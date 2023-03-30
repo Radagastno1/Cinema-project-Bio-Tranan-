@@ -9,4 +9,5 @@ public class Reservation
     public MovieScreening MovieScreening { get; set; }
     public int CustomerId { get; set; }
     public Customer Customer { get; set; }
+    public List<Seat>Seats{get;set;}
 }

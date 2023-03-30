@@ -1,6 +1,6 @@
 {
   "version": 2,
-  "dgSpecHash": "kCUrk0rT0AEHPXX6RZuWQuZN/K2b9YYlrEyAH0vGUGfEdHv/adVEB8cTE6d/EGCm2POMQS/AU/Rt4JDv+nil1g==",
+  "dgSpecHash": "DHjnSf+qwtPwV7RwAgsrDIwt4dS8TA9cXFJQd/BTfuCBvSaeKigjNVKLVTibedWsh/CslQbSOok4ff4oxT4BfQ==",
   "success": true,
   "projectFilePath": "C:\\Users\\angel\\Documents\\SUVNET22\\OOP2\\INLÄMNINGAR\\bio-tranan-Radagastno1\\trananapi\\TrananAPI.csproj",
   "expectedPackageFiles": [
@@ -10,6 +10,7 @@
     "C:\\Users\\angel\\.nuget\\packages\\microsoft.entityframeworkcore.abstractions\\7.0.4\\microsoft.entityframeworkcore.abstractions.7.0.4.nupkg.sha512",
     "C:\\Users\\angel\\.nuget\\packages\\microsoft.entityframeworkcore.analyzers\\7.0.4\\microsoft.entityframeworkcore.analyzers.7.0.4.nupkg.sha512",
     "C:\\Users\\angel\\.nuget\\packages\\microsoft.entityframeworkcore.design\\7.0.4\\microsoft.entityframeworkcore.design.7.0.4.nupkg.sha512",
+    "C:\\Users\\angel\\.nuget\\packages\\microsoft.entityframeworkcore.inmemory\\7.0.4\\microsoft.entityframeworkcore.inmemory.7.0.4.nupkg.sha512",
     "C:\\Users\\angel\\.nuget\\packages\\microsoft.entityframeworkcore.relational\\7.0.4\\microsoft.entityframeworkcore.relational.7.0.4.nupkg.sha512",
     "C:\\Users\\angel\\.nuget\\packages\\microsoft.entityframeworkcore.sqlite\\7.0.4\\microsoft.entityframeworkcore.sqlite.7.0.4.nupkg.sha512",
     "C:\\Users\\angel\\.nuget\\packages\\microsoft.entityframeworkcore.sqlite.core\\7.0.4\\microsoft.entityframeworkcore.sqlite.core.7.0.4.nupkg.sha512",
