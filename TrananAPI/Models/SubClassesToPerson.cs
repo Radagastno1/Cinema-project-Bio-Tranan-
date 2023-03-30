@@ -15,7 +15,6 @@ public class Actor
         LastName = lastName;
     }
 }
-
 public class Director 
 {
     public int DirectorId{get;set;}
@@ -30,7 +29,6 @@ public class Director
         this.LastName = lastName;
     }
 }
-
 public class Customer : Person
 {
     public string PhoneNumber { get; set; }

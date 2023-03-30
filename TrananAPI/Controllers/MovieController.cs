@@ -22,23 +22,7 @@ public class MovieController : ControllerBase
         try
         {
             var movies = await _seedData.GetMovies();
-            var movieDTOs = movies
-                .Select(
-                    m =>
-                        new MovieDTO(
-                            m.MovieId,
-                            m.Title,
-                            m.ReleaseYear,
-                            m.Language,
-                            m.AmountOfScreenings,
-                            m.MaxScreenings,
-                            m.DurationSeconds,
-                            m.Actors
-                                .Select(actor => $"{actor.FirstName} {actor.LastName}")
-                                .ToList()
-                        )
-                )
-                .ToList();
+            var movieDTOs = movies.Select(m => GenerateMovieDTO(m)).ToList();
             return Ok(movieDTOs);
         }
         catch (Exception e)
@@ -49,12 +33,12 @@ public class MovieController : ControllerBase
     }
 
     [HttpGet("{id:int}")]
-    public async Task<ActionResult<Movie>> GetMovieById(int id)
+    public async Task<ActionResult<MovieDTO>> GetMovieById(int id)
     {
         try
         {
             var movie = await _seedData.GetMovieById(id);
-            return Ok(movie);
+            return Ok(GenerateMovieDTO(movie));
         }
         catch (Exception e)
         {
@@ -64,12 +48,12 @@ public class MovieController : ControllerBase
     }
 
     [HttpPost]
-    public async Task<ActionResult<Movie>> PostMovie(Movie movie)
+    public async Task<ActionResult<MovieDTO>> PostMovie(Movie movie)
     {
         try
         {
             var newMovie = await _seedData.CreateMovie(movie);
-            return Ok(newMovie);
+            return Ok(GenerateMovieDTO(newMovie));
         }
         catch (Exception e)
         {
@@ -121,5 +105,20 @@ public class MovieController : ControllerBase
             Console.WriteLine(e);
             return NotFound();
         }
+    }
+
+    private MovieDTO GenerateMovieDTO(Movie movie)
+    {
+        var movieDTO = new MovieDTO(
+            movie.MovieId,
+            movie.Title,
+            movie.ReleaseYear,
+            movie.Language,
+            movie.AmountOfScreenings,
+            movie.MaxScreenings,
+            movie.DurationSeconds,
+            movie.Actors.Select(actor => $"{actor.FirstName} {actor.LastName}").ToList()
+        );
+        return movieDTO;
     }
 }

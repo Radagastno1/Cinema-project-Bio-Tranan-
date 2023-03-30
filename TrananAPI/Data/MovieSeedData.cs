@@ -18,14 +18,7 @@ public class MovieSeedData
         {
             if (_trananDbContext.Movies.Count() < 1)
             {
-                var actors = new List<Actor>()
-                {
-                    new Actor("Isabella", "Tortellini"),
-                    new Actor("Henrik", "Byström")
-                };
-                await _trananDbContext.AddAsync(
-                    new Movie(1, "Harry Potter", 2023, "English", 10, 12, actors)
-                );
+                await _trananDbContext.AddAsync(GenerateRandomMovie());
                 await _trananDbContext.SaveChangesAsync();
             }
             return await _trananDbContext.Movies.ToListAsync() ?? new List<Movie>();
@@ -69,8 +62,6 @@ public class MovieSeedData
     {
         try
         {
-            // var movieToUpdate = await _trananDbContext.Movies.FindAsync(movie.MovieId);
-            // movieToUpdate = movie;
             _trananDbContext.Update(movie);
             await _trananDbContext.SaveChangesAsync();
         }
@@ -96,5 +87,17 @@ public class MovieSeedData
     {
         _trananDbContext.Movies.ToList().ForEach(m => _trananDbContext.Movies.Remove(m));
         await _trananDbContext.SaveChangesAsync();
+    }
+
+    private Movie GenerateRandomMovie()
+    {
+        var actors = new List<Actor>()
+        {
+            new Actor("Isabella", "Tortellini"),
+            new Actor("Henrik", "Byström")
+        };
+
+        var movie = new Movie(1, "Harry Potter", 2023, "English", 10, 12, actors);
+        return movie;
     }
 }
