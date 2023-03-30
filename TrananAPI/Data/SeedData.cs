@@ -16,28 +16,42 @@ public class SeedData
     {
         try
         {
-            var movies = await _trananDbContext.Movies.ToListAsync();
-            if (movies == null)
+            if (_trananDbContext.Movies.Count() < 1)
             {
-                movies = new List<Movie>()
+                var movies = new List<Movie>()
                 {
                     new Movie("Harry Potter", 2023, "English", 10, 12),
                     new Movie("StarGaze", 2023, "English", 2, 15),
                     new Movie("Påskfilmen", 2023, "Svenska", 8, 10)
                 };
+                await _trananDbContext.AddRangeAsync(movies);
+                await _trananDbContext.SaveChangesAsync();
             }
+            return await _trananDbContext.Movies.ToListAsync() ?? new List<Movie>();
         }
         catch (Exception e)
         {
             Console.WriteLine(e.Message);
-            var movies = new List<Movie>()
-            {
-                new Movie("Harry Potter", 2023, "English", 10, 12),
-                new Movie("StarGaze", 2023, "English", 2, 15),
-                new Movie("Påskfilmen", 2023, "Svenska", 8, 10)
-            };
-            return movies;
         }
         return null;
+    }
+
+    public async Task<Movie> GetMovieById(int id)
+    {
+        try
+        {
+            return await _trananDbContext.Movies.FindAsync(id);
+        }
+        catch (Exception e)
+        {
+            Console.WriteLine(e.Message);
+            return null;
+        }
+    }
+
+    public async Task AddMovie(Movie movie)
+    {
+        await _trananDbContext.Movies.AddAsync(movie);
+        await _trananDbContext.SaveChangesAsync();
     }
 }

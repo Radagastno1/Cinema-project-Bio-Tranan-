@@ -29,4 +29,19 @@ public class MovieController : ControllerBase
             return NotFound();
         }
     }
+
+    [HttpGet("{id:int}")]
+    public async Task<ActionResult<Movie>> GetMovieById(int id)
+    {
+        try
+        {
+            var movie = await _seedData.GetMovieById(id);
+            return Ok(movie);
+        }
+        catch (Exception e)
+        {
+            Console.WriteLine(e);
+            return NotFound();
+        }
+    }
 }
