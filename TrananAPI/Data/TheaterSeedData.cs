@@ -1,4 +1,5 @@
 using TrananAPI.Models;
+using Microsoft.EntityFrameworkCore;
 namespace TrananAPI.Data;
 
 public class TheaterSeedData
@@ -10,23 +11,23 @@ public class TheaterSeedData
         _trananDbContext = trananDbContext;
     }
 
-    // public async Task<List<Theater>> GetTheaters()
-    // {
-    //     try
-    //     {
-    //         if (_trananDbContext.Movies.Count() < 1)
-    //         {
-    //             await _trananDbContext.AddRangeAsync(movies);
-    //             await _trananDbContext.SaveChangesAsync();
-    //         }
-    //         return await _trananDbContext.Movies.ToListAsync() ?? new List<Movie>();
-    //     }
-    //     catch (Exception e)
-    //     {
-    //         Console.WriteLine(e.Message);
-    //     }
-    //     return null;
-    // }
+    public async Task<List<Theater>> GetTheaters()
+    {
+        try
+        {
+            if (_trananDbContext.Theaters.Count() < 1)
+            {
+                await _trananDbContext.Theaters.AddAsync(GenerateRandomTheater());
+                await _trananDbContext.SaveChangesAsync();
+            }
+            return await _trananDbContext.Theaters.ToListAsync();
+        }
+        catch (Exception e)
+        {
+            Console.WriteLine(e.Message);
+        }
+        return null;
+    }
 
     // public async Task<Theater> GetTheaterById(int id)
     // {
@@ -82,4 +83,17 @@ public class TheaterSeedData
     //     _trananDbContext.Movies.Remove(movie);
     //     await _trananDbContext.SaveChangesAsync();
     // }
+    private Theater GenerateRandomTheater()
+    {
+        var seats = new List<Seat>()
+        {
+            new Seat(1, 1),
+            new Seat(1, 2),
+            new Seat(1, 3),
+            new Seat(1, 4),
+            new Seat(1, 5)
+        };
+        var theater = new Theater("Tranan123", seats);
+        return theater;
+    }
 }

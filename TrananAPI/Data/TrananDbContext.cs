@@ -37,7 +37,7 @@ public class TrananDbContext : DbContext
 
     //     modelBuilder.Entity<Theater>().HasMany(m => m.MovieScreenings).WithOne(a => a.Theater);
 
-    //     modelBuilder.Entity<Theater>().HasMany(m => m.Seats).WithOne(a => a.Theater);
+        modelBuilder.Entity<Theater>().HasMany(m => m.Seats).WithOne(a => a.Theater);
 
     //     modelBuilder
     //         .Entity<Seat>()
@@ -60,6 +60,6 @@ public class TrananDbContext : DbContext
     // public DbSet<Customer> Customers { get; set; }
     // public DbSet<Admin> Admins { get; set; }
     // public DbSet<Reservation> Reservations { get; set; }
-    // public DbSet<Seat> Seats { get; set; }
-    // public DbSet<Theater> Theaters { get; set; }
+    public DbSet<Seat> Seats { get; set; }
+    public DbSet<Theater> Theaters { get; set; }
 }
