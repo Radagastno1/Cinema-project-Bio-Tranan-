@@ -74,3 +74,4 @@ C:\Users\angel\Documents\SUVNET22\OOP2\INLÄMNINGAR\bio-tranan-Radagastno1\trana
 C:\Users\angel\Documents\SUVNET22\OOP2\INLÄMNINGAR\bio-tranan-Radagastno1\trananapi\obj\Debug\net6.0\TrananAPI.pdb
 C:\Users\angel\Documents\SUVNET22\OOP2\INLÄMNINGAR\bio-tranan-Radagastno1\trananapi\obj\Debug\net6.0\TrananAPI.genruntimeconfig.cache
 C:\Users\angel\Documents\SUVNET22\OOP2\INLÄMNINGAR\bio-tranan-Radagastno1\trananapi\obj\Debug\net6.0\ref\TrananAPI.dll
+C:\Users\angel\Documents\SUVNET22\OOP2\INLÄMNINGAR\bio-tranan-Radagastno1\trananapi\bin\Debug\net6.0\Newtonsoft.Json.dll

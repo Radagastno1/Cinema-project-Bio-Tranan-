@@ -1,33 +1,32 @@
 using System.ComponentModel.DataAnnotations;
-namespace TrananAPI.Models;
+namespace TrananAPI.Models.DTO;
 
-public class Movie
+public class MovieDTO
 {
     [Required]
     public int MovieId { get; set; }
-     [Required]
+
+    [Required]
     public string Title { get; set; }
-     [Required]
+
+    [Required]
     public int ReleaseYear { get; set; }
-     [Required]
+
+    [Required]
     public string Language { get; set; }
-     [Required]
+
+    [Required]
     public int AmountOfScreenings { get; set; }
-     [Required]
+
+    [Required]
     public int MaxScreenings { get; set; }
+
     [Required]
     public int DurationSeconds { get; set; }
-    public List<Director> Directors { get; set; }
-    public List<Actor> Actors { get; set; }
-    // public List<MovieScreening> MovieScreenings { get; set; }
+    [Required]
+    public List<string> ActorNames { get; set; }
 
-     public Movie(int movieId,
-        string title,
-        int releaseYear,
-        string language,
-        int amountOfScreenings,
-        int maxScreenings, List<Actor>actors
-    )
+    public MovieDTO(int movieId, string title, int releaseYear, string language, int amountOfScreenings, int maxScreenings, int durationSeconds, List<string>actorNames)
     {
         MovieId = movieId;
         Title = title;
@@ -35,7 +34,7 @@ public class Movie
         Language = language;
         AmountOfScreenings = amountOfScreenings;
         MaxScreenings = maxScreenings;
-        Actors = actors;
+        DurationSeconds = durationSeconds;
+        ActorNames = actorNames;
     }
-    public Movie(){}
 }

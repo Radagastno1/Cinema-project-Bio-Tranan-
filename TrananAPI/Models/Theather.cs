@@ -7,4 +7,10 @@ public class Theater
     public int Rows { get; set; }
     public List<Seat> Seats { get; set; }
     public List<MovieScreening> MovieScreenings { get; set; }
+
+    public Theater(string name, int rows)
+    {
+        Name = name;
+        Rows = rows;
+    }
 }

@@ -11,7 +11,8 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
 
-builder.Services.AddScoped<TrananAPI.Data.SeedData>();
+builder.Services.AddScoped<TrananAPI.Data.MovieSeedData>();
+builder.Services.AddScoped<TrananAPI.Data.TheaterSeedData>();
 builder.Services.AddDbContext<TrananAPI.Data.TrananDbContext>
 (o => o.UseInMemoryDatabase("InMemoryDb"));
 

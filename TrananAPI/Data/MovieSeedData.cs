@@ -3,11 +3,11 @@ using TrananAPI.Models;
 
 namespace TrananAPI.Data;
 
-public class SeedData
+public class MovieSeedData
 {
     private readonly TrananDbContext _trananDbContext;
 
-    public SeedData(TrananDbContext trananDbContext)
+    public MovieSeedData(TrananDbContext trananDbContext)
     {
         _trananDbContext = trananDbContext;
     }
@@ -18,13 +18,14 @@ public class SeedData
         {
             if (_trananDbContext.Movies.Count() < 1)
             {
-                var movies = new List<Movie>()
+                var actors = new List<Actor>()
                 {
-                    new Movie("Harry Potter", 2023, "English", 10, 12),
-                    new Movie("StarGaze", 2023, "English", 2, 15),
-                    new Movie("Påskfilmen", 2023, "Svenska", 8, 10)
+                    new Actor("Isabella", "Tortellini"),
+                    new Actor("Henrik", "Byström")
                 };
-                await _trananDbContext.AddRangeAsync(movies);
+                await _trananDbContext.AddAsync(
+                    new Movie(1, "Harry Potter", 2023, "English", 10, 12, actors)
+                );
                 await _trananDbContext.SaveChangesAsync();
             }
             return await _trananDbContext.Movies.ToListAsync() ?? new List<Movie>();
@@ -88,6 +89,12 @@ public class SeedData
     public async Task DeleteMovie(Movie movie)
     {
         _trananDbContext.Movies.Remove(movie);
+        await _trananDbContext.SaveChangesAsync();
+    }
+
+    public async Task DeleteMovies()
+    {
+        _trananDbContext.Movies.ToList().ForEach(m => _trananDbContext.Movies.Remove(m));
         await _trananDbContext.SaveChangesAsync();
     }
 }
