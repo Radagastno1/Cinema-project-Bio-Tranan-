@@ -44,4 +44,49 @@ public class MovieController : ControllerBase
             return NotFound();
         }
     }
+
+    [HttpPost]
+    public async Task<ActionResult<Movie>> PostMovie(Movie movie)
+    {
+        try
+        {
+            var newMovie = await _seedData.CreateMovie(movie);
+            return Ok(newMovie);
+        }
+        catch (Exception e)
+        {
+            Console.WriteLine(e);
+            return NotFound();
+        }
+    }
+
+    [HttpPut]
+    public async Task<ActionResult> PutMovie(Movie movie)
+    {
+        try
+        {
+            await _seedData.UpdateMovie(movie);
+            return Ok();
+        }
+        catch (Exception e)
+        {
+            Console.WriteLine(e);
+            return NotFound();
+        }
+    }
+
+    [HttpDelete]
+    public async Task<ActionResult> DeleteMovie(Movie movie)
+    {
+        try
+        {
+            await _seedData.DeleteMovie(movie);
+            return Ok();
+        }
+        catch (Exception e)
+        {
+            Console.WriteLine(e);
+            return NotFound();
+        }
+    }
 }

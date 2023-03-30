@@ -49,9 +49,45 @@ public class SeedData
         }
     }
 
+    public async Task<Movie> CreateMovie(Movie movie)
+    {
+        try
+        {
+            await _trananDbContext.AddAsync(movie);
+            await _trananDbContext.SaveChangesAsync();
+            return movie;
+        }
+        catch (Exception e)
+        {
+            Console.WriteLine(e.Message);
+            return null;
+        }
+    }
+
+    public async Task UpdateMovie(Movie movie)
+    {
+        try
+        {
+            // var movieToUpdate = await _trananDbContext.Movies.FindAsync(movie.MovieId);
+            // movieToUpdate = movie;
+            _trananDbContext.Update(movie);
+            await _trananDbContext.SaveChangesAsync();
+        }
+        catch (Exception e)
+        {
+            Console.WriteLine(e.Message);
+        }
+    }
+
     public async Task AddMovie(Movie movie)
     {
         await _trananDbContext.Movies.AddAsync(movie);
+        await _trananDbContext.SaveChangesAsync();
+    }
+
+    public async Task DeleteMovie(Movie movie)
+    {
+        _trananDbContext.Movies.Remove(movie);
         await _trananDbContext.SaveChangesAsync();
     }
 }
