@@ -20,7 +20,7 @@ public class TheaterSeedData
                 await _trananDbContext.Theaters.AddAsync(GenerateRandomTheater());
                 await _trananDbContext.SaveChangesAsync();
             }
-            return await _trananDbContext.Theaters.ToListAsync();
+            return await _trananDbContext.Theaters.Include(t => t.Seats).ToListAsync();
         }
         catch (Exception e)
         {
@@ -29,60 +29,61 @@ public class TheaterSeedData
         return null;
     }
 
-    // public async Task<Theater> GetTheaterById(int id)
-    // {
-    //     try
-    //     {
-    //         return await _trananDbContext.Movies.FindAsync(id);
-    //     }
-    //     catch (Exception e)
-    //     {
-    //         Console.WriteLine(e.Message);
-    //         return null;
-    //     }
-    // }
+    public async Task<Theater> GetTheaterById(int id)
+    {
+        try
+        {
+            return await _trananDbContext.Theaters.Include(t => t.Seats).FirstAsync(t => t.TheaterId == id); //INCLUDE SEATS?
+        }
+        catch (Exception e)
+        {
+            Console.WriteLine(e.Message);
+            return null;
+        }
+    }
 
-    // public async Task<Theater> CreateTheater(Movie movie)
-    // {
-    //     try
-    //     {
-    //         await _trananDbContext.AddAsync(movie);
-    //         await _trananDbContext.SaveChangesAsync();
-    //         return movie;
-    //     }
-    //     catch (Exception e)
-    //     {
-    //         Console.WriteLine(e.Message);
-    //         return null;
-    //     }
-    // }
+    public async Task<Theater> CreateTheater(Theater theater)
+    {
+        try
+        {
+            await _trananDbContext.Theaters.AddAsync(theater);
+            await _trananDbContext.Seats.AddRangeAsync(theater.Seats);
+            await _trananDbContext.SaveChangesAsync();
+            return theater;
+        }
+        catch (Exception e)
+        {
+            Console.WriteLine(e.Message);
+            return null;
+        }
+    }
 
-    // public async Task UpdateTheater(Theater theater)
-    // {
-    //     try
-    //     {
-    //         // var movieToUpdate = await _trananDbContext.Movies.FindAsync(movie.MovieId);
-    //         // movieToUpdate = movie;
-    //         _trananDbContext.Update(movie);
-    //         await _trananDbContext.SaveChangesAsync();
-    //     }
-    //     catch (Exception e)
-    //     {
-    //         Console.WriteLine(e.Message);
-    //     }
-    // }
+    public async Task UpdateTheater(Theater theater)
+    {
+        try
+        {
 
-    // public async Task AddTheater(Theater theater)
-    // {
-    //     await _trananDbContext.Movies.AddAsync(movie);
-    //     await _trananDbContext.SaveChangesAsync();
-    // }
+            _trananDbContext.Theaters.Update(theater);
+            _trananDbContext.Seats.UpdateRange(theater.Seats);
+            await _trananDbContext.SaveChangesAsync();
+        }
+        catch (Exception e)
+        {
+            Console.WriteLine(e.Message);
+        }
+    }
 
-    // public async Task DeleteTheater(Theater theater)
-    // {
-    //     _trananDbContext.Movies.Remove(movie);
-    //     await _trananDbContext.SaveChangesAsync();
-    // }
+    public async Task AddTheater(Theater theater)
+    {
+        await _trananDbContext.Theaters.AddAsync(theater);
+        await _trananDbContext.SaveChangesAsync();
+    }
+
+    public async Task DeleteTheater(Theater theater)
+    {
+        _trananDbContext.Theaters.Remove(theater);
+        await _trananDbContext.SaveChangesAsync();
+    }
     private Theater GenerateRandomTheater()
     {
         var seats = new List<Seat>()
