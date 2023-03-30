@@ -21,7 +21,7 @@ public class MovieSeedData
                 await _trananDbContext.AddAsync(GenerateRandomMovie());
                 await _trananDbContext.SaveChangesAsync();
             }
-            return await _trananDbContext.Movies.ToListAsync() ?? new List<Movie>();
+            return await _trananDbContext.Movies.Include(m => m.Actors).Include(m => m.Directors).ToListAsync() ?? new List<Movie>();
         }
         catch (Exception e)
         {
@@ -32,7 +32,7 @@ public class MovieSeedData
 
     public async Task<Movie> GetMovieById(int id)
     {
-        try
+        try //include
         {
             return await _trananDbContext.Movies.FindAsync(id);
         }

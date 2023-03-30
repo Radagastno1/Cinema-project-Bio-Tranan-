@@ -12,6 +12,7 @@ public class Seat
     public Theater Theater;
     // public List<Reservation> Reservations { get; set; }
 
+
     public Seat() { }
 
     public Seat(int seatNumber, int row) 
