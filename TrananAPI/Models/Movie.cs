@@ -24,17 +24,14 @@ public class Movie
      public Movie(int movieId,
         string title,
         int releaseYear,
-        string language,
-        int amountOfScreenings,
-        int maxScreenings, List<Actor>actors
+        string language, int durationSeconds, List<Actor>actors
     )
     {
         MovieId = movieId;
         Title = title;
         ReleaseYear = releaseYear;
         Language = language;
-        AmountOfScreenings = amountOfScreenings;
-        MaxScreenings = maxScreenings;
+        DurationSeconds = durationSeconds;
         Actors = actors;
     }
     public Movie(){}

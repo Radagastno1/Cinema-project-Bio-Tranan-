@@ -33,7 +33,12 @@ public class TrananDbContext : DbContext
             .WithMany(d => d.Movies)
             .UsingEntity(x => x.ToTable("director_to_movie"));
 
-        modelBuilder.Entity<Movie>().HasMany(m => m.MovieScreenings).WithOne(a => a.Movie);
+       modelBuilder.Entity<Movie>()
+    .HasMany(m => m.MovieScreenings)
+    .WithOne(s => s.Movie)
+    .HasForeignKey(s => s.MovieId);
+
+
 
         // modelBuilder.Entity<Theater>().HasMany(m => m.MovieScreenings).WithOne(a => a.Theater);
         modelBuilder.Entity<MovieScreening>().HasOne(m => m.Theater).WithMany(t => t.MovieScreenings);

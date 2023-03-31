@@ -8,7 +8,7 @@ public class Actor
     public string LastName { get; set; }
     [JsonIgnore]
     public List<Movie> Movies { get; set; }
-
+    public int Statistic;
     public Actor(string firstName, string lastName)
     {
         FirstName = firstName;

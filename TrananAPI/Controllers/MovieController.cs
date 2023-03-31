@@ -1,6 +1,6 @@
 using TrananAPI.Data;
-using TrananAPI.Models;
-using TrananAPI.Models.DTO;
+// using TrananAPI.Models;
+using TrananAPI.DTO;
 using Microsoft.AspNetCore.Mvc; //kolla upp varför just mvc
 
 namespace TrananAPI.Controllers;
@@ -21,8 +21,7 @@ public class MovieController : ControllerBase
     {
         try
         {
-            var movies = await _seedData.GetMovies();
-            var movieDTOs = movies.Select(m => GenerateMovieDTO(m)).ToList();
+            var movieDTOs = await _seedData.GetMovies();
             return Ok(movieDTOs);
         }
         catch (Exception e)
@@ -37,8 +36,8 @@ public class MovieController : ControllerBase
     {
         try
         {
-            var movie = await _seedData.GetMovieById(id);
-            return Ok(GenerateMovieDTO(movie));
+            var movieDTO = await _seedData.GetMovieById(id);
+            return Ok(movieDTO);
         }
         catch (Exception e)
         {
@@ -48,12 +47,12 @@ public class MovieController : ControllerBase
     }
 
     [HttpPost]
-    public async Task<ActionResult<MovieDTO>> PostMovie(Movie movie)
+    public async Task<ActionResult<MovieDTO>> PostMovie(MovieDTO movieDTO)
     {
         try
         {
-            var newMovie = await _seedData.CreateMovie(movie);
-            return Ok(GenerateMovieDTO(newMovie));
+            var newMovie = await _seedData.CreateMovie(movieDTO);
+            return Ok(newMovie);
         }
         catch (Exception e)
         {
@@ -63,11 +62,11 @@ public class MovieController : ControllerBase
     }
 
     [HttpPut]
-    public async Task<ActionResult> PutMovie(Movie movie)
+    public async Task<ActionResult> PutMovie(MovieDTO movieDTO)
     {
         try
         {
-            await _seedData.UpdateMovie(movie);
+            await _seedData.UpdateMovie(movieDTO);
             return Ok();
         }
         catch (Exception e)
@@ -78,11 +77,11 @@ public class MovieController : ControllerBase
     }
 
     [HttpDelete]
-    public async Task<ActionResult> DeleteMovie(Movie movie)
+    public async Task<ActionResult> DeleteMovie(MovieDTO movieDTO)
     {
         try
         {
-            await _seedData.DeleteMovie(movie);
+            await _seedData.DeleteMovie(movieDTO);
             return Ok();
         }
         catch (Exception e)
@@ -107,18 +106,5 @@ public class MovieController : ControllerBase
         }
     }
 
-    private MovieDTO GenerateMovieDTO(Movie movie)
-    {
-        var movieDTO = new MovieDTO(
-            movie.MovieId,
-            movie.Title,
-            movie.ReleaseYear,
-            movie.Language,
-            movie.AmountOfScreenings,
-            movie.MaxScreenings,
-            movie.DurationSeconds,
-            movie.Actors.Select(actor => $"{actor.FirstName} {actor.LastName}").ToList()
-        );
-        return movieDTO;
-    }
+ 
 }

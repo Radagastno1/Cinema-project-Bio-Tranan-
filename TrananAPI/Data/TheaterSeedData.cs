@@ -88,13 +88,13 @@ public class TheaterSeedData
     {
         var seats = new List<Seat>()
         {
-            new Seat(1, 1),
-            new Seat(1, 2),
-            new Seat(1, 3),
-            new Seat(1, 4),
-            new Seat(1, 5)
+            new Seat(1, 1, 1),
+            new Seat(2, 1, 2),
+            new Seat(3, 1, 3),
+            new Seat(4, 1, 4),
+            new Seat(5, 1, 5)
         };
-        var theater = new Theater("Tranan123", seats);
+        var theater = new Theater(1, "Tranan123", 25, seats);
         return theater;
     }
 }

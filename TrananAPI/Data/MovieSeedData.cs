@@ -1,4 +1,5 @@
 using Microsoft.EntityFrameworkCore;
+using TrananAPI.DTO;
 using TrananAPI.Models;
 
 namespace TrananAPI.Data;
@@ -12,16 +13,19 @@ public class MovieSeedData
         _trananDbContext = trananDbContext;
     }
 
-    public async Task<List<Movie>> GetMovies()
+    public async Task<List<MovieDTO>> GetMovies()
     {
         try
         {
             if (_trananDbContext.Movies.Count() < 1)
             {
-                await _trananDbContext.AddAsync(GenerateRandomMovie());
+                await _trananDbContext.Movies.AddRangeAsync(GenerateRandomMovies());
                 await _trananDbContext.SaveChangesAsync();
             }
-            return await _trananDbContext.Movies.Include(m => m.Actors).Include(m => m.Directors).ToListAsync() ?? new List<Movie>();
+            return await _trananDbContext.Movies
+                    .Include(m => m.Actors)
+                    .Include(m => m.Directors)
+                    .Select(m => Mapper.GenerateMovieDTO(m)).ToListAsync();
         }
         catch (Exception e)
         {
@@ -30,11 +34,12 @@ public class MovieSeedData
         return null;
     }
 
-    public async Task<Movie> GetMovieById(int id)
+    public async Task<MovieDTO> GetMovieById(int id)
     {
         try //include
         {
-            return await _trananDbContext.Movies.FindAsync(id);
+            var movie = await _trananDbContext.Movies.FindAsync(id);
+            return Mapper.GenerateMovieDTO(movie);
         }
         catch (Exception e)
         {
@@ -43,13 +48,13 @@ public class MovieSeedData
         }
     }
 
-    public async Task<Movie> CreateMovie(Movie movie)
+    public async Task<MovieDTO> CreateMovie(MovieDTO movieDTO)
     {
         try
         {
-            await _trananDbContext.AddAsync(movie);
+            await _trananDbContext.AddAsync(Mapper.GenerateMovie(movieDTO));
             await _trananDbContext.SaveChangesAsync();
-            return movie;
+            return movieDTO;
         }
         catch (Exception e)
         {
@@ -58,11 +63,11 @@ public class MovieSeedData
         }
     }
 
-    public async Task UpdateMovie(Movie movie)
+    public async Task UpdateMovie(MovieDTO movieDTO)
     {
         try
         {
-            _trananDbContext.Update(movie);
+            _trananDbContext.Update(Mapper.GenerateMovie(movieDTO));
             await _trananDbContext.SaveChangesAsync();
         }
         catch (Exception e)
@@ -71,15 +76,16 @@ public class MovieSeedData
         }
     }
 
-    public async Task AddMovie(Movie movie)
+    public async Task<MovieDTO> AddMovie(MovieDTO movieDTO)
     {
-        await _trananDbContext.Movies.AddAsync(movie);
+        await _trananDbContext.Movies.AddAsync(Mapper.GenerateMovie(movieDTO));
         await _trananDbContext.SaveChangesAsync();
+        return movieDTO;
     }
 
-    public async Task DeleteMovie(Movie movie)
+    public async Task DeleteMovie(MovieDTO movieDTO)
     {
-        _trananDbContext.Movies.Remove(movie);
+        _trananDbContext.Movies.Remove(Mapper.GenerateMovie(movieDTO));
         await _trananDbContext.SaveChangesAsync();
     }
 
@@ -89,15 +95,23 @@ public class MovieSeedData
         await _trananDbContext.SaveChangesAsync();
     }
 
-    private Movie GenerateRandomMovie()
+    private List<Movie> GenerateRandomMovies()
     {
         var actors = new List<Actor>()
         {
             new Actor("Isabella", "Tortellini"),
             new Actor("Henrik", "Byström")
         };
+        List<Movie> movies =
+            new()
+            {
+                new Movie(1, "Harry Potter", 2023, "English", 208, actors),
+                new Movie(2, "Kalle Anka", 2023, "English", 208, actors),
+                new Movie(3, "Sagan om de sju", 2023, "English", 208, actors),
+                new Movie(4, "Milkshake", 2023, "English", 208, actors),
+                new Movie(5, "Macarena", 2023, "English", 208, actors),
+            };
 
-        var movie = new Movie(1, "Harry Potter", 2023, "English", 10, 12, actors);
-        return movie;
+        return movies;
     }
 }
