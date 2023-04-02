@@ -119,7 +119,7 @@ public class MovieSeedData
                     updatedActors.Add(existingActor);
                 }
             }
-            movie.Actors.AddRange(updatedActors);
+            movie.Actors = updatedActors;
             _trananDbContext.Movies.Update(movie);
             await _trananDbContext.SaveChangesAsync();
         }
@@ -138,7 +138,8 @@ public class MovieSeedData
 
     public async Task DeleteMovie(MovieDTO movieDTO)
     {
-        _trananDbContext.Movies.Remove(Mapper.GenerateMovie(movieDTO));
+        var movieToDelete = await _trananDbContext.Movies.FindAsync(movieDTO.MovieId);
+        _trananDbContext.Movies.Remove(movieToDelete);
         await _trananDbContext.SaveChangesAsync();
     }
 
