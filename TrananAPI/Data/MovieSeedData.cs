@@ -56,17 +56,24 @@ public class MovieSeedData
     {
         try
         {
+            List<Actor> actorsOfMovie = new();
             foreach (var actor in movieDTO.ActorDTOs)
             {
-                var actorNotInDB = _trananDbContext.Actors.Where(
-                    a => a.FirstName != actor.FirstName && a.LastName != actor.LastName
-                );
-                if (actorNotInDB == null)
+                var actorInDB = await _trananDbContext.Actors.FindAsync(actor.ActorId);
+                if (actorInDB == null)
                 {
-                    await _trananDbContext.Actors.AddAsync(Mapper.GenerateActor(actor));
+                    var newActor = Mapper.GenerateActor(actor);
+                    actorsOfMovie.Add(newActor);
+                }
+                else
+                {
+                    actorsOfMovie.Add(actorInDB);
                 }
             }
-            await _trananDbContext.AddAsync(Mapper.GenerateMovie(movieDTO));
+
+            var newMovie = Mapper.GenerateMovie(movieDTO);
+            newMovie.Actors = actorsOfMovie;
+            await _trananDbContext.AddAsync(newMovie);
             await _trananDbContext.SaveChangesAsync();
             return movieDTO;
         }
@@ -81,8 +88,9 @@ public class MovieSeedData
     {
         try
         {
-            var movie = await _trananDbContext.Movies.
-            Include(m => m.Actors).FirstAsync(m => m.MovieId == movieDTO.MovieId);
+            var movie = await _trananDbContext.Movies
+                .Include(m => m.Actors)
+                .FirstAsync(m => m.MovieId == movieDTO.MovieId);
             if (movie == null)
             {
                 throw new Exception("No movie found");
@@ -94,7 +102,7 @@ public class MovieSeedData
             movie.ReleaseYear = movieDTO.ReleaseYear;
             movie.DurationSeconds = movieDTO.DurationSeconds;
 
-            List<Actor>updatedActors = new();
+            List<Actor> updatedActors = new();
             foreach (var actorDTO in movieDTO.ActorDTOs)
             {
                 var existingActor = await _trananDbContext.Actors.FindAsync(actorDTO.ActorId);
