@@ -13,7 +13,7 @@ public class MovieScreeningSeedData
         _trananDbContext = trananDbContext;
     }
 
-    public async Task<List<MovieScreening>> GetScreenings()
+    public async Task<List<MovieScreeningOutgoingDTO>> GetUpcomingScreenings()
     {
         try
         {
@@ -22,23 +22,17 @@ public class MovieScreeningSeedData
                 await _trananDbContext.MovieScreenings.AddAsync(GenerateRandomMovieScreening());
                 await _trananDbContext.SaveChangesAsync();
             }
-            var screening = _trananDbContext.MovieScreenings
+            var screenings = await _trananDbContext.MovieScreenings
                 .Include(s => s.Movie)
                 .ThenInclude(m => m.Actors)
                 .Include(s => s.Movie)
                 .ThenInclude(m => m.Directors)
-                .Include(s => s.Theater);
-            // .FirstOrDefault(s => s.MovieScreeningId == screeningId);
-
-            if (screening != null)
-            {
-                // här kan du använda screening.Movie för att få tillhörande filmen
-            }
-
-            return await _trananDbContext.MovieScreenings
-                    .Include(m => m.Movie)
-                    .Include(m => m.Theater)
-                    .ToListAsync() ?? new List<MovieScreening>();
+                .Include(s => s.Theater)
+                .Where(s => s.DateAndTime > DateTime.Now)
+                .ToListAsync();
+            return screenings
+                .Select(s => Mapper.GenerateMovieScreeningOutcomingDTO(s))
+                .ToList();
         }
         catch (Exception e)
         {
@@ -47,14 +41,14 @@ public class MovieScreeningSeedData
         return null;
     }
 
-    public async Task<MovieScreeningDTO> GetMovieScreeningById(int id)
+    public async Task<MovieScreeningOutgoingDTO> GetMovieScreeningById(int id)
     {
         try
         {
             var screening = await _trananDbContext.MovieScreenings.FindAsync(id);
             var movie = await _trananDbContext.Movies.FindAsync(screening.MovieId);
             var theater = await _trananDbContext.Theaters.FindAsync(screening.TheaterId);
-            return Mapper.GenerateMovieScreeningDTO(screening, movie, theater);
+            return Mapper.GenerateMovieScreeningOutcomingDTO(screening);
         }
         catch (Exception e)
         {
@@ -63,24 +57,35 @@ public class MovieScreeningSeedData
         }
     }
 
-    public async Task<MovieScreeningDTO> CreateMovieScreening(MovieScreeningDTO movieScreeningDTO)
+    public async Task<MovieScreeningOutgoingDTO> CreateMovieScreening(
+        MovieScreeningIncomingDTO movieScreeningDTO
+    )
     {
         try
         {
-            var movie = await _trananDbContext.Movies.FindAsync(movieScreeningDTO.MovieId);
-            var theater = await _trananDbContext.Theaters.FindAsync(movieScreeningDTO.TheaterId);
+            var movie = await _trananDbContext.Movies.FirstAsync(m => m.MovieId == movieScreeningDTO.MovieId);
+            var theater = await _trananDbContext.Theaters.FirstAsync(m => m.TheaterId == movieScreeningDTO.TheaterId);
             if (movie == null)
             {
-                return null;
+                Console.WriteLine("movie is null");
+            }
+            else if(theater == null)
+            {
+                Console.WriteLine("theater is null");
             }
             else
             {
                 await _trananDbContext.MovieScreenings.AddAsync(
-                    Mapper.GenerateMovieScreening(movieScreeningDTO, movie, theater)
+                    Mapper.GenerateMovieScreeningFromIncomingDTO(movieScreeningDTO, movie, theater)
                 );
             }
             await _trananDbContext.SaveChangesAsync();
-            return movieScreeningDTO;
+            var recentlyAddedScreening = _trananDbContext.MovieScreenings
+                .OrderByDescending(s => s.MovieScreeningId)
+                .Include(s => s.Movie)
+                .Include(s => s.Theater)
+                .FirstOrDefault();
+            return Mapper.GenerateMovieScreeningOutcomingDTO(recentlyAddedScreening);
         }
         catch (Exception e)
         {
@@ -89,7 +94,7 @@ public class MovieScreeningSeedData
         }
     }
 
-    public async Task UpdateMovieScreening(MovieScreeningDTO movieScreeningDTO)
+    public async Task UpdateMovieScreening(MovieScreeningIncomingDTO movieScreeningDTO)
     {
         try
         {
@@ -102,12 +107,12 @@ public class MovieScreeningSeedData
         }
     }
 
-    public async Task DeleteMovieScreening(MovieScreeningDTO movieScreeningDTO)
+    public async Task DeleteMovieScreening(MovieScreeningIncomingDTO movieScreeningDTO)
     {
         var movie = await _trananDbContext.Movies.FindAsync(movieScreeningDTO.MovieId);
         var theater = await _trananDbContext.Theaters.FindAsync(movieScreeningDTO.TheaterId);
         _trananDbContext.MovieScreenings.Remove(
-            Mapper.GenerateMovieScreening(movieScreeningDTO, movie, theater)
+            Mapper.GenerateMovieScreeningFromIncomingDTO(movieScreeningDTO, movie, theater)
         );
         await _trananDbContext.SaveChangesAsync();
     }
@@ -123,7 +128,7 @@ public class MovieScreeningSeedData
     private MovieScreening GenerateRandomMovieScreening()
     {
         List<Seat> seats =
-            new() { new Seat(4, 1, 2), new Seat(5, 2, 2), new Seat(6, 3, 2), new Seat(7, 4, 2) };
+            new() { new Seat(1, 2), new Seat(2, 2), new Seat(3, 2), new Seat(4, 2) };
         List<Actor> actors = new() { new Actor("Beyonce", "Hawking") };
 
         Movie movie =
@@ -135,7 +140,7 @@ public class MovieScreeningSeedData
                 Language = "svenska"
             };
         Theater theater = new() { Name = "Stora salen", Seats = seats };
-        var movieScreening = new MovieScreening(1, DateTime.Now, movie, theater);
+        var movieScreening = new MovieScreening(DateTime.Now.AddDays(4), movie, theater);
 
         return movieScreening;
     }

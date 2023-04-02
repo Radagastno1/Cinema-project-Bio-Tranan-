@@ -23,9 +23,10 @@ public class MovieSeedData
                 await _trananDbContext.SaveChangesAsync();
             }
             return await _trananDbContext.Movies
-                    .Include(m => m.Actors)
-                    .Include(m => m.Directors)
-                    .Select(m => Mapper.GenerateMovieDTO(m)).ToListAsync();
+                .Include(m => m.Actors)
+                .Include(m => m.Directors)
+                .Select(m => Mapper.GenerateMovieDTO(m))
+                .ToListAsync();
         }
         catch (Exception e)
         {
@@ -38,7 +39,10 @@ public class MovieSeedData
     {
         try //include
         {
-            var movie = await _trananDbContext.Movies.FindAsync(id);
+            var movie = await _trananDbContext.Movies
+                .Include(m => m.Actors)
+                .FirstAsync(m => m.MovieId == id);
+
             return Mapper.GenerateMovieDTO(movie);
         }
         catch (Exception e)
@@ -52,6 +56,16 @@ public class MovieSeedData
     {
         try
         {
+            foreach (var actor in movieDTO.ActorDTOs)
+            {
+                var actorNotInDB = _trananDbContext.Actors.Where(
+                    a => a.FirstName != actor.FirstName && a.LastName != actor.LastName
+                );
+                if (actorNotInDB == null)
+                {
+                    await _trananDbContext.Actors.AddAsync(Mapper.GenerateActor(actor));
+                }
+            }
             await _trananDbContext.AddAsync(Mapper.GenerateMovie(movieDTO));
             await _trananDbContext.SaveChangesAsync();
             return movieDTO;
@@ -67,7 +81,38 @@ public class MovieSeedData
     {
         try
         {
-            _trananDbContext.Update(Mapper.GenerateMovie(movieDTO));
+            var movie = await _trananDbContext.Movies.
+            Include(m => m.Actors).FirstAsync(m => m.MovieId == movieDTO.MovieId);
+            if (movie == null)
+            {
+                throw new Exception("No movie found");
+            }
+
+            //får göra såhär annars skapar ny instans och då skapas ny film ist för upppdatera
+            movie.Title = movieDTO.Title;
+            movie.Language = movieDTO.Language;
+            movie.ReleaseYear = movieDTO.ReleaseYear;
+            movie.DurationSeconds = movieDTO.DurationSeconds;
+
+            List<Actor>updatedActors = new();
+            foreach (var actorDTO in movieDTO.ActorDTOs)
+            {
+                var existingActor = await _trananDbContext.Actors.FindAsync(actorDTO.ActorId);
+                if (existingActor == null)
+                {
+                    _trananDbContext.Actors.Add(Mapper.GenerateActor(actorDTO));
+                    var recentlyAddedActor = movie.Actors
+                        .OrderByDescending(a => a.ActorId)
+                        .FirstOrDefault();
+                    updatedActors.Add(recentlyAddedActor);
+                }
+                else
+                {
+                    updatedActors.Add(existingActor);
+                }
+            }
+            movie.Actors.AddRange(updatedActors);
+            _trananDbContext.Movies.Update(movie);
             await _trananDbContext.SaveChangesAsync();
         }
         catch (Exception e)
@@ -105,11 +150,11 @@ public class MovieSeedData
         List<Movie> movies =
             new()
             {
-                new Movie(1, "Harry Potter", 2023, "English", 208, actors),
-                new Movie(2, "Kalle Anka", 2023, "English", 208, actors),
-                new Movie(3, "Sagan om de sju", 2023, "English", 208, actors),
-                new Movie(4, "Milkshake", 2023, "English", 208, actors),
-                new Movie(5, "Macarena", 2023, "English", 208, actors),
+                new Movie("Harry Potter", 2023, "English", 208, actors),
+                new Movie("Kalle Anka", 2023, "English", 208, actors),
+                new Movie("Sagan om de sju", 2023, "English", 208, actors),
+                new Movie("Milkshake", 2023, "English", 208, actors),
+                new Movie("Macarena", 2023, "English", 208, actors),
             };
 
         return movies;

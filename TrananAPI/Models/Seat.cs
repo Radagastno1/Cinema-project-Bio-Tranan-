@@ -15,9 +15,8 @@ public class Seat
 
     public Seat() { }
 
-    public Seat(int seatId, int seatNumber, int row) 
+    public Seat(int seatNumber, int row) 
     { 
-        SeatId = seatId;
         SeatNumber =seatNumber;
         Row = row;
     }

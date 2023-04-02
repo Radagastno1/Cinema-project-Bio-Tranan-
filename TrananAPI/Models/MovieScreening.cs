@@ -12,9 +12,8 @@ public class MovieScreening
     // public List<Reservation> Reservations { get; set; }
 
     public MovieScreening(){}
-    public MovieScreening(int movieScreeningId, DateTime dateAndTime, Movie movie, Theater theater)
+    public MovieScreening(DateTime dateAndTime, Movie movie, Theater theater)
     {
-        MovieScreeningId = movieScreeningId;
         DateAndTime = dateAndTime;
         Movie = movie;
         Theater = theater;

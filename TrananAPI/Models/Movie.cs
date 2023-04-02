@@ -19,15 +19,14 @@ public class Movie
     public int DurationSeconds { get; set; }
     public List<Director> Directors { get; set; }
     public List<Actor> Actors { get; set; }
-    public List<MovieScreening> MovieScreenings{get;set;}
+    public List<MovieScreening> MovieScreenings;
 
-     public Movie(int movieId,
+     public Movie(
         string title,
         int releaseYear,
         string language, int durationSeconds, List<Actor>actors
     )
     {
-        MovieId = movieId;
         Title = title;
         ReleaseYear = releaseYear;
         Language = language;

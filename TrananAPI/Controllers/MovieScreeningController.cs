@@ -17,11 +17,11 @@ public class MovieScreeningController : ControllerBase
     }
 
     [HttpGet]
-    public async Task<ActionResult<IEnumerable<MovieScreening>>> GetMovieScreenings()
+    public async Task<ActionResult<List<MovieScreeningOutgoingDTO>>> GetMovieScreenings()
     {
         try
         {
-            var movieScreenings = await _seedData.GetScreenings();
+            var movieScreenings = await _seedData.GetUpcomingScreenings();
             // var movieDTOs = movies.Select(m => GenerateMovieDTO(m)).ToList();
             return Ok(movieScreenings);
         }
@@ -33,7 +33,7 @@ public class MovieScreeningController : ControllerBase
     }
 
     [HttpGet("{id:int}")]
-    public async Task<ActionResult<MovieScreeningDTO>> GetMovieScreeningById(int id)
+    public async Task<ActionResult<MovieScreeningOutgoingDTO>> GetMovieScreeningById(int id)
     {
         try
         {
@@ -48,7 +48,7 @@ public class MovieScreeningController : ControllerBase
     }
 
     [HttpPost]
-    public async Task<ActionResult<MovieScreeningDTO>> PostMovieScreeningDTO(MovieScreeningDTO movieScreeningDTO)
+    public async Task<ActionResult<MovieScreeningOutgoingDTO>> PostMovieScreeningDTO(MovieScreeningIncomingDTO movieScreeningDTO)
     {
         try
         {
@@ -63,7 +63,7 @@ public class MovieScreeningController : ControllerBase
     }
 
     [HttpPut]
-    public async Task<ActionResult> PutMovieScreening(MovieScreeningDTO movieScreeningDTO)
+    public async Task<ActionResult> PutMovieScreening(MovieScreeningIncomingDTO movieScreeningDTO)
     {
         try
         {
@@ -78,7 +78,7 @@ public class MovieScreeningController : ControllerBase
     }
 
     [HttpDelete]
-    public async Task<ActionResult> DeleteMovieScreening(MovieScreeningDTO movieScreeningDTO)
+    public async Task<ActionResult> DeleteMovieScreening(MovieScreeningIncomingDTO movieScreeningDTO)
     {
         try
         {
@@ -91,30 +91,4 @@ public class MovieScreeningController : ControllerBase
             return NotFound();
         }
     }
-
-    // [HttpDelete("delete-all")]
-    // public async Task<ActionResult> DeleteMovies()
-    // {
-    //     try
-    //     {
-    //         await _seedData.DeleteMovies();
-    //         return Ok();
-    //     }
-    //     catch (Exception e)
-    //     {
-    //         Console.WriteLine(e);
-    //         return NotFound();
-    //     }
-    // }
-
-    // private MovieScreeningDTO GenerateMovieScreeningDTO(MovieScreening movieScreening)
-    // {
-    //     var movieScreeningDTO = new MovieScreeningDTO()
-    //     {
-    //         MovieScreeningId = movieScreening.MovieScreeningId,
-    //         DateAndTime = movieScreening.DateAndTime,
-    //         MovieDTO = Mapper.GenerateMovieDTO(movieScreening.Movie)  
-    //     };
-    //     return movieScreeningDTO;
-    // }
 }

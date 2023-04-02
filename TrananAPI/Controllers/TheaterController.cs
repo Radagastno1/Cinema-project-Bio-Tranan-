@@ -1,6 +1,6 @@
 using Microsoft.AspNetCore.Mvc;
 using TrananAPI.Data;
-using TrananAPI.Models;
+using TrananAPI.DTO;
 
 namespace TrananAPI.Controllers;
 
@@ -16,7 +16,7 @@ public class TheaterController : ControllerBase
     }
 
     [HttpGet]
-    public async Task<ActionResult<IEnumerable<Theater>>> GetTheaters()
+    public async Task<ActionResult<IEnumerable<TheaterDTO>>> GetTheaters()
     {
         try
         {
@@ -30,7 +30,7 @@ public class TheaterController : ControllerBase
     }
 
     [HttpGet("{id:int}")]
-    public async Task<ActionResult<Theater>> GetTheaterById(int id) 
+    public async Task<ActionResult<TheaterDTO>> GetTheaterById(int id) 
     { 
         try
         {
@@ -44,11 +44,11 @@ public class TheaterController : ControllerBase
     }
 
     [HttpPost]
-    public async Task<ActionResult<Theater>> PostTheater(Theater theater)
+    public async Task<ActionResult<TheaterDTO>> PostTheater(TheaterDTO theaterDTO)
     {
         try
         {
-            var addedTheater = _seedData.CreateTheater(theater);
+            var addedTheater = _seedData.CreateTheater(theaterDTO);
             return Ok(addedTheater);
         }
         catch(Exception)
@@ -57,11 +57,11 @@ public class TheaterController : ControllerBase
         }
     }
     [HttpPut]
-    public async Task<IActionResult> PutTheater(Theater theater)
+    public async Task<IActionResult> PutTheater(TheaterDTO theaterDTO)
     {
         try
         {
-            await _seedData.UpdateTheater(theater);
+            await _seedData.UpdateTheater(theaterDTO);
             return Ok(); //fixa
         }
         catch(Exception)
@@ -70,11 +70,11 @@ public class TheaterController : ControllerBase
         }
     }
     [HttpDelete]
-    public async Task<ActionResult> DeleteTheater(Theater theater)
+    public async Task<ActionResult> DeleteTheater(TheaterDTO theaterDTO)
     {
         try
         {
-            await _seedData.DeleteTheater(theater);
+            await _seedData.DeleteTheater(theaterDTO);
             return Ok();
         }
         catch(Exception)

@@ -1,9 +1,11 @@
+using TrananAPI.DTO;
 using TrananAPI.Models;
 using Microsoft.EntityFrameworkCore;
 namespace TrananAPI.Data;
 
 public class TheaterSeedData
 {
+    //har hand om salong och dess stolar 
     private readonly TrananDbContext _trananDbContext;
 
     public TheaterSeedData(TrananDbContext trananDbContext)
@@ -11,16 +13,19 @@ public class TheaterSeedData
         _trananDbContext = trananDbContext;
     }
 
-    public async Task<List<Theater>> GetTheaters()
+    public async Task<List<TheaterDTO>> GetTheaters()
     {
         try
         {
             if (_trananDbContext.Theaters.Count() < 1)
             {
-                await _trananDbContext.Theaters.AddAsync(GenerateRandomTheater());
+                var randomTheater = GenerateRandomTheater();
+                await _trananDbContext.Theaters.AddAsync(randomTheater);
+                await _trananDbContext.Seats.AddRangeAsync(randomTheater.Seats);
                 await _trananDbContext.SaveChangesAsync();
             }
-            return await _trananDbContext.Theaters.Include(t => t.Seats).ToListAsync();
+            var theaters = await _trananDbContext.Theaters.Include(t => t.Seats).ToListAsync();
+            return theaters.Select(t => Mapper.GenerateTheaterDTO(t)).ToList();
         }
         catch (Exception e)
         {
@@ -29,11 +34,12 @@ public class TheaterSeedData
         return null;
     }
 
-    public async Task<Theater> GetTheaterById(int id)
+    public async Task<TheaterDTO> GetTheaterById(int id)
     {
         try
         {
-            return await _trananDbContext.Theaters.Include(t => t.Seats).FirstAsync(t => t.TheaterId == id); //INCLUDE SEATS?
+            var theater =  await _trananDbContext.Theaters.Include(t => t.Seats).FirstAsync(t => t.TheaterId == id); 
+            return Mapper.GenerateTheaterDTO(theater);
         }
         catch (Exception e)
         {
@@ -42,14 +48,14 @@ public class TheaterSeedData
         }
     }
 
-    public async Task<Theater> CreateTheater(Theater theater)
+    public async Task<TheaterDTO> CreateTheater(TheaterDTO theaterDTO)
     {
         try
         {
-            await _trananDbContext.Theaters.AddAsync(theater);
-            await _trananDbContext.Seats.AddRangeAsync(theater.Seats);
+            await _trananDbContext.Theaters.AddAsync(Mapper.GenerateTheater(theaterDTO));
+            await _trananDbContext.Seats.AddRangeAsync(Mapper.GenerateSeats(theaterDTO.SeatDTOs));
             await _trananDbContext.SaveChangesAsync();
-            return theater;
+            return theaterDTO;
         }
         catch (Exception e)
         {
@@ -58,13 +64,13 @@ public class TheaterSeedData
         }
     }
 
-    public async Task UpdateTheater(Theater theater)
+    public async Task UpdateTheater(TheaterDTO theaterDTO)
     {
         try
         {
 
-            _trananDbContext.Theaters.Update(theater);
-            _trananDbContext.Seats.UpdateRange(theater.Seats);
+            _trananDbContext.Theaters.Update(Mapper.GenerateTheater(theaterDTO));
+            _trananDbContext.Seats.UpdateRange(Mapper.GenerateSeats(theaterDTO.SeatDTOs));
             await _trananDbContext.SaveChangesAsync();
         }
         catch (Exception e)
@@ -73,28 +79,28 @@ public class TheaterSeedData
         }
     }
 
-    public async Task AddTheater(Theater theater)
+    public async Task AddTheater(TheaterDTO theaterDTO)
     {
-        await _trananDbContext.Theaters.AddAsync(theater);
+        await _trananDbContext.Theaters.AddAsync(Mapper.GenerateTheater(theaterDTO));
         await _trananDbContext.SaveChangesAsync();
     }
 
-    public async Task DeleteTheater(Theater theater)
+    public async Task DeleteTheater(TheaterDTO theaterDTO)
     {
-        _trananDbContext.Theaters.Remove(theater);
+        _trananDbContext.Theaters.Remove(Mapper.GenerateTheater(theaterDTO));
         await _trananDbContext.SaveChangesAsync();
     }
     private Theater GenerateRandomTheater()
     {
         var seats = new List<Seat>()
         {
-            new Seat(1, 1, 1),
-            new Seat(2, 1, 2),
-            new Seat(3, 1, 3),
-            new Seat(4, 1, 4),
-            new Seat(5, 1, 5)
+            new Seat(1, 1),
+            new Seat(1, 2),
+            new Seat(1, 3),
+            new Seat(1, 4),
+            new Seat(1, 5)
         };
-        var theater = new Theater(1, "Tranan123", 25, seats);
+        var theater = new Theater("Tranan123", 25, seats);
         return theater;
     }
 }

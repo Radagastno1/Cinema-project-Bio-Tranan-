@@ -20,7 +20,6 @@ public class Mapper
     public static Movie GenerateMovie(MovieDTO movieDTO)
     {
         var movie = new Movie(
-            movieDTO.MovieId,
             movieDTO.Title,
             movieDTO.ReleaseYear,
             movieDTO.Language,
@@ -32,7 +31,7 @@ public class Mapper
 
     public static ActorDTO GenerateActorDTO(Actor actor)
     {
-        var actorDTO = new ActorDTO(actor.FirstName, actor.LastName);
+        var actorDTO = new ActorDTO(actor.ActorId, actor.FirstName, actor.LastName);
         return actorDTO;
     }
 
@@ -42,14 +41,13 @@ public class Mapper
         return actor;
     }
 
-    public static MovieScreening GenerateMovieScreening(
-        MovieScreeningDTO movieScreeningDTO,
+    public static MovieScreening GenerateMovieScreeningFromIncomingDTO(
+        MovieScreeningIncomingDTO movieScreeningDTO,
         Movie movie,
         Theater theater
     )
     {
         var movieScreening = new MovieScreening(
-            movieScreeningDTO.MovieScreeningId,
             movieScreeningDTO.DateAndTime,
             movie,
             theater
@@ -57,13 +55,13 @@ public class Mapper
         return movieScreening;
     }
 
-    public static MovieScreeningDTO GenerateMovieScreeningDTO(
+    public static MovieScreeningIncomingDTO GenerateMovieScreeningIncomingDTO(
         MovieScreening movieScreening,
         Movie movie,
         Theater theater
     )
     {
-        var movieScreeningDTO = new MovieScreeningDTO(
+        var movieScreeningDTO = new MovieScreeningIncomingDTO(
             movieScreening.DateAndTime,
             movie.MovieId,
             theater.TheaterId
@@ -71,10 +69,21 @@ public class Mapper
         return movieScreeningDTO;
     }
 
+    public static MovieScreeningOutgoingDTO GenerateMovieScreeningOutcomingDTO(
+        MovieScreening movieScreening
+    )
+    {
+        var movieScreeningDTO = new MovieScreeningOutgoingDTO(
+            movieScreening.DateAndTime,
+            GenerateMovieDTO(movieScreening.Movie),
+            GenerateTheaterDTO(movieScreening.Theater)
+        );
+        return movieScreeningDTO;
+    }
+
     public static Theater GenerateTheater(TheaterDTO theaterDTO)
     {
         var theater = new Theater(
-            theaterDTO.TheaterId,
             theaterDTO.Name,
             theaterDTO.Rows,
             GenerateSeats(theaterDTO.SeatDTOs)
@@ -94,11 +103,11 @@ public class Mapper
 
     public static List<Seat> GenerateSeats(List<SeatDTO> seatDTOs)
     {
-        return seatDTOs.Select(s => new Seat(s.SeatId, s.SeatNumber, s.Row)).ToList();
+        return seatDTOs.Select(s => new Seat(s.SeatNumber, s.Row)).ToList();
     }
 
     public static List<SeatDTO> GenerateSeatsDTO(List<Seat> seats)
     {
-        return seats.Select(s => new SeatDTO(s.SeatId, s.SeatNumber, s.Row)).ToList();
+        return seats.Select(s => new SeatDTO(s.SeatNumber, s.Row)).ToList();
     }
 }

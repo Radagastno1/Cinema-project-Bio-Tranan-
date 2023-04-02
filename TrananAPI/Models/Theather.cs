@@ -9,7 +9,7 @@ public class Theater
     public List<Seat> Seats { get; set; }
     public List<MovieScreening> MovieScreenings { get; set; }
     public Theater(){}
-    public Theater(int theaterId, string name, int rows, List<Seat> seats)
+    public Theater(string name, int rows, List<Seat> seats)
     {
         Name = name;
         Seats = seats;

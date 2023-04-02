@@ -40,7 +40,7 @@ public class TrananDbContext : DbContext
 
 
 
-        // modelBuilder.Entity<Theater>().HasMany(m => m.MovieScreenings).WithOne(a => a.Theater);
+        modelBuilder.Entity<Theater>().HasMany(m => m.MovieScreenings).WithOne(a => a.Theater);
         modelBuilder.Entity<MovieScreening>().HasOne(m => m.Theater).WithMany(t => t.MovieScreenings);
 
         modelBuilder.Entity<Theater>().HasMany(m => m.Seats).WithOne(a => a.Theater);
