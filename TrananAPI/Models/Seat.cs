@@ -9,9 +9,8 @@ public class Seat
     public bool IsBooked { get; set; }
     public bool IsNotBookable { get; set; }
     public int TheaterId { get; set; }
-    public Theater Theater;
+    public Theater Theater{get;set;}
     public List<Reservation> Reservations { get; set; }
-
 
     public Seat() { }
 

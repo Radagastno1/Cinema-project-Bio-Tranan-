@@ -1,11 +1,12 @@
 using TrananAPI.DTO;
 using TrananAPI.Models;
 using Microsoft.EntityFrameworkCore;
+
 namespace TrananAPI.Data;
 
 public class TheaterRepository
 {
-    //har hand om salong och dess stolar 
+    //har hand om salong och dess stolar
     private readonly TrananDbContext _trananDbContext;
 
     public TheaterRepository(TrananDbContext trananDbContext)
@@ -19,10 +20,7 @@ public class TheaterRepository
         {
             if (_trananDbContext.Theaters.Count() < 1)
             {
-                var randomTheater = GenerateRandomTheater();
-                await _trananDbContext.Theaters.AddAsync(randomTheater);
-                await _trananDbContext.Seats.AddRangeAsync(randomTheater.Seats);
-                await _trananDbContext.SaveChangesAsync();
+                return new List<TheaterDTO>();
             }
             var theaters = await _trananDbContext.Theaters.Include(t => t.Seats).ToListAsync();
             return theaters.Select(t => Mapper.GenerateTheaterDTO(t)).ToList();
@@ -38,7 +36,9 @@ public class TheaterRepository
     {
         try
         {
-            var theater =  await _trananDbContext.Theaters.Include(t => t.Seats).FirstAsync(t => t.TheaterId == id); 
+            var theater = await _trananDbContext.Theaters
+                .Include(t => t.Seats)
+                .FirstAsync(t => t.TheaterId == id);
             return Mapper.GenerateTheaterDTO(theater);
         }
         catch (Exception e)
@@ -52,8 +52,8 @@ public class TheaterRepository
     {
         try
         {
-            await _trananDbContext.Theaters.AddAsync(Mapper.GenerateTheater(theaterDTO));
-            await _trananDbContext.Seats.AddRangeAsync(Mapper.GenerateSeats(theaterDTO.SeatDTOs));
+            Theater theater = Mapper.GenerateTheater(theaterDTO);
+            await _trananDbContext.Theaters.AddAsync(theater);
             await _trananDbContext.SaveChangesAsync();
             return theaterDTO;
         }
@@ -68,9 +68,7 @@ public class TheaterRepository
     {
         try
         {
-
             _trananDbContext.Theaters.Update(Mapper.GenerateTheater(theaterDTO));
-            _trananDbContext.Seats.UpdateRange(Mapper.GenerateSeats(theaterDTO.SeatDTOs));
             await _trananDbContext.SaveChangesAsync();
         }
         catch (Exception e)
@@ -89,18 +87,5 @@ public class TheaterRepository
     {
         _trananDbContext.Theaters.Remove(Mapper.GenerateTheater(theaterDTO));
         await _trananDbContext.SaveChangesAsync();
-    }
-    private Theater GenerateRandomTheater()
-    {
-        var seats = new List<Seat>()
-        {
-            new Seat(1, 1),
-            new Seat(1, 2),
-            new Seat(1, 3),
-            new Seat(1, 4),
-            new Seat(1, 5)
-        };
-        var theater = new Theater("Tranan123", 25, seats);
-        return theater;
     }
 }

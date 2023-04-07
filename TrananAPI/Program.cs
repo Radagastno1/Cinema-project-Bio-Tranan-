@@ -10,11 +10,8 @@ builder.Services.AddControllers().AddNewtonsoftJson(options =>
 //ATT GÖRA!!!!!
 //FELSÖK VARFÖR DET INTE GÅR ATT POSTA EN MOVIESCREENING? något värde är null på vägen som ej ska vara det
 
-
-
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
-
 
 builder.Services.AddScoped<TrananAPI.Data.MovieRepository>();
 builder.Services.AddScoped<TrananAPI.Data.TheaterRepository>();
