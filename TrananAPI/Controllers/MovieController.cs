@@ -1,5 +1,4 @@
 using TrananAPI.Data;
-// using TrananAPI.Models;
 using TrananAPI.DTO;
 using Microsoft.AspNetCore.Mvc; //kolla upp varför just mvc
 

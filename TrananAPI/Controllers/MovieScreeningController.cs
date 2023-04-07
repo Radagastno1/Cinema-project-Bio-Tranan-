@@ -21,8 +21,7 @@ public class MovieScreeningController : ControllerBase
     {
         try
         {
-            var movieScreenings = await _seedData.GetUpcomingScreenings();
-            // var movieDTOs = movies.Select(m => GenerateMovieDTO(m)).ToList();
+            var movieScreenings = await _seedData.GetUpcomingScreenings() ?? new List<MovieScreeningOutgoingDTO>();
             return Ok(movieScreenings);
         }
         catch (Exception e)

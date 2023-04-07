@@ -159,11 +159,11 @@ public class MovieSeedData
         List<Movie> movies =
             new()
             {
-                new Movie("Harry Potter", 2023, "English", 208, actors),
-                new Movie("Kalle Anka", 2023, "English", 208, actors),
-                new Movie("Sagan om de sju", 2023, "English", 208, actors),
-                new Movie("Milkshake", 2023, "English", 208, actors),
-                new Movie("Macarena", 2023, "English", 208, actors),
+                new Movie("Harry Potter", 2023, "English", 208,"Let's go to hogwarts", actors),
+                new Movie("Kalle Anka", 2023, "English", 208,"En anka som är tokig", actors),
+                new Movie("Sagan om de sju", 2023, "English", 208,"Läskig men rolig", actors),
+                new Movie("Milkshake", 2023, "English", 208,"My milkshake brings all..", actors),
+                new Movie("Macarena", 2023, "English", 208,"Om macarena bandet med la ketchup", actors),
             };
 
         return movies;

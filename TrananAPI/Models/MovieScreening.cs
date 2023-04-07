@@ -2,7 +2,6 @@ namespace TrananAPI.Models;
 
 public class MovieScreening
 {
-    //DENNA BEHÖVS JU INTE, RÄCKER MED EN DTO
     public int MovieScreeningId { get; set; }
     public DateTime DateAndTime { get; set; }
     public int MovieId { get; set; }

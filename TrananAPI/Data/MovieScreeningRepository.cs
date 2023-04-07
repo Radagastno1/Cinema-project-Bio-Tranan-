@@ -17,10 +17,11 @@ public class MovieScreeningSeedData
     {
         try
         {
-            if (_trananDbContext.MovieScreenings.Count() < 1)
+            if (_trananDbContext.MovieScreenings == null)
             {
-                await _trananDbContext.MovieScreenings.AddAsync(GenerateRandomMovieScreening());
-                await _trananDbContext.SaveChangesAsync();
+                // await _trananDbContext.MovieScreenings.AddAsync(GenerateRandomMovieScreening());
+                // await _trananDbContext.SaveChangesAsync();
+                return null;
             }
             var screenings = await _trananDbContext.MovieScreenings
                 .Include(s => s.Movie)
@@ -28,11 +29,10 @@ public class MovieScreeningSeedData
                 .Include(s => s.Movie)
                 .ThenInclude(m => m.Directors)
                 .Include(s => s.Theater)
+                .ThenInclude(t => t.Seats)
                 .Where(s => s.DateAndTime > DateTime.Now)
                 .ToListAsync();
-            return screenings
-                .Select(s => Mapper.GenerateMovieScreeningOutcomingDTO(s))
-                .ToList();
+            return screenings.Select(s => Mapper.GenerateMovieScreeningOutcomingDTO(s)).ToList();
         }
         catch (Exception e)
         {
@@ -63,27 +63,29 @@ public class MovieScreeningSeedData
     {
         try
         {
-            var movie = await _trananDbContext.Movies.FirstAsync(m => m.MovieId == movieScreeningDTO.MovieId);
-            var theater = await _trananDbContext.Theaters.FirstAsync(m => m.TheaterId == movieScreeningDTO.TheaterId);
-            if (movie == null)
+            var movie = await _trananDbContext.Movies.FirstAsync(
+                m => m.MovieId == movieScreeningDTO.MovieId
+            );
+            var theater = await _trananDbContext.Theaters.FirstAsync(
+                m => m.TheaterId == movieScreeningDTO.TheaterId
+            );
+            if (movie == null || theater == null)
             {
-                Console.WriteLine("movie is null");
+                throw new Exception("movie or theater can not be found.");
             }
-            else if(theater == null)
-            {
-                Console.WriteLine("theater is null");
-            }
-            else
-            {
-                await _trananDbContext.MovieScreenings.AddAsync(
-                    Mapper.GenerateMovieScreeningFromIncomingDTO(movieScreeningDTO, movie, theater)
-                );
-            }
+
+            await _trananDbContext.MovieScreenings.AddAsync(
+                Mapper.GenerateMovieScreeningFromIncomingDTO(movieScreeningDTO, movie, theater)
+            );
             await _trananDbContext.SaveChangesAsync();
+
             var recentlyAddedScreening = _trananDbContext.MovieScreenings
                 .OrderByDescending(s => s.MovieScreeningId)
                 .Include(s => s.Movie)
+                .Include(s => s.Movie.Actors)
+                .Include(s => s.Movie.Directors)
                 .Include(s => s.Theater)
+                .Include(s => s.Theater.Seats)
                 .FirstOrDefault();
             return Mapper.GenerateMovieScreeningOutcomingDTO(recentlyAddedScreening);
         }
@@ -125,23 +127,23 @@ public class MovieScreeningSeedData
         await _trananDbContext.SaveChangesAsync();
     }
 
-    private MovieScreening GenerateRandomMovieScreening()
-    {
-        List<Seat> seats =
-            new() { new Seat(1, 2), new Seat(2, 2), new Seat(3, 2), new Seat(4, 2) };
-        List<Actor> actors = new() { new Actor("Beyonce", "Hawking") };
+    // private MovieScreening GenerateRandomMovieScreening()
+    // {
+    //     List<Seat> seats =
+    //         new() { new Seat(1, 2), new Seat(2, 2), new Seat(3, 2), new Seat(4, 2) };
+    //     List<Actor> actors = new() { new Actor("Beyonce", "Hawking") };
 
-        Movie movie =
-            new()
-            {
-                Title = "Bella Svan Prinsessan",
-                Actors = actors,
-                DurationSeconds = 123,
-                Language = "svenska"
-            };
-        Theater theater = new() { Name = "Stora salen", Seats = seats };
-        var movieScreening = new MovieScreening(DateTime.Now.AddDays(4), movie, theater);
+    //     Movie movie =
+    //         new()
+    //         {
+    //             Title = "Bella Svan Prinsessan",
+    //             Actors = actors,
+    //             DurationSeconds = 123,
+    //             Language = "svenska"
+    //         };
+    //     Theater theater = new() { Name = "Stora salen", Seats = seats };
+    //     var movieScreening = new MovieScreening(DateTime.Now.AddDays(4), movie, theater);
 
-        return movieScreening;
-    }
+    //     return movieScreening;
+    // }
 }

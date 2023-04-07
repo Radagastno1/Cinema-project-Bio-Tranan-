@@ -11,7 +11,7 @@ public class Mapper
             movie.Title,
             movie.ReleaseYear,
             movie.Language,
-            movie.DurationSeconds,
+            movie.DurationSeconds, movie.Description,
             movie.Actors.Select(a => GenerateActorDTO(a)).ToList()
         );
         return movieDTO;
@@ -23,7 +23,7 @@ public class Mapper
             movieDTO.Title,
             movieDTO.ReleaseYear,
             movieDTO.Language,
-            movieDTO.DurationSeconds,
+            movieDTO.DurationSeconds, movieDTO.Description,
             movieDTO.ActorDTOs.Select(a => GenerateActor(a)).ToList() //to actors
         );
         return movie;
