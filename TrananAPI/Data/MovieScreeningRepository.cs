@@ -4,11 +4,11 @@ using TrananAPI.Models;
 
 namespace TrananAPI.Data;
 
-public class MovieScreeningSeedData
+public class MovieScreeningRepository
 {
     private readonly TrananDbContext _trananDbContext;
 
-    public MovieScreeningSeedData(TrananDbContext trananDbContext)
+    public MovieScreeningRepository(TrananDbContext trananDbContext)
     {
         _trananDbContext = trananDbContext;
     }
@@ -19,9 +19,7 @@ public class MovieScreeningSeedData
         {
             if (_trananDbContext.MovieScreenings == null)
             {
-                // await _trananDbContext.MovieScreenings.AddAsync(GenerateRandomMovieScreening());
-                // await _trananDbContext.SaveChangesAsync();
-                return null;
+                return new List<MovieScreeningOutgoingDTO>();
             }
             var screenings = await _trananDbContext.MovieScreenings
                 .Include(s => s.Movie)
@@ -126,24 +124,4 @@ public class MovieScreeningSeedData
             .ForEach(m => _trananDbContext.MovieScreenings.Remove(m));
         await _trananDbContext.SaveChangesAsync();
     }
-
-    // private MovieScreening GenerateRandomMovieScreening()
-    // {
-    //     List<Seat> seats =
-    //         new() { new Seat(1, 2), new Seat(2, 2), new Seat(3, 2), new Seat(4, 2) };
-    //     List<Actor> actors = new() { new Actor("Beyonce", "Hawking") };
-
-    //     Movie movie =
-    //         new()
-    //         {
-    //             Title = "Bella Svan Prinsessan",
-    //             Actors = actors,
-    //             DurationSeconds = 123,
-    //             Language = "svenska"
-    //         };
-    //     Theater theater = new() { Name = "Stora salen", Seats = seats };
-    //     var movieScreening = new MovieScreening(DateTime.Now.AddDays(4), movie, theater);
-
-    //     return movieScreening;
-    // }
 }

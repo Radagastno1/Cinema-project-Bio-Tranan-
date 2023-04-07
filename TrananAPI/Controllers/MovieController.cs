@@ -8,11 +8,11 @@ namespace TrananAPI.Controllers;
 [Route("movie")]
 public class MovieController : ControllerBase
 {
-    private readonly MovieSeedData _seedData;
+    private readonly MovieRepository _repository;
 
-    public MovieController(MovieSeedData seedData)
+    public MovieController(MovieRepository repository)
     {
-        _seedData = seedData;
+        _repository = repository;
     }
 
     [HttpGet]
@@ -20,7 +20,7 @@ public class MovieController : ControllerBase
     {
         try
         {
-            var movieDTOs = await _seedData.GetMovies();
+            var movieDTOs = await _repository.GetMovies();
             return Ok(movieDTOs);
         }
         catch (Exception e)
@@ -35,7 +35,7 @@ public class MovieController : ControllerBase
     {
         try
         {
-            var movieDTO = await _seedData.GetMovieById(id);
+            var movieDTO = await _repository.GetMovieById(id);
             return Ok(movieDTO);
         }
         catch (Exception e)
@@ -50,7 +50,7 @@ public class MovieController : ControllerBase
     {
         try
         {
-            var newMovie = await _seedData.CreateMovie(movieDTO);
+            var newMovie = await _repository.CreateMovie(movieDTO);
             return Ok(newMovie);
         }
         catch (Exception e)
@@ -65,7 +65,7 @@ public class MovieController : ControllerBase
     {
         try
         {
-            await _seedData.UpdateMovie(movieDTO);
+            await _repository.UpdateMovie(movieDTO);
             return Ok();
         }
         catch (Exception e)
@@ -80,7 +80,7 @@ public class MovieController : ControllerBase
     {
         try
         {
-            await _seedData.DeleteMovie(movieDTO);
+            await _repository.DeleteMovie(movieDTO);
             return Ok();
         }
         catch (Exception e)
@@ -95,7 +95,7 @@ public class MovieController : ControllerBase
     {
         try
         {
-            await _seedData.DeleteMovies();
+            await _repository.DeleteMovies();
             return Ok();
         }
         catch (Exception e)

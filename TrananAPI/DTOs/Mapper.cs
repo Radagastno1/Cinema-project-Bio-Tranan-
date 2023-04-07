@@ -11,7 +11,8 @@ public class Mapper
             movie.Title,
             movie.ReleaseYear,
             movie.Language,
-            movie.DurationSeconds, movie.Description,
+            movie.DurationSeconds,
+            movie.Description,
             movie.Actors.Select(a => GenerateActorDTO(a)).ToList()
         );
         return movieDTO;
@@ -23,7 +24,8 @@ public class Mapper
             movieDTO.Title,
             movieDTO.ReleaseYear,
             movieDTO.Language,
-            movieDTO.DurationSeconds, movieDTO.Description,
+            movieDTO.DurationSeconds,
+            movieDTO.Description,
             movieDTO.ActorDTOs.Select(a => GenerateActor(a)).ToList() //to actors
         );
         return movie;
@@ -47,11 +49,7 @@ public class Mapper
         Theater theater
     )
     {
-        var movieScreening = new MovieScreening(
-            movieScreeningDTO.DateAndTime,
-            movie,
-            theater
-        );
+        var movieScreening = new MovieScreening(movieScreeningDTO.DateAndTime, movie, theater);
         return movieScreening;
     }
 
@@ -99,6 +97,44 @@ public class Mapper
             GenerateSeatsDTO(theater.Seats)
         );
         return theaterDTO;
+    }
+
+    public static ReservationDTO GenerateReservationDTO(Reservation reservation)
+    {
+        var reservationDTO = new ReservationDTO(
+            reservation.Price,
+            reservation.MovieScreeningId,
+            GenerateCustomerDTO(reservation.Customer),
+            GenerateSeatsDTO(reservation.Seats),
+            reservation.ReservationCode
+        );
+        return reservationDTO;
+    }
+
+    public static Reservation GenerateReservation(ReservationDTO reservationDTO)
+    {
+        var reservation = Reservation.CreateReservationAsync(
+            reservationDTO.Price,
+            reservationDTO.MovieScreeningId,
+            GenerateCustomer(reservationDTO.CustomerDTO),
+            GenerateSeats(reservationDTO.BookedSeats)
+        );
+        return reservation.Result; //kollla upp om rätt
+    }
+
+    public static CustomerDTO GenerateCustomerDTO(Customer customer)
+    {
+        return new CustomerDTO();
+    }
+
+    public static Customer GenerateCustomer(CustomerDTO customerDTO)
+    {
+        return new Customer(
+            customerDTO.FirstName,
+            customerDTO.LastName,
+            customerDTO.PhoneNumber,
+            customerDTO.Email
+        );
     }
 
     public static List<Seat> GenerateSeats(List<SeatDTO> seatDTOs)

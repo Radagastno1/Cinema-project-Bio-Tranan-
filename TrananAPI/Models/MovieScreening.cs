@@ -8,7 +8,7 @@ public class MovieScreening
     public Movie Movie { get; set; }
     public int TheaterId { get; set; }
     public Theater Theater { get; set; }
-    // public List<Reservation> Reservations { get; set; }
+    public List<Reservation> Reservations { get; set; }
 
     public MovieScreening(){}
     public MovieScreening(DateTime dateAndTime, Movie movie, Theater theater)

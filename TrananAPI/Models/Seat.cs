@@ -10,7 +10,7 @@ public class Seat
     public bool IsNotBookable { get; set; }
     public int TheaterId { get; set; }
     public Theater Theater;
-    // public List<Reservation> Reservations { get; set; }
+    public List<Reservation> Reservations { get; set; }
 
 
     public Seat() { }

@@ -8,11 +8,11 @@ namespace TrananAPI.Controllers;
 [Route("theater")]
 public class TheaterController : ControllerBase
 {
-    private readonly TheaterSeedData _seedData;
+    private readonly TheaterRepository _repository;
 
-    public TheaterController(TheaterSeedData seedData)
+    public TheaterController(TheaterRepository repository)
     {
-        _seedData = seedData;
+        _repository = repository;
     }
 
     [HttpGet]
@@ -20,7 +20,7 @@ public class TheaterController : ControllerBase
     {
         try
         {
-            var theaters = await _seedData.GetTheaters();
+            var theaters = await _repository.GetTheaters();
             return Ok(theaters);
         }
         catch (Exception)
@@ -34,7 +34,7 @@ public class TheaterController : ControllerBase
     { 
         try
         {
-            var theater = _seedData.GetTheaterById(id);
+            var theater = _repository.GetTheaterById(id);
             return Ok(theater);
         }
         catch(Exception)
@@ -48,7 +48,7 @@ public class TheaterController : ControllerBase
     {
         try
         {
-            var addedTheater = _seedData.CreateTheater(theaterDTO);
+            var addedTheater = _repository.CreateTheater(theaterDTO);
             return Ok(addedTheater);
         }
         catch(Exception)
@@ -61,7 +61,7 @@ public class TheaterController : ControllerBase
     {
         try
         {
-            await _seedData.UpdateTheater(theaterDTO);
+            await _repository.UpdateTheater(theaterDTO);
             return Ok(); //fixa
         }
         catch(Exception)
@@ -74,7 +74,7 @@ public class TheaterController : ControllerBase
     {
         try
         {
-            await _seedData.DeleteTheater(theaterDTO);
+            await _repository.DeleteTheater(theaterDTO);
             return Ok();
         }
         catch(Exception)

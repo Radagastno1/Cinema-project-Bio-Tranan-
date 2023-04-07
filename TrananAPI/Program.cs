@@ -16,9 +16,10 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
 
-builder.Services.AddScoped<TrananAPI.Data.MovieSeedData>();
-builder.Services.AddScoped<TrananAPI.Data.TheaterSeedData>();
-builder.Services.AddScoped<TrananAPI.Data.MovieScreeningSeedData>();
+builder.Services.AddScoped<TrananAPI.Data.MovieRepository>();
+builder.Services.AddScoped<TrananAPI.Data.TheaterRepository>();
+builder.Services.AddScoped<TrananAPI.Data.MovieScreeningRepository>();
+builder.Services.AddScoped<TrananAPI.Data.ReservationRepository>();
 builder.Services.AddDbContext<TrananAPI.Data.TrananDbContext>
 (o => o.UseInMemoryDatabase("InMemoryDb"));
 

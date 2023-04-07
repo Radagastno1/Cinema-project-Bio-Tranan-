@@ -1,4 +1,5 @@
 using Newtonsoft.Json;
+
 namespace TrananAPI.Models;
 
 public class Actor
@@ -6,20 +7,24 @@ public class Actor
     public int ActorId { get; set; }
     public string FirstName { get; set; }
     public string LastName { get; set; }
+
     [JsonIgnore]
     public List<Movie> Movies { get; set; }
     public int Statistic;
+
     public Actor(string firstName, string lastName)
     {
         FirstName = firstName;
         LastName = lastName;
     }
 }
-public class Director 
+
+public class Director
 {
-    public int DirectorId{get;set;}
+    public int DirectorId { get; set; }
     public string FirstName { get; set; }
     public string LastName { get; set; }
+
     [JsonIgnore]
     public List<Movie> Movies { get; set; }
 
@@ -29,19 +34,7 @@ public class Director
         this.LastName = lastName;
     }
 }
-public class Customer : Person
-{
-    public string PhoneNumber { get; set; }
-    public string Email { get; set; }
-    public List<Reservation> Reservations { get; set; }
 
-    public Customer(string firstName, string lastName)
-        : base(firstName, lastName)
-    {
-        FirstName = firstName;
-        LastName = lastName;
-    }
-}
 
 public class Admin : Person
 {

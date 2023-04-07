@@ -4,11 +4,11 @@ using TrananAPI.Models;
 
 namespace TrananAPI.Data;
 
-public class MovieSeedData
+public class MovieRepository
 {
     private readonly TrananDbContext _trananDbContext;
 
-    public MovieSeedData(TrananDbContext trananDbContext)
+    public MovieRepository(TrananDbContext trananDbContext)
     {
         _trananDbContext = trananDbContext;
     }

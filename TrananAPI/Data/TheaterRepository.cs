@@ -3,12 +3,12 @@ using TrananAPI.Models;
 using Microsoft.EntityFrameworkCore;
 namespace TrananAPI.Data;
 
-public class TheaterSeedData
+public class TheaterRepository
 {
     //har hand om salong och dess stolar 
     private readonly TrananDbContext _trananDbContext;
 
-    public TheaterSeedData(TrananDbContext trananDbContext)
+    public TheaterRepository(TrananDbContext trananDbContext)
     {
         _trananDbContext = trananDbContext;
     }

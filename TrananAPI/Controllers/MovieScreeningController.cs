@@ -9,11 +9,11 @@ namespace TrananAPI.Controllers;
 [Route("moviescreening")]
 public class MovieScreeningController : ControllerBase
 {
-    private readonly MovieScreeningSeedData _seedData;
+    private readonly MovieScreeningRepository _repository;
 
-    public MovieScreeningController(MovieScreeningSeedData seedData)
+    public MovieScreeningController(MovieScreeningRepository repository)
     {
-        _seedData = seedData;
+        _repository = repository;
     }
 
     [HttpGet]
@@ -21,7 +21,7 @@ public class MovieScreeningController : ControllerBase
     {
         try
         {
-            var movieScreenings = await _seedData.GetUpcomingScreenings() ?? new List<MovieScreeningOutgoingDTO>();
+            var movieScreenings = await _repository.GetUpcomingScreenings() ?? new List<MovieScreeningOutgoingDTO>();
             return Ok(movieScreenings);
         }
         catch (Exception e)
@@ -36,7 +36,7 @@ public class MovieScreeningController : ControllerBase
     {
         try
         {
-            var movieScreeningDTO = await _seedData.GetMovieScreeningById(id);
+            var movieScreeningDTO = await _repository.GetMovieScreeningById(id);
             return Ok(movieScreeningDTO);
         }
         catch (Exception e)
@@ -51,7 +51,7 @@ public class MovieScreeningController : ControllerBase
     {
         try
         {
-            var newMovieScreening = await _seedData.CreateMovieScreening(movieScreeningDTO);
+            var newMovieScreening = await _repository.CreateMovieScreening(movieScreeningDTO);
             return Ok(newMovieScreening);
         }
         catch (Exception e)
@@ -66,7 +66,7 @@ public class MovieScreeningController : ControllerBase
     {
         try
         {
-            await _seedData.UpdateMovieScreening(movieScreeningDTO);
+            await _repository.UpdateMovieScreening(movieScreeningDTO);
             return Ok();
         }
         catch (Exception e)
@@ -81,7 +81,7 @@ public class MovieScreeningController : ControllerBase
     {
         try
         {
-            await _seedData.DeleteMovieScreening(movieScreeningDTO);
+            await _repository.DeleteMovieScreening(movieScreeningDTO);
             return Ok();
         }
         catch (Exception e)
