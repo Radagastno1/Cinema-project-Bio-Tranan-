@@ -35,22 +35,25 @@ public class ReservationRepository
         }
     }
 
-    // public async Task<MovieDTO> GetMovieById(int id)
-    // {
-    //     try //include
-    //     {
-    //         var movie = await _trananDbContext.Movies
-    //             .Include(m => m.Actors)
-    //             .FirstAsync(m => m.MovieId == id);
+    public async Task<List<ReservationDTO>> GetReservationsByScreeningId(int screeningId)
+    {
+        try
+        {
+            var reservations = await _trananDbContext.Reservations
+                                .Include(r => r.Customer)
+                                .Include(r => r.MovieScreening)
+                                .Include(r => r.Seats)
+                                .Where(r => r.MovieScreeningId == screeningId)
+                                .ToListAsync();
 
-    //         return Mapper.GenerateMovieDTO(movie);
-    //     }
-    //     catch (Exception e)
-    //     {
-    //         Console.WriteLine(e.Message);
-    //         return null;
-    //     }
-    // }
+            return reservations.Select(r => Mapper.GenerateReservationDTO(r)).ToList();
+        }
+        catch (Exception e)
+        {
+            Console.WriteLine(e.Message);
+            return null;
+        }
+    }
 
     public async Task<ReservationDTO> CreateReservation(ReservationDTO reservationDTO)
     {

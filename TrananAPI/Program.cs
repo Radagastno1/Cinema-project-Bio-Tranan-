@@ -21,7 +21,7 @@ builder.Services.AddScoped<TrananAPI.Data.TheaterRepository>();
 builder.Services.AddScoped<TrananAPI.Data.MovieScreeningRepository>();
 builder.Services.AddScoped<TrananAPI.Data.ReservationRepository>();
 builder.Services.AddDbContext<TrananAPI.Data.TrananDbContext>
-(o => o.UseInMemoryDatabase("InMemoryDb"));
+(o => o.UseSqlite("tranandatabase.db"));
 
 var app = builder.Build();
 

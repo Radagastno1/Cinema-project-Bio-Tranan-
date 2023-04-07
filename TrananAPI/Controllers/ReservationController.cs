@@ -29,19 +29,19 @@ public class ReservationController : ControllerBase
         }
     }
 
-    // [HttpGet("{id:int}")]
-    // public async Task<ActionResult<TheaterDTO>> GetTheaterById(int id) 
-    // { 
-    //     try
-    //     {
-    //         var theater = _seedData.GetTheaterById(id);
-    //         return Ok(theater);
-    //     }
-    //     catch(Exception)
-    //     {
-    //         return NotFound();
-    //     }
-    // }
+    [HttpGet("{screeningId:int}")]
+    public async Task<ActionResult<List<ReservationDTO>>> GetReservationsByScreeningId(int screeningId) 
+    { 
+        try
+        {
+            var reservations = _repository.GetReservationsByScreeningId(screeningId);
+            return Ok(reservations);
+        }
+        catch(Exception)
+        {
+            return NotFound();
+        }
+    }
 
     [HttpPost]
     public async Task<ActionResult<ReservationDTO>> PostReservation(ReservationDTO reservationDTO)

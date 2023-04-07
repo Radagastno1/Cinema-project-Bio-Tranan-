@@ -25,10 +25,10 @@ public class TrananDbContext : DbContext
     //         @"C:\Users\angel\Documents\SUVNET22\OOP2\INLÄMNINGAR\bio-tranan-Radagastno1\TrananAPI\Data\tranandatabase.db";
     //     optionsBuilder.UseSqlite($"Data Source={dbFilePath}");
     // }
-    // protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-    // {
-    //     optionsBuilder.UseInMemoryDatabase(databaseName: "InMemoryDb");
-    // }
+    protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+    {
+        optionsBuilder.UseSqlite($"Data Source ={"tranandatabase.db"}");
+    }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
