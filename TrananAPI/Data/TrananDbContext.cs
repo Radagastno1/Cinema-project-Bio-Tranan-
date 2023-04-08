@@ -59,6 +59,7 @@ public class TrananDbContext : DbContext
             .HasMany(m => m.Reservations)
             .WithOne(a => a.MovieScreening);
 
-        modelBuilder.Entity<Customer>().HasMany(m => m.Reservations).WithOne(a => a.Customer);
+        //modelBuilder.Entity<Customer>().HasMany(m => m.Reservations).WithOne(a => a.Customer);
+        modelBuilder.Entity<Reservation>().HasOne(r => r.Customer).WithMany(c => c.Reservations);
     }
 }

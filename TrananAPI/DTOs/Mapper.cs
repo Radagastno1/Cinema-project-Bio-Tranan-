@@ -14,7 +14,7 @@ public class Mapper
             movie.Language,
             movie.DurationSeconds,
             movie.Description,
-            movie.Actors.Select(a => GenerateActorDTO(a)).ToList(), 
+            movie.Actors.Select(a => GenerateActorDTO(a)).ToList(),
             movie.Directors.Select(d => GenerateDirectorDTO(d)).ToList()
         );
         return movieDTO;
@@ -48,7 +48,11 @@ public class Mapper
 
     public static DirectorDTO GenerateDirectorDTO(Director director)
     {
-        var directorDTO = new DirectorDTO(director.DirectorId, director.FirstName, director.LastName);
+        var directorDTO = new DirectorDTO(
+            director.DirectorId,
+            director.FirstName,
+            director.LastName
+        );
         return directorDTO;
     }
 
@@ -137,15 +141,23 @@ public class Mapper
         );
         return reservation; //kollla upp om rätt
     }
-    public static List<Seat> GenerateSeatsFromIds(List<int>ids)
+
+    public static List<Seat> GenerateSeatsFromIds(List<int> ids)
     {
-        List<Seat>seats = new();
-        ids.ForEach(id => seats.Add(new Seat(){SeatId = id}));
+        List<Seat> seats = new();
+        ids.ForEach(id => seats.Add(new Seat() { SeatId = id }));
         return seats;
     }
+
     public static CustomerDTO GenerateCustomerDTO(Customer customer)
     {
-        return new CustomerDTO();
+        return new CustomerDTO(
+            customer.CustomerId,
+            customer.FirstName,
+            customer.LastName,
+            customer.PhoneNumber,
+            customer.Email
+        );
     }
 
     public static Customer GenerateCustomer(CustomerDTO customerDTO)

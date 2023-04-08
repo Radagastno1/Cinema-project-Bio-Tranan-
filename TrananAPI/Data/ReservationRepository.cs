@@ -61,7 +61,7 @@ public class ReservationRepository
         {
             var newReservation = await Mapper.GenerateReservation(reservationDTO);
             List<Seat> seats = new();
-            foreach(var seat in newReservation.Seats)
+            foreach (var seat in newReservation.Seats)
             {
                 var foundSet = await _trananDbContext.Seats.FindAsync(seat.SeatId);
                 seats.Add(foundSet);
