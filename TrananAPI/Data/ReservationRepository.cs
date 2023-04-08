@@ -40,11 +40,11 @@ public class ReservationRepository
         try
         {
             var reservations = await _trananDbContext.Reservations
-                                .Include(r => r.Customer)
-                                .Include(r => r.MovieScreening)
-                                .Include(r => r.Seats)
-                                .Where(r => r.MovieScreeningId == screeningId)
-                                .ToListAsync();
+                .Include(r => r.Customer)
+                .Include(r => r.MovieScreening)
+                .Include(r => r.Seats)
+                .Where(r => r.MovieScreeningId == screeningId)
+                .ToListAsync();
 
             return reservations.Select(r => Mapper.GenerateReservationDTO(r)).ToList();
         }
@@ -59,7 +59,14 @@ public class ReservationRepository
     {
         try
         {
-            var newReservation = Mapper.GenerateReservation(reservationDTO);
+            var newReservation = await Mapper.GenerateReservation(reservationDTO);
+            List<Seat> seats = new();
+            foreach(var seat in newReservation.Seats)
+            {
+                var foundSet = await _trananDbContext.Seats.FindAsync(seat.SeatId);
+                seats.Add(foundSet);
+            }
+            newReservation.Seats = seats;
             await _trananDbContext.Reservations.AddAsync(newReservation);
             await _trananDbContext.SaveChangesAsync();
             var recentlyAddedReservation = await _trananDbContext.Reservations

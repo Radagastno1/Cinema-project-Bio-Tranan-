@@ -12,12 +12,13 @@ public class MovieDTO
     public string Description{get;set;}
  
     public int DurationSeconds { get; set; }
-    // public int MaxScreenings{get;set;}
-    // public int AmountOfScreenings {get;set;}
+    public int MaxScreenings{get;set;}
+    public int AmountOfScreenings {get;set;}
   
     public List<ActorDTO> ActorDTOs { get; set; }
+    public List<DirectorDTO> DirectorDTOs { get; set; }
 
-    public MovieDTO(int movieId, string title, int releaseYear, string language, int durationSeconds,string description, List<ActorDTO>actorDTOs)
+    public MovieDTO(int movieId, string title, int releaseYear, string language, int durationSeconds,string description, List<ActorDTO>actorDTOs, List<DirectorDTO>directorDTOs)
     {
         MovieId = movieId;
         Title = title;
@@ -26,6 +27,7 @@ public class MovieDTO
         DurationSeconds = durationSeconds;
         Description = description;
         ActorDTOs = actorDTOs;
+        DirectorDTOs = directorDTOs;
     }
     private string SecondsToTimeAsString()
     {

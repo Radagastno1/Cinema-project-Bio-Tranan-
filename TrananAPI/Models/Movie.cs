@@ -25,7 +25,7 @@ public class Movie
      public Movie(
         string title,
         int releaseYear,
-        string language, int durationSeconds, string description, List<Actor>actors
+        string language, int durationSeconds, string description, List<Actor>actors, List<Director>directors
     )
     {
         Title = title;
@@ -34,6 +34,7 @@ public class Movie
         DurationSeconds = durationSeconds;
         Description = description;
         Actors = actors;
+        Directors = directors;
     }
     public Movie(){}
 }

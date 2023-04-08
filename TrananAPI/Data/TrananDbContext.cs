@@ -19,12 +19,6 @@ public class TrananDbContext : DbContext
     public TrananDbContext(DbContextOptions<TrananDbContext> options)
         : base(options) { }
 
-    // protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-    // {
-    //     string dbFilePath =
-    //         @"C:\Users\angel\Documents\SUVNET22\OOP2\INLÄMNINGAR\bio-tranan-Radagastno1\TrananAPI\Data\tranandatabase.db";
-    //     optionsBuilder.UseSqlite($"Data Source={dbFilePath}");
-    // }
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
     {
         optionsBuilder.UseSqlite($"Data Source ={"tranandatabase.db"}");

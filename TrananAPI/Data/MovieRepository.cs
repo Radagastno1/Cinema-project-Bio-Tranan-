@@ -19,8 +19,7 @@ public class MovieRepository
         {
             if (_trananDbContext.Movies.Count() < 1)
             {
-                await _trananDbContext.Movies.AddRangeAsync(GenerateRandomMovies());
-                await _trananDbContext.SaveChangesAsync();
+                return new List<MovieDTO>();
             }
             return await _trananDbContext.Movies
                 .Include(m => m.Actors)
@@ -41,6 +40,7 @@ public class MovieRepository
         {
             var movie = await _trananDbContext.Movies
                 .Include(m => m.Actors)
+                .Include(m => m.Directors)
                 .FirstAsync(m => m.MovieId == id);
 
             return Mapper.GenerateMovieDTO(movie);
@@ -70,9 +70,24 @@ public class MovieRepository
                     actorsOfMovie.Add(actorInDB);
                 }
             }
+            List<Director> directorsOfMovie = new();
+            foreach (var director in movieDTO.DirectorDTOs)
+            {
+                var directorInDb = await _trananDbContext.Directors.FindAsync(director.DirectorId);
+                if (directorInDb == null)
+                {
+                    var newDirector = Mapper.GenerateDirector(director);
+                    directorsOfMovie.Add(newDirector);
+                }
+                else
+                {
+                    directorsOfMovie.Add(directorInDb);
+                }
+            }
 
             var newMovie = Mapper.GenerateMovie(movieDTO);
             newMovie.Actors = actorsOfMovie;
+            newMovie.Directors = directorsOfMovie;
             await _trananDbContext.AddAsync(newMovie);
             await _trananDbContext.SaveChangesAsync();
             return movieDTO;
@@ -84,43 +99,97 @@ public class MovieRepository
         }
     }
 
+    // public async Task UpdateMovie(MovieDTO movieDTO)
+    // {
+    //     try
+    //     {
+    //         var movie = await _trananDbContext.Movies
+    //             .Include(m => m.Actors)
+    //             .Include(m => m.Directors)
+    //             .FirstAsync(m => m.MovieId == movieDTO.MovieId);
+    //         if (movie == null)
+    //         {
+    //             throw new Exception("No movie found");
+    //         }
+
+    //         //får göra såhär annars skapar ny instans och då skapas ny film ist för upppdatera
+    //         movie.Title = movieDTO.Title;
+    //         movie.Language = movieDTO.Language;
+    //         movie.ReleaseYear = movieDTO.ReleaseYear;
+    //         movie.DurationSeconds = movieDTO.DurationSeconds;
+
+    //         List<Actor> updatedActors = new();
+    //         foreach (var actorDTO in movieDTO.ActorDTOs)
+    //         {
+    //             var existingActor = await _trananDbContext.Actors.FindAsync(actorDTO.ActorId);
+    //             if (existingActor == null)
+    //             {
+    //                 _trananDbContext.Actors.Add(Mapper.GenerateActor(actorDTO));
+    //                 var recentlyAddedActor = movie.Actors
+    //                     .OrderByDescending(a => a.ActorId)
+    //                     .FirstOrDefault();
+    //                 updatedActors.Add(recentlyAddedActor);
+    //             }
+    //             else
+    //             {
+    //                 updatedActors.Add(existingActor);
+    //             }
+    //         }
+    //           List<Director> updatedDirectors = new();
+    //         foreach (var directorDTO in movieDTO.DirectorDTOs)
+    //         {
+    //             var existingDirector = await _trananDbContext.Directors.FindAsync(directorDTO.DirectorId);
+    //             if (existingDirector == null)
+    //             {
+    //                 _trananDbContext.Directors.Add(Mapper.GenerateDirector(directorDTO));
+    //                 var recentlyAddedDirector = movie.Directors
+    //                     .OrderByDescending(d => d.DirectorId)
+    //                     .FirstOrDefault();
+    //                 updatedDirectors.Add(recentlyAddedDirector);
+    //             }
+    //             else
+    //             {
+    //                 updatedDirectors.Add(existingDirector);
+    //             }
+    //         }
+    //         movie.Actors = updatedActors;
+    //         _trananDbContext.Movies.Update(movie);
+    //         await _trananDbContext.SaveChangesAsync();
+    //     }
+    //     catch (Exception e)
+    //     {
+    //         Console.WriteLine(e.Message);
+    //     }
+    // }
+
     public async Task UpdateMovie(MovieDTO movieDTO)
-    {
+    { //får vara ifyllda fält för uppdatering av filmen sen i mvc ?? 
         try
         {
             var movie = await _trananDbContext.Movies
                 .Include(m => m.Actors)
+                .Include(m => m.Directors)
                 .FirstAsync(m => m.MovieId == movieDTO.MovieId);
             if (movie == null)
             {
                 throw new Exception("No movie found");
             }
+        
 
-            //får göra såhär annars skapar ny instans och då skapas ny film ist för upppdatera
-            movie.Title = movieDTO.Title;
-            movie.Language = movieDTO.Language;
+            movie.Title = movieDTO.Title ?? movie.Title;
+            movie.Description = movieDTO.Description ?? movie.Description;
+            movie.AmountOfScreenings = movieDTO.AmountOfScreenings;
+            movie.MaxScreenings = movieDTO.MaxScreenings;
+            movie.Language = movieDTO.Language ?? movieDTO.Language;
             movie.ReleaseYear = movieDTO.ReleaseYear;
             movie.DurationSeconds = movieDTO.DurationSeconds;
 
-            List<Actor> updatedActors = new();
-            foreach (var actorDTO in movieDTO.ActorDTOs)
-            {
-                var existingActor = await _trananDbContext.Actors.FindAsync(actorDTO.ActorId);
-                if (existingActor == null)
-                {
-                    _trananDbContext.Actors.Add(Mapper.GenerateActor(actorDTO));
-                    var recentlyAddedActor = movie.Actors
-                        .OrderByDescending(a => a.ActorId)
-                        .FirstOrDefault();
-                    updatedActors.Add(recentlyAddedActor);
-                }
-                else
-                {
-                    updatedActors.Add(existingActor);
-                }
-            }
-            movie.Actors = updatedActors;
+            movie.Actors = movieDTO.ActorDTOs.Select(a => Mapper.GenerateActor(a)).ToList();
+  
+            movie.Directors = movieDTO.DirectorDTOs.Select(d => Mapper.GenerateDirector(d)).ToList();
+
             _trananDbContext.Movies.Update(movie);
+ 
             await _trananDbContext.SaveChangesAsync();
         }
         catch (Exception e)
@@ -147,25 +216,5 @@ public class MovieRepository
     {
         _trananDbContext.Movies.ToList().ForEach(m => _trananDbContext.Movies.Remove(m));
         await _trananDbContext.SaveChangesAsync();
-    }
-
-    private List<Movie> GenerateRandomMovies()
-    {
-        var actors = new List<Actor>()
-        {
-            new Actor("Isabella", "Tortellini"),
-            new Actor("Henrik", "Byström")
-        };
-        List<Movie> movies =
-            new()
-            {
-                new Movie("Harry Potter", 2023, "English", 208,"Let's go to hogwarts", actors),
-                new Movie("Kalle Anka", 2023, "English", 208,"En anka som är tokig", actors),
-                new Movie("Sagan om de sju", 2023, "English", 208,"Läskig men rolig", actors),
-                new Movie("Milkshake", 2023, "English", 208,"My milkshake brings all..", actors),
-                new Movie("Macarena", 2023, "English", 208,"Om macarena bandet med la ketchup", actors),
-            };
-
-        return movies;
     }
 }

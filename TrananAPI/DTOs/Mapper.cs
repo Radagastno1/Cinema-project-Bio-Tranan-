@@ -1,4 +1,5 @@
 using TrananAPI.Models;
+using TrananAPI.Service;
 
 namespace TrananAPI.DTO;
 
@@ -13,7 +14,8 @@ public class Mapper
             movie.Language,
             movie.DurationSeconds,
             movie.Description,
-            movie.Actors.Select(a => GenerateActorDTO(a)).ToList()
+            movie.Actors.Select(a => GenerateActorDTO(a)).ToList(), 
+            movie.Directors.Select(d => GenerateDirectorDTO(d)).ToList()
         );
         return movieDTO;
     }
@@ -26,7 +28,8 @@ public class Mapper
             movieDTO.Language,
             movieDTO.DurationSeconds,
             movieDTO.Description,
-            movieDTO.ActorDTOs.Select(a => GenerateActor(a)).ToList() //to actors
+            movieDTO.ActorDTOs.Select(a => GenerateActor(a)).ToList(),
+            movieDTO.DirectorDTOs.Select(d => GenerateDirector(d)).ToList()
         );
         return movie;
     }
@@ -41,6 +44,18 @@ public class Mapper
     {
         var actor = new Actor(actorDTO.FirstName, actorDTO.LastName);
         return actor;
+    }
+
+    public static DirectorDTO GenerateDirectorDTO(Director director)
+    {
+        var directorDTO = new DirectorDTO(director.DirectorId, director.FirstName, director.LastName);
+        return directorDTO;
+    }
+
+    public static Director GenerateDirector(DirectorDTO directorDTO)
+    {
+        var director = new Director(directorDTO.FirstName, directorDTO.LastName);
+        return director;
     }
 
     public static MovieScreening GenerateMovieScreeningFromIncomingDTO(
@@ -105,23 +120,29 @@ public class Mapper
             reservation.Price,
             reservation.MovieScreeningId,
             GenerateCustomerDTO(reservation.Customer),
-            GenerateSeatsDTO(reservation.Seats),
+            reservation.Seats.Select(s => s.SeatId).ToList(),
             reservation.ReservationCode
         );
         return reservationDTO;
     }
 
-    public static Reservation GenerateReservation(ReservationDTO reservationDTO)
+    public static async Task<Reservation> GenerateReservation(ReservationDTO reservationDTO)
     {
-        var reservation = Reservation.CreateReservationAsync(
+        var reservation = await Reservation.CreateReservationAsync(
             reservationDTO.Price,
             reservationDTO.MovieScreeningId,
             GenerateCustomer(reservationDTO.CustomerDTO),
-            GenerateSeats(reservationDTO.BookedSeats)
+            // await SeatService.GenerateSeatsFromIdsAsync(reservationDTO.SeatIds) //blir detta rätt async?
+            GenerateSeatsFromIds(reservationDTO.SeatIds)
         );
-        return reservation.Result; //kollla upp om rätt
+        return reservation; //kollla upp om rätt
     }
-
+    public static List<Seat> GenerateSeatsFromIds(List<int>ids)
+    {
+        List<Seat>seats = new();
+        ids.ForEach(id => seats.Add(new Seat(){SeatId = id}));
+        return seats;
+    }
     public static CustomerDTO GenerateCustomerDTO(Customer customer)
     {
         return new CustomerDTO();

@@ -17,6 +17,9 @@ builder.Services.AddScoped<TrananAPI.Data.MovieRepository>();
 builder.Services.AddScoped<TrananAPI.Data.TheaterRepository>();
 builder.Services.AddScoped<TrananAPI.Data.MovieScreeningRepository>();
 builder.Services.AddScoped<TrananAPI.Data.ReservationRepository>();
+builder.Services.AddScoped<TrananAPI.Data.SeatRepository>();
+builder.Services.AddScoped<TrananAPI.Service.SeatService>();
+// builder.Services.AddScoped<TrananAPI.Service.ReservationService>();
 builder.Services.AddDbContext<TrananAPI.Data.TrananDbContext>
 (o => o.UseSqlite("tranandatabase.db"));
 
