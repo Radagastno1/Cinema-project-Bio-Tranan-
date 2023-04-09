@@ -71,9 +71,12 @@ public class MovieScreeningRepository
             );
             if (movieScreening.Movie == null || movieScreening.Theater == null)
             {
-                throw new Exception("movie or theater can not be found.");
+                throw new NullReferenceException("Movie or theater can not be found.");
             }
-
+            else if(movieScreening.Movie.AmountOfScreenings >= movieScreening.Movie.MaxScreenings)
+            {
+                throw new InvalidOperationException("Movie has maximum amount moviescreenings.");
+            }
             await _trananDbContext.MovieScreenings.AddAsync(
                 movieScreening
             );

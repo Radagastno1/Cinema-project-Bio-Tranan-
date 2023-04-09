@@ -1,5 +1,4 @@
 using TrananAPI.Models;
-using TrananAPI.Service;
 
 namespace TrananAPI.DTO;
 
@@ -14,6 +13,8 @@ public class Mapper
             movie.Language,
             movie.DurationSeconds,
             movie.Description,
+            movie.AmountOfScreenings,
+            movie.MaxScreenings,
             movie.Actors.Select(a => GenerateActorDTO(a)).ToList(),
             movie.Directors.Select(d => GenerateDirectorDTO(d)).ToList()
         );
@@ -28,6 +29,8 @@ public class Mapper
             movieDTO.Language,
             movieDTO.DurationSeconds,
             movieDTO.Description,
+            movieDTO.AmountOfScreenings,
+            movieDTO.MaxScreenings,
             movieDTO.ActorDTOs.Select(a => GenerateActor(a)).ToList(),
             movieDTO.DirectorDTOs.Select(d => GenerateDirector(d)).ToList()
         );
@@ -100,6 +103,7 @@ public class Mapper
     public static Theater GenerateTheater(TheaterDTO theaterDTO)
     {
         var theater = new Theater(
+            theaterDTO.TheaterId,
             theaterDTO.Name,
             theaterDTO.Rows,
             GenerateSeats(theaterDTO.SeatDTOs)
@@ -110,6 +114,7 @@ public class Mapper
     public static TheaterDTO GenerateTheaterDTO(Theater theater)
     {
         var theaterDTO = new TheaterDTO(
+            theater.TheaterId,
             theater.Name,
             theater.Rows,
             GenerateSeatsDTO(theater.Seats)
@@ -120,6 +125,7 @@ public class Mapper
     public static ReservationDTO GenerateReservationDTO(Reservation reservation)
     {
         var reservationDTO = new ReservationDTO(
+            reservation.ReservationId,
             reservation.Price,
             reservation.MovieScreeningId,
             GenerateCustomerDTO(reservation.Customer),

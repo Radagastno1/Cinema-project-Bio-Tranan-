@@ -53,10 +53,13 @@ public class MovieScreeningController : ControllerBase
             var newMovieScreening = await _movieScreeningService.CreateMovieScreening(movieScreeningDTO);
             return Ok(newMovieScreening);
         }
-        catch (Exception e)
+        catch (NullReferenceException)
         {
-            Console.WriteLine(e);
-            return NotFound();
+            return BadRequest("Invalid input data.");
+        }
+        catch(InvalidOperationException)
+        {
+            return BadRequest("Maximum amount of viewings for this movie has been reached.");
         }
     }
 

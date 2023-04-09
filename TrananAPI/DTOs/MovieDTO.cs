@@ -18,7 +18,7 @@ public class MovieDTO
     public List<ActorDTO> ActorDTOs { get; set; }
     public List<DirectorDTO> DirectorDTOs { get; set; }
 
-    public MovieDTO(int movieId, string title, int releaseYear, string language, int durationSeconds,string description, List<ActorDTO>actorDTOs, List<DirectorDTO>directorDTOs)
+    public MovieDTO(int movieId, string title, int releaseYear, string language, int durationSeconds,string description, int amountOfScreenings, int maxScreenings, List<ActorDTO>actorDTOs, List<DirectorDTO>directorDTOs)
     {
         MovieId = movieId;
         Title = title;
@@ -26,11 +26,9 @@ public class MovieDTO
         Language = language;
         DurationSeconds = durationSeconds;
         Description = description;
+        AmountOfScreenings = amountOfScreenings;
+        MaxScreenings = maxScreenings;
         ActorDTOs = actorDTOs;
         DirectorDTOs = directorDTOs;
-    }
-    private string SecondsToTimeAsString()
-    {
-        return "";
     }
 }

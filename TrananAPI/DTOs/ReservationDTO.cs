@@ -10,12 +10,14 @@ public class ReservationDTO
     public List<int> SeatIds { get; set; }
 
     public ReservationDTO(
+        int reservationId,
         decimal price,
         int movieScreeningId,
         CustomerDTO customerDTO,
         List<int> seatIds, int reservationCode = 0
     )
     {
+        ReservationId = reservationId;
         Price = price;
         MovieScreeningId = movieScreeningId;
         CustomerDTO = customerDTO;
