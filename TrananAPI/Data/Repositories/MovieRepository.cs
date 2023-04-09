@@ -163,12 +163,12 @@ public class MovieRepository
                 throw new NullReferenceException("No movie found");
             }
             movieToUpdate.Title = movie.Title ?? movieToUpdate.Title;
-            movie.Description = movie.Description ?? movieToUpdate.Description;
-            movie.AmountOfScreenings = movie.AmountOfScreenings;
-            movie.MaxScreenings = movie.MaxScreenings;
-            movie.Language = movie.Language ?? movieToUpdate.Language;
-            movie.ReleaseYear = movie.ReleaseYear;
-            movie.DurationSeconds = movie.DurationSeconds;
+            movieToUpdate.Description = movie.Description ?? movieToUpdate.Description;
+            movieToUpdate.AmountOfScreenings = movie.AmountOfScreenings;
+            movieToUpdate.MaxScreenings = movie.MaxScreenings;
+            movieToUpdate.Language = movie.Language ?? movieToUpdate.Language;
+            movieToUpdate.ReleaseYear = movie.ReleaseYear;
+            movieToUpdate.DurationSeconds = movie.DurationSeconds;
 
             movieToUpdate.Actors = movie.Actors;
 

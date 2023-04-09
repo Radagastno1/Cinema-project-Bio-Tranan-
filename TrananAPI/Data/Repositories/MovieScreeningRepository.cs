@@ -73,7 +73,7 @@ public class MovieScreeningRepository
             {
                 throw new NullReferenceException("Movie or theater can not be found.");
             }
-            else if(movieScreening.Movie.AmountOfScreenings >= movieScreening.Movie.MaxScreenings)
+            else if(movieScreening.Movie.AmountOfScreenings == movieScreening.Movie.MaxScreenings)
             {
                 throw new InvalidOperationException("Movie has maximum amount moviescreenings.");
             }

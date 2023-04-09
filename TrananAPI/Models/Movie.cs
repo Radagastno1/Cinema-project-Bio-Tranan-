@@ -23,11 +23,13 @@ public class Movie
     public List<MovieScreening> MovieScreenings;
 
      public Movie(
+        int movieId,
         string title,
         int releaseYear,
         string language, int durationSeconds, string description,int amountOfScreenings, int maxScreenings, List<Actor>actors, List<Director>directors
     )
     {
+        MovieId = movieId;
         Title = title;
         ReleaseYear = releaseYear;
         Language = language;

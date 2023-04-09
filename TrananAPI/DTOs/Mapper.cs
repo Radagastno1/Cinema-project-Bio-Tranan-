@@ -24,6 +24,7 @@ public class Mapper
     public static Movie GenerateMovie(MovieDTO movieDTO)
     {
         var movie = new Movie(
+            movieDTO.MovieId,
             movieDTO.Title,
             movieDTO.ReleaseYear,
             movieDTO.Language,

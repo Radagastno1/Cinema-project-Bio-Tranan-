@@ -45,6 +45,10 @@ public class MovieScreeningService
                 TheaterId = movieScreeningIncomingDTO.TheaterId,
                 DateAndTime = movieScreeningIncomingDTO.DateAndTime
             };
+            if(newMovieScreening.Movie.AmountOfScreenings == newMovieScreening.Movie.MaxScreenings)
+            {
+                throw new InvalidOperationException();
+            }
             var addedMovieScreening = await _movieScreeningsRepository.CreateMovieScreening(
                 newMovieScreening
             );
@@ -59,7 +63,7 @@ public class MovieScreeningService
         }
         catch (InvalidOperationException)
         {
-            throw new InvalidOperationException();
+            throw new InvalidOperationException("Maximum amount of viewings has been reached.");
         }
     }
 
@@ -85,11 +89,11 @@ public class MovieScreeningService
         await _movieScreeningsRepository.DeleteMovieScreeningById(id);
     }
 
-    private async Task UpdateMaxScreeningsPerMovie() //måste jag ha task ??
+    private async void UpdateMaxScreeningsPerMovie() //måste jag ha task ?
     {
         var upcomingMovieScreenings = await _movieScreeningsRepository.GetUpcomingScreenings();
         var movieScreeningsToday = upcomingMovieScreenings.Where(
-            m => m.DateAndTime == DateTime.Today
+            m => m.DateAndTime >= DateTime.Now
         );
         if (movieScreeningsToday != null)
         {
