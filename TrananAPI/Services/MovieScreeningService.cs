@@ -57,13 +57,13 @@ public class MovieScreeningService
             );
             return addedMovieScreeningDTO;
         }
-        catch (NullReferenceException)
+        catch (NullReferenceException e)
         {
-            throw new NullReferenceException();
+            throw new NullReferenceException(e.Message);
         }
-        catch (InvalidOperationException)
+        catch (InvalidOperationException e)
         {
-            throw new InvalidOperationException("Maximum amount of viewings has been reached.");
+            throw new InvalidOperationException(e.Message);
         }
     }
 

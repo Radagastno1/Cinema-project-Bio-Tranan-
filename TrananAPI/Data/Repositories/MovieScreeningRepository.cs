@@ -57,12 +57,14 @@ public class MovieScreeningRepository
         }
     }
 
-    public async Task<MovieScreening> CreateMovieScreening(
-        MovieScreening movieScreening
-    )
+    public async Task<MovieScreening> CreateMovieScreening(MovieScreening movieScreening)
     {
         try
         {
+            if(await TheaterAvailable(movieScreening) == false)
+            {
+                throw new InvalidOperationException("Theater not available at chosen time and day.");
+            }
             movieScreening.Movie = await _trananDbContext.Movies.FirstAsync(
                 m => m.MovieId == movieScreening.MovieId
             );
@@ -73,13 +75,11 @@ public class MovieScreeningRepository
             {
                 throw new NullReferenceException("Movie or theater can not be found.");
             }
-            else if(movieScreening.Movie.AmountOfScreenings == movieScreening.Movie.MaxScreenings)
+            else if (movieScreening.Movie.AmountOfScreenings == movieScreening.Movie.MaxScreenings)
             {
                 throw new InvalidOperationException("Movie has maximum amount moviescreenings.");
             }
-            await _trananDbContext.MovieScreenings.AddAsync(
-                movieScreening
-            );
+            await _trananDbContext.MovieScreenings.AddAsync(movieScreening);
             await _trananDbContext.SaveChangesAsync();
 
             var recentlyAddedScreening = _trananDbContext.MovieScreenings
@@ -103,10 +103,16 @@ public class MovieScreeningRepository
     {
         try
         {
-            var movieScreeningToUpdate = await _trananDbContext.MovieScreenings.FindAsync(movieScreening.MovieScreeningId);
+            var movieScreeningToUpdate = await _trananDbContext.MovieScreenings.FindAsync(
+                movieScreening.MovieScreeningId
+            );
             movieScreeningToUpdate.DateAndTime = movieScreening.DateAndTime;
-            movieScreeningToUpdate.Movie = await _trananDbContext.Movies.FindAsync(movieScreening.MovieId);
-            movieScreeningToUpdate.Theater = await _trananDbContext.Theaters.FindAsync(movieScreening.TheaterId);
+            movieScreeningToUpdate.Movie = await _trananDbContext.Movies.FindAsync(
+                movieScreening.MovieId
+            );
+            movieScreeningToUpdate.Theater = await _trananDbContext.Theaters.FindAsync(
+                movieScreening.TheaterId
+            );
 
             _trananDbContext.Update(movieScreeningToUpdate);
             await _trananDbContext.SaveChangesAsync();
@@ -136,5 +142,23 @@ public class MovieScreeningRepository
     public async Task SaveChanges()
     {
         await _trananDbContext.SaveChangesAsync();
+    }
+
+    private async Task<bool> TheaterAvailable(MovieScreening movieScreening)
+    {
+        var currentMovieScreeningTime = movieScreening.DateAndTime;
+        var currentMovieDuration = movieScreening.Movie.DurationSeconds;
+        var extraMinutes = 15;
+
+        var movieScreeningsFound = await _trananDbContext.MovieScreenings
+            .Where(
+                m =>
+                    m.TheaterId == movieScreening.TheaterId
+                    && m.DateAndTime.AddSeconds(m.Movie.DurationSeconds).AddMinutes(extraMinutes)
+                        > currentMovieScreeningTime
+            )
+            .ToListAsync();
+
+        return movieScreeningsFound.Count < 1;
     }
 }

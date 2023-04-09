@@ -12,7 +12,7 @@ public class MovieScreeningController : ControllerBase
 
     public MovieScreeningController(MovieScreeningService movieScreeningService)
     {
-       _movieScreeningService = movieScreeningService;
+        _movieScreeningService = movieScreeningService;
     }
 
     [HttpGet]
@@ -20,7 +20,9 @@ public class MovieScreeningController : ControllerBase
     {
         try
         {
-            var movieScreenings = await _movieScreeningService.GetUpcomingScreenings() ?? new List<MovieScreeningOutgoingDTO>();
+            var movieScreenings =
+                await _movieScreeningService.GetUpcomingScreenings()
+                ?? new List<MovieScreeningOutgoingDTO>();
             return Ok(movieScreenings);
         }
         catch (Exception e)
@@ -46,22 +48,33 @@ public class MovieScreeningController : ControllerBase
     }
 
     [HttpPost]
-    public async Task<ActionResult<MovieScreeningOutgoingDTO>> PostMovieScreeningDTO(MovieScreeningIncomingDTO movieScreeningDTO)
+    public async Task<ActionResult<MovieScreeningOutgoingDTO>> PostMovieScreeningDTO(
+        MovieScreeningIncomingDTO movieScreeningDTO
+    )
     {
         try
         {
-            var newMovieScreening = await _movieScreeningService.CreateMovieScreening(movieScreeningDTO);
+            var newMovieScreening = await _movieScreeningService.CreateMovieScreening(
+                movieScreeningDTO
+            );
             return Ok(newMovieScreening);
         }
-         catch(InvalidOperationException)
+        catch (InvalidOperationException e)
         {
-            return BadRequest("Maximum amount of viewings for this movie has been reached.");
+            if (e.Message == "Theater not available at chosen time and day.")
+            {
+                return BadRequest(e.Message);
+            }
+            else if (e.Message == "Movie has maximum amount moviescreenings.")
+            {
+                return BadRequest(e.Message);
+            }
+            return BadRequest(e.Message);
         }
         catch (NullReferenceException)
         {
             return BadRequest("Invalid input data.");
         }
-       
     }
 
     [HttpPut]
@@ -93,5 +106,4 @@ public class MovieScreeningController : ControllerBase
             return NotFound();
         }
     }
-
 }
