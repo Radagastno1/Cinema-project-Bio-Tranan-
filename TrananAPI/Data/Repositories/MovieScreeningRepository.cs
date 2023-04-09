@@ -59,44 +59,35 @@ public class MovieScreeningRepository
 
     public async Task<MovieScreening> CreateMovieScreening(MovieScreening movieScreening)
     {
-        try
+        movieScreening.Movie = await _trananDbContext.Movies.FindAsync(movieScreening.MovieId);
+        movieScreening.Theater = await _trananDbContext.Theaters.FindAsync(
+            movieScreening.TheaterId
+        );
+        if (movieScreening.Movie == null || movieScreening.Theater == null)
         {
-            if(await TheaterAvailable(movieScreening) == false)
-            {
-                throw new InvalidOperationException("Theater not available at chosen time and day.");
-            }
-            movieScreening.Movie = await _trananDbContext.Movies.FirstAsync(
-                m => m.MovieId == movieScreening.MovieId
-            );
-            movieScreening.Theater = await _trananDbContext.Theaters.FirstAsync(
-                m => m.TheaterId == movieScreening.TheaterId
-            );
-            if (movieScreening.Movie == null || movieScreening.Theater == null)
-            {
-                throw new NullReferenceException("Movie or theater can not be found.");
-            }
-            else if (movieScreening.Movie.AmountOfScreenings == movieScreening.Movie.MaxScreenings)
-            {
-                throw new InvalidOperationException("Movie has maximum amount moviescreenings.");
-            }
-            await _trananDbContext.MovieScreenings.AddAsync(movieScreening);
-            await _trananDbContext.SaveChangesAsync();
+            throw new NullReferenceException("Movie or theater can not be found.");
+        }
+        else if (movieScreening.Movie.AmountOfScreenings >= movieScreening.Movie.MaxScreenings)
+        {
+            throw new InvalidOperationException("Movie has maximum amount moviescreenings.");
+        }
+        else if(await TheaterAvailable(movieScreening) == false)
+        {
+            throw new InvalidOperationException("Theater not available at chosen time and day.");
+        }
 
-            var recentlyAddedScreening = _trananDbContext.MovieScreenings
-                .OrderByDescending(s => s.MovieScreeningId)
-                .Include(s => s.Movie)
-                .Include(s => s.Movie.Actors)
-                .Include(s => s.Movie.Directors)
-                .Include(s => s.Theater)
-                .Include(s => s.Theater.Seats)
-                .FirstOrDefault();
-            return recentlyAddedScreening;
-        }
-        catch (Exception e)
-        {
-            Console.WriteLine(e.Message);
-            return null;
-        }
+        await _trananDbContext.MovieScreenings.AddAsync(movieScreening);
+        await _trananDbContext.SaveChangesAsync();
+
+        var recentlyAddedScreening = _trananDbContext.MovieScreenings
+            .OrderByDescending(s => s.MovieScreeningId)
+            .Include(s => s.Movie)
+            .Include(s => s.Movie.Actors)
+            .Include(s => s.Movie.Directors)
+            .Include(s => s.Theater)
+            .Include(s => s.Theater.Seats)
+            .FirstOrDefault();
+        return recentlyAddedScreening;
     }
 
     public async Task<MovieScreening> UpdateMovieScreening(MovieScreening movieScreening)
@@ -150,15 +141,21 @@ public class MovieScreeningRepository
         var currentMovieDuration = movieScreening.Movie.DurationSeconds;
         var extraMinutes = 15;
 
-        var movieScreeningsFound = await _trananDbContext.MovieScreenings
-            .Where(
-                m =>
-                    m.TheaterId == movieScreening.TheaterId
-                    && m.DateAndTime.AddSeconds(m.Movie.DurationSeconds).AddMinutes(extraMinutes)
-                        > currentMovieScreeningTime
-            )
-            .ToListAsync();
+        var overlappingScreenings =
+            await _trananDbContext.MovieScreenings
+                .Where(m => m.TheaterId == movieScreening.TheaterId)
+                .Where(
+                    m =>
+                        m.DateAndTime
+                            < currentMovieScreeningTime.AddSeconds(
+                                currentMovieDuration + extraMinutes
+                            )
+                        && m.DateAndTime.AddSeconds(m.Movie.DurationSeconds + extraMinutes)
+                            > currentMovieScreeningTime
+                        && m.MovieScreeningId != movieScreening.MovieScreeningId
+                )
+                .ToListAsync() ?? new List<MovieScreening>();
 
-        return movieScreeningsFound.Count < 1;
+        return overlappingScreenings.Count == 0;
     }
 }

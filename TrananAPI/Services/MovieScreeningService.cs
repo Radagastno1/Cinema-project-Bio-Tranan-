@@ -45,10 +45,6 @@ public class MovieScreeningService
                 TheaterId = movieScreeningIncomingDTO.TheaterId,
                 DateAndTime = movieScreeningIncomingDTO.DateAndTime
             };
-            if(newMovieScreening.Movie.AmountOfScreenings == newMovieScreening.Movie.MaxScreenings)
-            {
-                throw new InvalidOperationException();
-            }
             var addedMovieScreening = await _movieScreeningsRepository.CreateMovieScreening(
                 newMovieScreening
             );
@@ -63,7 +59,15 @@ public class MovieScreeningService
         }
         catch (InvalidOperationException e)
         {
-            throw new InvalidOperationException(e.Message);
+            if (e.Message == "Theater not available at chosen time and day.")
+            {
+                throw new InvalidOperationException(e.Message);
+            }
+            else if (e.Message == "Movie has maximum amount moviescreenings.")
+            {
+                throw new InvalidOperationException(e.Message);
+            }
+            throw new InvalidOperationException();
         }
     }
 

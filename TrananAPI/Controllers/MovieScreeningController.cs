@@ -71,9 +71,9 @@ public class MovieScreeningController : ControllerBase
             }
             return BadRequest(e.Message);
         }
-        catch (NullReferenceException)
+        catch (NullReferenceException e)
         {
-            return BadRequest("Invalid input data.");
+            return BadRequest(e.Message);
         }
     }
 
