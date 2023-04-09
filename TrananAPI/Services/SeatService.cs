@@ -1,4 +1,4 @@
-using TrananAPI.Data;
+using TrananAPI.Data.Repository;
 using TrananAPI.Models;
 
 namespace TrananAPI.Service;

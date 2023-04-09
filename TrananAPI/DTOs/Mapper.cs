@@ -63,9 +63,7 @@ public class Mapper
     }
 
     public static MovieScreening GenerateMovieScreeningFromIncomingDTO(
-        MovieScreeningIncomingDTO movieScreeningDTO,
-        Movie movie,
-        Theater theater
+        MovieScreeningIncomingDTO movieScreeningDTO, Movie movie, Theater theater
     )
     {
         var movieScreening = new MovieScreening(movieScreeningDTO.DateAndTime, movie, theater);
@@ -91,6 +89,7 @@ public class Mapper
     )
     {
         var movieScreeningDTO = new MovieScreeningOutgoingDTO(
+            movieScreening.MovieScreeningId,
             movieScreening.DateAndTime,
             GenerateMovieDTO(movieScreening.Movie),
             GenerateTheaterDTO(movieScreening.Theater)

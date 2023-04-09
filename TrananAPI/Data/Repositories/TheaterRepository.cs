@@ -1,8 +1,7 @@
-using TrananAPI.DTO;
 using TrananAPI.Models;
 using Microsoft.EntityFrameworkCore;
 
-namespace TrananAPI.Data;
+namespace TrananAPI.Data.Repository;
 
 public class TheaterRepository
 {
@@ -14,16 +13,16 @@ public class TheaterRepository
         _trananDbContext = trananDbContext;
     }
 
-    public async Task<List<TheaterDTO>> GetTheaters()
+    public async Task<List<Theater>> GetTheaters()
     {
         try
         {
             if (_trananDbContext.Theaters.Count() < 1)
             {
-                return new List<TheaterDTO>();
+                return new List<Theater>();
             }
             var theaters = await _trananDbContext.Theaters.Include(t => t.Seats).ToListAsync();
-            return theaters.Select(t => Mapper.GenerateTheaterDTO(t)).ToList();
+            return theaters;
         }
         catch (Exception e)
         {
@@ -32,14 +31,14 @@ public class TheaterRepository
         return null;
     }
 
-    public async Task<TheaterDTO> GetTheaterById(int id)
+    public async Task<Theater> GetTheaterById(int id)
     {
         try
         {
             var theater = await _trananDbContext.Theaters
                 .Include(t => t.Seats)
                 .FirstAsync(t => t.TheaterId == id);
-            return Mapper.GenerateTheaterDTO(theater);
+            return theater;
         }
         catch (Exception e)
         {
@@ -48,14 +47,15 @@ public class TheaterRepository
         }
     }
 
-    public async Task<TheaterDTO> CreateTheater(TheaterDTO theaterDTO)
+    public async Task<Theater> CreateTheater(Theater theater)
     {
         try
         {
-            Theater theater = Mapper.GenerateTheater(theaterDTO);
             await _trananDbContext.Theaters.AddAsync(theater);
             await _trananDbContext.SaveChangesAsync();
-            return theaterDTO;
+            var recentlyAddedTheater = await _trananDbContext.Theaters.OrderByDescending(t => t.TheaterId)
+            .FirstOrDefaultAsync();
+            return recentlyAddedTheater;
         }
         catch (Exception e)
         {
@@ -64,28 +64,31 @@ public class TheaterRepository
         }
     }
 
-    public async Task UpdateTheater(TheaterDTO theaterDTO)
+    public async Task<Theater> UpdateTheater(Theater theater)
     {
         try
         {
-            _trananDbContext.Theaters.Update(Mapper.GenerateTheater(theaterDTO));
+            var theaterToUpdate = await _trananDbContext.Theaters.FindAsync(theater.TheaterId);
+            theaterToUpdate.Name = theater.Name ?? theaterToUpdate.Name;
+            theaterToUpdate.Rows = theater.Rows;
+            theaterToUpdate.Seats = theater.Seats;
+            theaterToUpdate.MaxAmountAvailebleSeats = theater.MaxAmountAvailebleSeats;
+
+            _trananDbContext.Theaters.Update(theaterToUpdate);
             await _trananDbContext.SaveChangesAsync();
+            return theaterToUpdate;
         }
         catch (Exception e)
         {
             Console.WriteLine(e.Message);
+            return null;
         }
     }
 
-    public async Task AddTheater(TheaterDTO theaterDTO)
+    public async Task DeleteTheaterById(int id)
     {
-        await _trananDbContext.Theaters.AddAsync(Mapper.GenerateTheater(theaterDTO));
-        await _trananDbContext.SaveChangesAsync();
-    }
-
-    public async Task DeleteTheater(TheaterDTO theaterDTO)
-    {
-        _trananDbContext.Theaters.Remove(Mapper.GenerateTheater(theaterDTO));
+        var theaterToDelete = await _trananDbContext.Theaters.FindAsync(id);
+        _trananDbContext.Theaters.Remove(theaterToDelete);
         await _trananDbContext.SaveChangesAsync();
     }
 }

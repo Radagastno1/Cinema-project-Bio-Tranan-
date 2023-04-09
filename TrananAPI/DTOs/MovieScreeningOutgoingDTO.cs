@@ -15,10 +15,12 @@ public class MovieScreeningOutgoingDTO
     public MovieScreeningOutgoingDTO() { }
 
     public MovieScreeningOutgoingDTO(
+        int movieScreeningId,
         DateTime dateAndTime,
         MovieDTO movieDTO, TheaterDTO theaterDTO  
     )
     {
+        MovieScreeningId = movieScreeningId;
         DateAndTime = dateAndTime;
         MovieDTO = movieDTO;
         TheaterDTO = theaterDTO;

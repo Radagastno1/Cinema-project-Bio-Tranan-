@@ -6,20 +6,22 @@ builder.Services.AddControllers().AddNewtonsoftJson(options =>
     options.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore
 );
 
-
 //ATT GÖRA!!!!!
 //FELSÖK VARFÖR DET INTE GÅR ATT POSTA EN MOVIESCREENING? något värde är null på vägen som ej ska vara det
 
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
-builder.Services.AddScoped<TrananAPI.Data.MovieRepository>();
-builder.Services.AddScoped<TrananAPI.Data.TheaterRepository>();
-builder.Services.AddScoped<TrananAPI.Data.MovieScreeningRepository>();
-builder.Services.AddScoped<TrananAPI.Data.ReservationRepository>();
-builder.Services.AddScoped<TrananAPI.Data.SeatRepository>();
+builder.Services.AddScoped<TrananAPI.Data.Repository.MovieRepository>();
+builder.Services.AddScoped<TrananAPI.Data.Repository.TheaterRepository>();
+builder.Services.AddScoped<TrananAPI.Data.Repository.MovieScreeningRepository>();
+builder.Services.AddScoped<TrananAPI.Data.Repository.ReservationRepository>();
+builder.Services.AddScoped<TrananAPI.Data.Repository.SeatRepository>();
+builder.Services.AddScoped<TrananAPI.Service.MovieService>();
+builder.Services.AddScoped<TrananAPI.Service.TheaterService>();
+builder.Services.AddScoped<TrananAPI.Service.MovieScreeningService>();
+builder.Services.AddScoped<TrananAPI.Service.ReservationService>();
 builder.Services.AddScoped<TrananAPI.Service.SeatService>();
-// builder.Services.AddScoped<TrananAPI.Service.ReservationService>();
 builder.Services.AddDbContext<TrananAPI.Data.TrananDbContext>
 (o => o.UseSqlite("tranandatabase.db"));
 

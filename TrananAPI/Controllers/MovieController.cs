@@ -1,6 +1,6 @@
-using TrananAPI.Data;
+using TrananAPI.Service;
 using TrananAPI.DTO;
-using Microsoft.AspNetCore.Mvc; //kolla upp varför just mvc
+using Microsoft.AspNetCore.Mvc; 
 
 namespace TrananAPI.Controllers;
 
@@ -8,11 +8,11 @@ namespace TrananAPI.Controllers;
 [Route("movie")]
 public class MovieController : ControllerBase
 {
-    private readonly MovieRepository _repository;
+    private readonly MovieService _movieService;
 
-    public MovieController(MovieRepository repository)
+    public MovieController(MovieService movieService)
     {
-        _repository = repository;
+        _movieService = movieService;
     }
 
     [HttpGet]
@@ -20,7 +20,7 @@ public class MovieController : ControllerBase
     {
         try
         {
-            var movieDTOs = await _repository.GetMovies();
+            var movieDTOs = await _movieService.GetAllMoviesAsDTOs();
             return Ok(movieDTOs);
         }
         catch (Exception e)
@@ -35,7 +35,7 @@ public class MovieController : ControllerBase
     {
         try
         {
-            var movieDTO = await _repository.GetMovieById(id);
+            var movieDTO = await _movieService.GetMovieAsDTOById(id);
             return Ok(movieDTO);
         }
         catch (Exception e)
@@ -50,7 +50,7 @@ public class MovieController : ControllerBase
     {
         try
         {
-            var newMovie = await _repository.CreateMovie(movieDTO);
+            var newMovie = await _movieService.CreateMovie(movieDTO);
             return Ok(newMovie);
         }
         catch (Exception e)
@@ -61,12 +61,12 @@ public class MovieController : ControllerBase
     }
 
     [HttpPut]
-    public async Task<ActionResult> PutMovie(MovieDTO movieDTO)
+    public async Task<ActionResult<MovieDTO>> PutMovie(MovieDTO movieDTO)
     {
         try
         {
-            await _repository.UpdateMovie(movieDTO);
-            return Ok();
+            var updatedMovie = await _movieService.UpdateMovie(movieDTO);
+            return Ok(updatedMovie);
         }
         catch (Exception e)
         {
@@ -75,13 +75,13 @@ public class MovieController : ControllerBase
         }
     }
 
-    [HttpDelete]
-    public async Task<ActionResult> DeleteMovie(MovieDTO movieDTO)
+    [HttpDelete("{id:int}")]
+    public async Task<IActionResult> DeleteMovieById(int id)
     {
         try
         {
-            await _repository.DeleteMovie(movieDTO);
-            return Ok();
+            await _movieService.DeleteMovieById(id);
+            return NoContent();
         }
         catch (Exception e)
         {
@@ -91,12 +91,12 @@ public class MovieController : ControllerBase
     }
 
     [HttpDelete("delete-all")]
-    public async Task<ActionResult> DeleteMovies()
+    public async Task<IActionResult> DeleteMovies()
     {
         try
         {
-            await _repository.DeleteMovies();
-            return Ok();
+            await _movieService.DeleteMovies();
+            return NoContent();
         }
         catch (Exception e)
         {

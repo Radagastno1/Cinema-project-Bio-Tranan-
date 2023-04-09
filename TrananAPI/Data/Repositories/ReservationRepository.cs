@@ -1,8 +1,7 @@
 using Microsoft.EntityFrameworkCore;
-using TrananAPI.DTO;
 using TrananAPI.Models;
 
-namespace TrananAPI.Data;
+namespace TrananAPI.Data.Repository;
 
 public class ReservationRepository
 {
@@ -13,19 +12,18 @@ public class ReservationRepository
         _trananDbContext = trananDbContext;
     }
 
-    public async Task<List<ReservationDTO>> GetReservations()
+    public async Task<List<Reservation>> GetReservations()
     {
         try
         {
             if (_trananDbContext.Movies.Count() < 1)
             {
-                return new List<ReservationDTO>();
+                return new List<Reservation>();
             }
             return await _trananDbContext.Reservations
                 .Include(r => r.Seats)
                 .Include(r => r.Customer)
                 .Include(r => r.MovieScreening)
-                .Select(r => Mapper.GenerateReservationDTO(r))
                 .ToListAsync();
         }
         catch (Exception e)
@@ -35,7 +33,7 @@ public class ReservationRepository
         }
     }
 
-    public async Task<List<ReservationDTO>> GetReservationsByScreeningId(int screeningId)
+    public async Task<List<Reservation>> GetReservationsByScreeningId(int screeningId)
     {
         try
         {
@@ -46,7 +44,7 @@ public class ReservationRepository
                 .Where(r => r.MovieScreeningId == screeningId)
                 .ToListAsync();
 
-            return reservations.Select(r => Mapper.GenerateReservationDTO(r)).ToList();
+            return reservations;
         }
         catch (Exception e)
         {
@@ -55,24 +53,23 @@ public class ReservationRepository
         }
     }
 
-    public async Task<ReservationDTO> CreateReservation(ReservationDTO reservationDTO)
+    public async Task<Reservation> CreateReservation(Reservation reservation)
     {
         try
         {
-            var newReservation = await Mapper.GenerateReservation(reservationDTO);
             List<Seat> seats = new();
-            foreach (var seat in newReservation.Seats)
+            foreach (var seat in reservation.Seats)
             {
                 var foundSet = await _trananDbContext.Seats.FindAsync(seat.SeatId);
                 seats.Add(foundSet);
             }
-            newReservation.Seats = seats;
-            await _trananDbContext.Reservations.AddAsync(newReservation);
+            reservation.Seats = seats;
+            await _trananDbContext.Reservations.AddAsync(reservation);
             await _trananDbContext.SaveChangesAsync();
             var recentlyAddedReservation = await _trananDbContext.Reservations
                 .OrderByDescending(r => r.ReservationId)
                 .FirstAsync();
-            return Mapper.GenerateReservationDTO(recentlyAddedReservation);
+            return reservation;
         }
         catch (Exception e)
         {
@@ -81,6 +78,28 @@ public class ReservationRepository
         }
     }
 
+    public async Task<Reservation> UpdateReservation(Reservation reservation)
+    {
+        var reservationToUpdate = await _trananDbContext.Reservations.FindAsync(
+            reservation.ReservationId
+        );
+        reservationToUpdate.Customer = reservation.Customer ?? reservationToUpdate.Customer;
+        reservationToUpdate.MovieScreening =
+            reservation.MovieScreening ?? reservationToUpdate.MovieScreening;
+        reservationToUpdate.Price = reservation.Price;
+        reservationToUpdate.Seats = reservation.Seats;
+        reservationToUpdate.ReservationCode = reservation.ReservationCode;
+
+        _trananDbContext.Reservations.Update(reservationToUpdate);
+        await _trananDbContext.SaveChangesAsync();
+        return reservationToUpdate;
+    }
+
+    public async Task DeleteReservation(int reservationId)
+    {
+        var reservationToDelete = await _trananDbContext.Reservations.FindAsync(reservationId);
+        _trananDbContext.Reservations.Remove(reservationToDelete);
+    }
     // public async Task UpdateMovie(MovieDTO movieDTO)
     // {
     //     try

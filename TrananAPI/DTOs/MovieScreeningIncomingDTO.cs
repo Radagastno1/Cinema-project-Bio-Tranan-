@@ -4,6 +4,7 @@ namespace TrananAPI.DTO;
 
 public class MovieScreeningIncomingDTO
 {
+    public int MovieScreeningId{get;set;}
     public DateTime DateAndTime { get; set; }
     public int MovieId { get; set; }
 

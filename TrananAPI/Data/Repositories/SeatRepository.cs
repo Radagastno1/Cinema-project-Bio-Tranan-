@@ -1,6 +1,6 @@
 using TrananAPI.Models;
 
-namespace TrananAPI.Data;
+namespace TrananAPI.Data.Repository;
 
 public class SeatRepository
 {

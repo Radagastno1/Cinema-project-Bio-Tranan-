@@ -1,5 +1,4 @@
-using TrananAPI.Data;
-using TrananAPI.Models;
+using TrananAPI.Service;
 using TrananAPI.DTO;
 using Microsoft.AspNetCore.Mvc; //kolla upp varför just mvc
 
@@ -9,11 +8,11 @@ namespace TrananAPI.Controllers;
 [Route("moviescreening")]
 public class MovieScreeningController : ControllerBase
 {
-    private readonly MovieScreeningRepository _repository;
+    private readonly MovieScreeningService _movieScreeningService;
 
-    public MovieScreeningController(MovieScreeningRepository repository)
+    public MovieScreeningController(MovieScreeningService movieScreeningService)
     {
-        _repository = repository;
+       _movieScreeningService = movieScreeningService;
     }
 
     [HttpGet]
@@ -21,7 +20,7 @@ public class MovieScreeningController : ControllerBase
     {
         try
         {
-            var movieScreenings = await _repository.GetUpcomingScreenings() ?? new List<MovieScreeningOutgoingDTO>();
+            var movieScreenings = await _movieScreeningService.GetUpcomingScreenings() ?? new List<MovieScreeningOutgoingDTO>();
             return Ok(movieScreenings);
         }
         catch (Exception e)
@@ -36,7 +35,7 @@ public class MovieScreeningController : ControllerBase
     {
         try
         {
-            var movieScreeningDTO = await _repository.GetMovieScreeningById(id);
+            var movieScreeningDTO = await _movieScreeningService.GetMovieScreeningById(id);
             return Ok(movieScreeningDTO);
         }
         catch (Exception e)
@@ -51,7 +50,7 @@ public class MovieScreeningController : ControllerBase
     {
         try
         {
-            var newMovieScreening = await _repository.CreateMovieScreening(movieScreeningDTO);
+            var newMovieScreening = await _movieScreeningService.CreateMovieScreening(movieScreeningDTO);
             return Ok(newMovieScreening);
         }
         catch (Exception e)
@@ -66,7 +65,7 @@ public class MovieScreeningController : ControllerBase
     {
         try
         {
-            await _repository.UpdateMovieScreening(movieScreeningDTO);
+            await _movieScreeningService.UpdateMovieScreening(movieScreeningDTO);
             return Ok();
         }
         catch (Exception e)
@@ -76,12 +75,12 @@ public class MovieScreeningController : ControllerBase
         }
     }
 
-    [HttpDelete]
-    public async Task<ActionResult> DeleteMovieScreening(MovieScreeningIncomingDTO movieScreeningDTO)
+    [HttpDelete("{id:int}")]
+    public async Task<ActionResult> DeleteMovieScreening(int id)
     {
         try
         {
-            await _repository.DeleteMovieScreening(movieScreeningDTO);
+            await _movieScreeningService.DeleteMovieScreeningById(id);
             return Ok();
         }
         catch (Exception e)
@@ -90,4 +89,5 @@ public class MovieScreeningController : ControllerBase
             return NotFound();
         }
     }
+
 }

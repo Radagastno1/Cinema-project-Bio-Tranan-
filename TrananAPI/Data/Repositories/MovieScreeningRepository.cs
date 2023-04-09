@@ -2,7 +2,7 @@ using Microsoft.EntityFrameworkCore;
 using TrananAPI.DTO;
 using TrananAPI.Models;
 
-namespace TrananAPI.Data;
+namespace TrananAPI.Data.Repository;
 
 public class MovieScreeningRepository
 {
@@ -13,13 +13,13 @@ public class MovieScreeningRepository
         _trananDbContext = trananDbContext;
     }
 
-    public async Task<List<MovieScreeningOutgoingDTO>> GetUpcomingScreenings()
+    public async Task<List<MovieScreening>> GetUpcomingScreenings()
     {
         try
         {
             if (_trananDbContext.MovieScreenings == null)
             {
-                return new List<MovieScreeningOutgoingDTO>();
+                return new List<MovieScreening>();
             }
             var screenings = await _trananDbContext.MovieScreenings
                 .Include(s => s.Movie)
@@ -30,7 +30,7 @@ public class MovieScreeningRepository
                 .ThenInclude(t => t.Seats)
                 .Where(s => s.DateAndTime > DateTime.Now)
                 .ToListAsync();
-            return screenings.Select(s => Mapper.GenerateMovieScreeningOutcomingDTO(s)).ToList();
+            return screenings;
         }
         catch (Exception e)
         {
@@ -39,14 +39,16 @@ public class MovieScreeningRepository
         return null;
     }
 
-    public async Task<MovieScreeningOutgoingDTO> GetMovieScreeningById(int id)
+    public async Task<MovieScreening> GetMovieScreeningById(int id)
     {
         try
         {
             var screening = await _trananDbContext.MovieScreenings.FindAsync(id);
             var movie = await _trananDbContext.Movies.FindAsync(screening.MovieId);
             var theater = await _trananDbContext.Theaters.FindAsync(screening.TheaterId);
-            return Mapper.GenerateMovieScreeningOutcomingDTO(screening);
+            screening.Movie = movie;
+            screening.Theater = theater;
+            return screening;
         }
         catch (Exception e)
         {
@@ -55,25 +57,25 @@ public class MovieScreeningRepository
         }
     }
 
-    public async Task<MovieScreeningOutgoingDTO> CreateMovieScreening(
-        MovieScreeningIncomingDTO movieScreeningDTO
+    public async Task<MovieScreening> CreateMovieScreening(
+        MovieScreening movieScreening
     )
     {
         try
         {
-            var movie = await _trananDbContext.Movies.FirstAsync(
-                m => m.MovieId == movieScreeningDTO.MovieId
+            movieScreening.Movie = await _trananDbContext.Movies.FirstAsync(
+                m => m.MovieId == movieScreening.MovieId
             );
-            var theater = await _trananDbContext.Theaters.FirstAsync(
-                m => m.TheaterId == movieScreeningDTO.TheaterId
+            movieScreening.Theater = await _trananDbContext.Theaters.FirstAsync(
+                m => m.TheaterId == movieScreening.TheaterId
             );
-            if (movie == null || theater == null)
+            if (movieScreening.Movie == null || movieScreening.Theater == null)
             {
                 throw new Exception("movie or theater can not be found.");
             }
 
             await _trananDbContext.MovieScreenings.AddAsync(
-                Mapper.GenerateMovieScreeningFromIncomingDTO(movieScreeningDTO, movie, theater)
+                movieScreening
             );
             await _trananDbContext.SaveChangesAsync();
 
@@ -85,7 +87,7 @@ public class MovieScreeningRepository
                 .Include(s => s.Theater)
                 .Include(s => s.Theater.Seats)
                 .FirstOrDefault();
-            return Mapper.GenerateMovieScreeningOutcomingDTO(recentlyAddedScreening);
+            return recentlyAddedScreening;
         }
         catch (Exception e)
         {
@@ -94,34 +96,42 @@ public class MovieScreeningRepository
         }
     }
 
-    public async Task UpdateMovieScreening(MovieScreeningIncomingDTO movieScreeningDTO)
+    public async Task<MovieScreening> UpdateMovieScreening(MovieScreening movieScreening)
     {
         try
         {
-            _trananDbContext.Update(movieScreeningDTO);
+            var movieScreeningToUpdate = await _trananDbContext.MovieScreenings.FindAsync(movieScreening.MovieScreeningId);
+            movieScreeningToUpdate.DateAndTime = movieScreening.DateAndTime;
+            movieScreeningToUpdate.Movie = await _trananDbContext.Movies.FindAsync(movieScreening.MovieId);
+            movieScreeningToUpdate.Theater = await _trananDbContext.Theaters.FindAsync(movieScreening.TheaterId);
+
+            _trananDbContext.Update(movieScreeningToUpdate);
             await _trananDbContext.SaveChangesAsync();
+            return movieScreeningToUpdate;
         }
         catch (Exception e)
         {
             Console.WriteLine(e.Message);
+            return null;
         }
     }
 
-    public async Task DeleteMovieScreening(MovieScreeningIncomingDTO movieScreeningDTO)
+    public async Task DeleteMovieScreeningById(int id)
     {
-        var movie = await _trananDbContext.Movies.FindAsync(movieScreeningDTO.MovieId);
-        var theater = await _trananDbContext.Theaters.FindAsync(movieScreeningDTO.TheaterId);
-        _trananDbContext.MovieScreenings.Remove(
-            Mapper.GenerateMovieScreeningFromIncomingDTO(movieScreeningDTO, movie, theater)
-        );
+        var movieScreeningToRemove = await _trananDbContext.MovieScreenings.FindAsync(id);
+        _trananDbContext.MovieScreenings.Remove(movieScreeningToRemove);
         await _trananDbContext.SaveChangesAsync();
     }
 
-    public async Task DeleteMovieScreenings()
+    // public async Task DeleteMovieScreenings()
+    // {
+    //     _trananDbContext.MovieScreenings
+    //         .ToList()
+    //         .ForEach(m => _trananDbContext.MovieScreenings.Remove(m));
+    //     await _trananDbContext.SaveChangesAsync();
+    // }
+    public async Task SaveChanges()
     {
-        _trananDbContext.MovieScreenings
-            .ToList()
-            .ForEach(m => _trananDbContext.MovieScreenings.Remove(m));
         await _trananDbContext.SaveChangesAsync();
     }
 }

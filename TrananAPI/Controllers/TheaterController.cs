@@ -1,5 +1,5 @@
 using Microsoft.AspNetCore.Mvc;
-using TrananAPI.Data;
+using TrananAPI.Service;
 using TrananAPI.DTO;
 
 namespace TrananAPI.Controllers;
@@ -8,11 +8,11 @@ namespace TrananAPI.Controllers;
 [Route("theater")]
 public class TheaterController : ControllerBase
 {
-    private readonly TheaterRepository _repository;
+    private readonly TheaterService _theaterService;
 
-    public TheaterController(TheaterRepository repository)
+    public TheaterController(TheaterService theaterService)
     {
-        _repository = repository;
+        _theaterService = theaterService;
     }
 
     [HttpGet]
@@ -20,7 +20,7 @@ public class TheaterController : ControllerBase
     {
         try
         {
-            var theaters = await _repository.GetTheaters();
+            var theaters = await _theaterService.GetTheaters();
             return Ok(theaters);
         }
         catch (Exception)
@@ -34,7 +34,7 @@ public class TheaterController : ControllerBase
     { 
         try
         {
-            var theater = _repository.GetTheaterById(id);
+            var theater = _theaterService.GetTheaterById(id);
             return Ok(theater);
         }
         catch(Exception)
@@ -48,7 +48,7 @@ public class TheaterController : ControllerBase
     {
         try
         {
-            var addedTheater = _repository.CreateTheater(theaterDTO);
+            var addedTheater = _theaterService.CreateTheater(theaterDTO);
             return Ok(addedTheater);
         }
         catch(Exception)
@@ -57,24 +57,24 @@ public class TheaterController : ControllerBase
         }
     }
     [HttpPut]
-    public async Task<IActionResult> PutTheater(TheaterDTO theaterDTO)
+    public async Task<ActionResult<TheaterDTO>> PutTheater(TheaterDTO theaterDTO)
     {
         try
         {
-            await _repository.UpdateTheater(theaterDTO);
-            return Ok(); //fixa
+            var updatedTheater = await _theaterService.UpdateTheater(theaterDTO);
+            return Ok(updatedTheater); 
         }
         catch(Exception)
         {
             return NotFound();
         }
     }
-    [HttpDelete]
-    public async Task<ActionResult> DeleteTheater(TheaterDTO theaterDTO)
+    [HttpDelete("{id:int}")]
+    public async Task<IActionResult> DeleteTheater(int id)
     {
         try
         {
-            await _repository.DeleteTheater(theaterDTO);
+            await _theaterService.DeleteTheaterById(id);
             return Ok();
         }
         catch(Exception)
