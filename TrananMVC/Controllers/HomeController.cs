@@ -1,21 +1,23 @@
 ﻿using System.Diagnostics;
 using Microsoft.AspNetCore.Mvc;
-using TrananMVC.Models;
+using TrananMVC.ViewModel;
+using TrananMVC.Service;
 
 namespace TrananMVC.Controllers;
 
 public class HomeController : Controller
 {
-    private readonly ILogger<HomeController> _logger;
+    private readonly MovieScreeningService _movieScreeningService;
 
-    public HomeController(ILogger<HomeController> logger)
+    public HomeController(MovieScreeningService movieScreeningService)
     {
-        _logger = logger;
+        _movieScreeningService = movieScreeningService;
     }
 
-    public IActionResult Index()
+    public async Task<ActionResult> Index()
     {
-        return View();
+        var movieScreeningSchema = await _movieScreeningService.GetUpcomingScreenings();
+        return View(movieScreeningSchema);
     }
 
     public IActionResult Privacy()
