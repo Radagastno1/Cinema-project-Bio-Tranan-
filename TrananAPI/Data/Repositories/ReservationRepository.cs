@@ -55,27 +55,53 @@ public class ReservationRepository
 
     public async Task<Reservation> CreateReservation(Reservation reservation)
     {
-        try
+        List<Seat> seats = new List<Seat>();
+
+        var foundMovieScreening = await _trananDbContext.MovieScreenings
+            .Include(m => m.Theater)
+            .ThenInclude(t => t.Seats)
+            .Where(m => m.MovieScreeningId == reservation.MovieScreeningId)
+            .FirstOrDefaultAsync();
+
+        if (foundMovieScreening == null)
         {
-            List<Seat> seats = new();
-            foreach (var seat in reservation.Seats)
+            throw new InvalidOperationException("Movie screening not found.");
+        }
+
+        var allReservedSeats = await _trananDbContext.Reservations
+            .Where(r => r.MovieScreeningId == foundMovieScreening.MovieScreeningId)
+            .SelectMany(r => r.Seats)
+            .ToListAsync();
+
+        foreach (var seat in reservation.Seats)
+        {
+            var foundSeat = foundMovieScreening.Theater.Seats.FirstOrDefault(
+                s => s.SeatId == seat.SeatId
+            );
+
+            if (foundSeat == null)
             {
-                var foundSet = await _trananDbContext.Seats.FindAsync(seat.SeatId);
-                seats.Add(foundSet);
+                throw new InvalidOperationException("Seat not found.");
             }
-            reservation.Seats = seats;
-            await _trananDbContext.Reservations.AddAsync(reservation);
-            await _trananDbContext.SaveChangesAsync();
-            var recentlyAddedReservation = await _trananDbContext.Reservations
-                .OrderByDescending(r => r.ReservationId)
-                .FirstAsync();
-            return reservation;
+
+            if (!allReservedSeats.Any(s => s.SeatId == foundSeat.SeatId))
+            {
+                foundSeat.IsBooked = true;
+                foundSeat.MovieScreenings.Add(foundMovieScreening);
+
+                seats.Add(foundSeat);
+            }
+            else
+            {
+                throw new InvalidOperationException("Seat is not available.");
+            }
         }
-        catch (Exception e)
-        {
-            Console.WriteLine(e.Message);
-            return null;
-        }
+
+        reservation.Seats = seats;
+        await _trananDbContext.Reservations.AddAsync(reservation);
+        await _trananDbContext.SaveChangesAsync();
+
+        return reservation;
     }
 
     public async Task<Reservation> UpdateReservation(Reservation reservation)

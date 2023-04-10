@@ -183,6 +183,6 @@ public class Mapper
 
     public static List<SeatDTO> GenerateSeatsDTO(List<Seat> seats)
     {
-        return seats.Select(s => new SeatDTO(s.SeatNumber, s.Row)).ToList();
+        return seats.Select(s => new SeatDTO(s.SeatId ,s.SeatNumber, s.Row)).ToList();
     }
 }

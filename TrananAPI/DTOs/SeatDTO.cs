@@ -2,6 +2,7 @@ namespace TrananAPI.DTO;
 
 public class SeatDTO
 {
+    public int SeatId{get;set;}
     public int SeatNumber { get; set; }
     public int Row { get; set; }
     public bool IsWheelChairSpace { get; set; }
@@ -10,8 +11,9 @@ public class SeatDTO
 
     public SeatDTO() { }
 
-    public SeatDTO(int seatNumber, int row)
+    public SeatDTO(int seatId, int seatNumber, int row)
     {
+        SeatId = seatId;
         SeatNumber = seatNumber;
         Row = row;
     }

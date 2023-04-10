@@ -15,6 +15,7 @@ public class TrananDbContext : DbContext
     public DbSet<Reservation> Reservations { get; set; }
     public DbSet<Seat> Seats { get; set; }
     public DbSet<Theater> Theaters { get; set; }
+    // public DbSet<ReservationSeat> ReservationSeat { get; set; }
 
     public TrananDbContext(DbContextOptions<TrananDbContext> options)
         : base(options) { }
@@ -49,6 +50,10 @@ public class TrananDbContext : DbContext
             .Entity<MovieScreening>()
             .HasOne(m => m.Theater)
             .WithMany(t => t.MovieScreenings);
+            
+            modelBuilder.Entity<MovieScreening>()
+            .HasMany(m => m.Seats)
+            .WithMany(s => s.MovieScreenings);
 
         modelBuilder.Entity<Theater>().HasMany(m => m.Seats).WithOne(a => a.Theater);
 
@@ -59,7 +64,7 @@ public class TrananDbContext : DbContext
             .HasMany(m => m.Reservations)
             .WithOne(a => a.MovieScreening);
 
-        //modelBuilder.Entity<Customer>().HasMany(m => m.Reservations).WithOne(a => a.Customer);
+        modelBuilder.Entity<Customer>().HasMany(m => m.Reservations).WithOne(a => a.Customer);
         modelBuilder.Entity<Reservation>().HasOne(r => r.Customer).WithMany(c => c.Reservations);
     }
 }

@@ -31,9 +31,24 @@ public class ReservationService
 
     public async Task<ReservationDTO> CreateReservation(ReservationDTO reservationDTO)
     {
-        var newReservation = await Mapper.GenerateReservation(reservationDTO);
-        var addedReservation = await _reservationRepository.CreateReservation(newReservation);
-        return Mapper.GenerateReservationDTO(addedReservation);
+        try
+        {
+            var newReservation = await Mapper.GenerateReservation(reservationDTO);
+            var addedReservation = await _reservationRepository.CreateReservation(newReservation);
+            return Mapper.GenerateReservationDTO(addedReservation);
+        }
+        catch (InvalidOperationException e)
+        {
+            if (e.Message == "Seat is not available.")
+            {
+                throw new InvalidOperationException(e.Message);
+            }
+            if (e.Message == "Seat not found.")
+            {
+                throw new InvalidOperationException(e.Message);
+            }
+            throw new InvalidOperationException();
+        }
     }
 
     public async Task<ReservationDTO> UpdateReservation(ReservationDTO reservationDTO)
@@ -45,7 +60,7 @@ public class ReservationService
         return Mapper.GenerateReservationDTO(reservationToUpdate);
     }
 
-    public async Task DeleteReservation(int reservationId) 
+    public async Task DeleteReservation(int reservationId)
     {
         await _reservationRepository.DeleteReservation(reservationId);
     }

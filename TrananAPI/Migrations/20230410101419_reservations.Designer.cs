@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using TrananAPI.Data;
 
@@ -10,9 +11,11 @@ using TrananAPI.Data;
 namespace TrananAPI.Migrations
 {
     [DbContext(typeof(TrananDbContext))]
-    partial class TrananDbContextModelSnapshot : ModelSnapshot
+    [Migration("20230410101419_reservations")]
+    partial class reservations
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder.HasAnnotation("ProductVersion", "7.0.4");
@@ -45,21 +48,6 @@ namespace TrananAPI.Migrations
                     b.HasIndex("MoviesMovieId");
 
                     b.ToTable("director_to_movie", (string)null);
-                });
-
-            modelBuilder.Entity("MovieScreeningSeat", b =>
-                {
-                    b.Property<int>("MovieScreeningsMovieScreeningId")
-                        .HasColumnType("INTEGER");
-
-                    b.Property<int>("SeatsSeatId")
-                        .HasColumnType("INTEGER");
-
-                    b.HasKey("MovieScreeningsMovieScreeningId", "SeatsSeatId");
-
-                    b.HasIndex("SeatsSeatId");
-
-                    b.ToTable("MovieScreeningSeat");
                 });
 
             modelBuilder.Entity("ReservationSeat", b =>
@@ -306,21 +294,6 @@ namespace TrananAPI.Migrations
                     b.HasOne("TrananAPI.Models.Movie", null)
                         .WithMany()
                         .HasForeignKey("MoviesMovieId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-                });
-
-            modelBuilder.Entity("MovieScreeningSeat", b =>
-                {
-                    b.HasOne("TrananAPI.Models.MovieScreening", null)
-                        .WithMany()
-                        .HasForeignKey("MovieScreeningsMovieScreeningId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("TrananAPI.Models.Seat", null)
-                        .WithMany()
-                        .HasForeignKey("SeatsSeatId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });

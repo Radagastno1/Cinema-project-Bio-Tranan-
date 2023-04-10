@@ -11,6 +11,7 @@ public class Seat
     public int TheaterId { get; set; }
     public Theater Theater{get;set;}
     public List<Reservation> Reservations { get; set; }
+    public List<MovieScreening> MovieScreenings{get;set;} = new();
 
     public Seat() { }
 

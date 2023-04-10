@@ -30,14 +30,16 @@ public class ReservationController : ControllerBase
     }
 
     [HttpGet("{screeningId:int}")]
-    public async Task<ActionResult<List<ReservationDTO>>> GetReservationsByScreeningId(int screeningId) 
-    { 
+    public async Task<ActionResult<List<ReservationDTO>>> GetReservationsByScreeningId(
+        int screeningId
+    )
+    {
         try
         {
             var reservations = _reservationService.GetReservationsByMovieScreening(screeningId);
             return Ok(reservations);
         }
-        catch(Exception)
+        catch (Exception)
         {
             return NotFound();
         }
@@ -48,27 +50,37 @@ public class ReservationController : ControllerBase
     {
         try
         {
-            var addedReservation = _reservationService.CreateReservation(reservationDTO);
+            var addedReservation = await _reservationService.CreateReservation(reservationDTO);
             return Ok(addedReservation);
         }
-        catch(Exception)
+        catch (InvalidOperationException e)
         {
-            return NotFound();
+            if (e.Message == "Seat is not available.")
+            {
+                return BadRequest(e.Message);
+            }
+            if (e.Message == "Seat not found.")
+            {
+                return BadRequest(e.Message);
+            }
+            return BadRequest(e.Message);
         }
     }
+
     [HttpPut]
     public async Task<ActionResult<ReservationDTO>> PutReservation(ReservationDTO reservationDTO)
     {
         try
         {
             var updatedReservation = await _reservationService.UpdateReservation(reservationDTO);
-            return Ok(updatedReservation); 
+            return Ok(updatedReservation);
         }
-        catch(Exception)
+        catch (Exception)
         {
             return NotFound();
         }
     }
+
     [HttpDelete("{id:int}")]
     public async Task<IActionResult> DeleteReservationById(int id)
     {
@@ -77,7 +89,7 @@ public class ReservationController : ControllerBase
             await _reservationService.DeleteReservation(id);
             return Ok();
         }
-        catch(Exception)
+        catch (Exception)
         {
             return NotFound();
         }
