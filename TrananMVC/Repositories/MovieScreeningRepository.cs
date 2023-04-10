@@ -4,24 +4,25 @@ using Newtonsoft.Json;
 using System.Net.Http.Json;
 using System.Text;
 using System.Collections.Generic;
-using TrananMVC.ViewModel;
+using TrananMVC.Models;
+
 namespace TrananMVC.Repository;
 
 public class MovieScreeningRepository
 {
-    HttpClient client = new();
-    const string url = "";
+    const string url = "https://localhost:7070";
 
-    public async Task<List<MovieScreeningViewModel>> GetUpcomingMovieScreenings()
+    public async Task<IEnumerable<MovieScreening>> GetUpcomingMovieScreenings()
     {
-         try
+        using HttpClient client = new();
+        try
         {
-            var movieScreenings = await client.GetFromJsonAsync<List<MovieScreeningViewModel>>(url);
+            var movieScreenings = await client.GetFromJsonAsync<List<MovieScreening>>(url + "/moviescreening");
             return movieScreenings;
         }
         catch (HttpRequestException)
         {
-            return new List<MovieScreeningViewModel>();
+            return new List<MovieScreening>();
         }
     }
 }

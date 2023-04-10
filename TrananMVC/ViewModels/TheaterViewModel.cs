@@ -10,7 +10,7 @@ public class TheaterViewModel
 
     [JsonIgnore]
     public List<MovieScreeningViewModel> MovieScreenings;
-
+    public TheaterViewModel(){}
     public TheaterViewModel(int theaterId, string name, int rows, List<SeatViewModel> seats)
     {
         TheaterId = theaterId;

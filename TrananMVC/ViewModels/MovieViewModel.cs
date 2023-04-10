@@ -16,7 +16,7 @@ public class MovieViewModel
 
     public List<ActorViewModel> Actors { get; set; }
     public List<DirectorViewModel> Directors { get; set; }
-
+    public MovieViewModel(){}
     public MovieViewModel(
         int movieId,
         string title,

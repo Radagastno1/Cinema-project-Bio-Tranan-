@@ -6,7 +6,6 @@ public class MovieScreening
     public DateTime DateAndTime { get; set; }
     public Movie Movie { get; set; } //outgoiing
     public int MovieId { get; set; } //incommiing
-
     public int TheaterId { get; set; } //incoming
     public Theater Theater { get; set; } //outgoing
 

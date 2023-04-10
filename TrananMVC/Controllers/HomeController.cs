@@ -8,21 +8,24 @@ namespace TrananMVC.Controllers;
 public class HomeController : Controller
 {
     private readonly MovieScreeningService _movieScreeningService;
+    private readonly MovieService _movieService;
 
-    public HomeController(MovieScreeningService movieScreeningService)
+    public HomeController(MovieScreeningService movieScreeningService, MovieService movieService)
     {
         _movieScreeningService = movieScreeningService;
+        _movieService = movieService;
     }
 
-    public async Task<ActionResult> Index()
+    public async Task<IActionResult> Index()
     {
-        var movieScreeningSchema = await _movieScreeningService.GetUpcomingScreenings();
-        return View(movieScreeningSchema);
+        var movieScreeningViewModel = await _movieScreeningService.GetUpcomingScreenings();
+        return View(movieScreeningViewModel);
     }
 
-    public IActionResult Privacy()
+    public async Task<IActionResult> Movies()
     {
-        return View();
+        var moviesViewModel = await _movieService.GetAllMovies();
+        return View(moviesViewModel);
     }
 
     [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]

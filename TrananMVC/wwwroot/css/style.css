@@ -1,0 +1,20 @@
+.menu {
+    display: flex;
+    justify-content: center;
+}
+
+.menu a {
+    color: black;
+    font-size: 24px;
+    margin: 0 10px;
+}
+
+a
+{
+    text-decoration: none;
+    border-bottom: none;
+}
+li
+{
+    list-style: none;
+}

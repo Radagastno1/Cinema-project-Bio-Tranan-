@@ -1,8 +1,24 @@
-﻿@{
+﻿@model List<TrananMVC.ViewModel.MovieScreeningViewModel>
+@{
     ViewData["Title"] = "Bio Tranan";
 }
 
 <div class="text-center">
     <h1 class="display-4">Bio Tranan</h1>
-    
 </div>
+
+<div class="menu">
+    <a href="/home/movies">Alla filmer</a>
+    <a href="/home/schema">Biljetter</a>
+    <a href="/home/aboutus">Om oss</a>
+</div>
+
+<div class="topmovies">
+    <h3>Topp-filmer på bio just nu</h3>
+    @foreach(var movieScreening in Model)
+    {
+        <li>@movieScreening.Movie.Title</li>
+    }
+</div>
+ 
+

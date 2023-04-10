@@ -3,6 +3,11 @@ var builder = WebApplication.CreateBuilder(args);
 // Add services to the container.
 builder.Services.AddControllersWithViews();
 
+builder.Services.AddScoped<TrananMVC.Repository.MovieScreeningRepository>();
+builder.Services.AddScoped<TrananMVC.Service.MovieScreeningService>();
+builder.Services.AddScoped<TrananMVC.Service.MovieService>();
+builder.Services.AddScoped<TrananMVC.Repository.MovieRepository>();
+
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
