@@ -17,7 +17,8 @@ public class SchemaController : Controller
     // - reservera och komma till reservation controller
     public async Task<IActionResult> Index()
     {
-        return View();
+        var movieScreeningViewModels = await _movieScreeningService.GetUpcomingScreenings();
+        return View(movieScreeningViewModels);
     }
 
 }

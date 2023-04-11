@@ -13,8 +13,15 @@ public class Mapper
         {
             MovieScreeningId = movieScreening.MovieScreeningId,
             DateAndTime = movieScreening.DateAndTime,
-            Movie = GenerateMovieAsViewModel(movieScreening.Movie),
-            Theater = GenerateTheaterToViewModel(movieScreening.Theater)
+            MovieId = movieScreening.Movie.MovieId,
+            MovieTitle = movieScreening.Movie.Title,
+            MovieImageUrl = movieScreening.Movie.ImageUrl,
+            TheaterName = movieScreening.Theater.Name,
+            AvailebleSeats = GenerateSeatsToViewModels(movieScreening.Theater.Seats
+                .Where(s => s.IsBooked == false && s.IsNotBookable == false)
+                .ToList())  //om man nu ska välja detta redan här? kolla på det
+            // Movie = GenerateMovieAsViewModel(movieScreening.Movie),
+            // Theater = GenerateTheaterToViewModel(movieScreening.Theater)
         };
         return movieScreeningViewModel;
     }
@@ -31,7 +38,7 @@ public class Mapper
         return theaterViewModel;
     }
 
-    private static List<SeatViewModel> GenerateSeatsToViewModels(List<Seat> seats)
+    public static List<SeatViewModel> GenerateSeatsToViewModels(List<Seat> seats)
     {
         List<SeatViewModel> seatViewModels = new();
         foreach (var seat in seats)

@@ -14,7 +14,7 @@ public class ReservationController : Controller
 
     }
     //sidan där man skapar reservationen
-    public async Task<IActionResult> Create()
+    public async Task<IActionResult> Create(int movieScreeningId)
     {
         return View();
     }

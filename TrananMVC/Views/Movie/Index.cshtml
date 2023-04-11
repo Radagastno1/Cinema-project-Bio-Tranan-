@@ -1,0 +1,12 @@
+@model List<TrananMVC.ViewModel.MovieViewModel>
+
+@foreach (var movie in Model)
+{
+    <div class="movie-list">
+        <li>
+            <a asp-controller="Movie" asp-action="Details" asp-route-movieId="@movie.MovieId">
+                <img src="@Html.Raw(movie.ImageUrl)" />
+            </a>
+        </li>
+    </div>
+}

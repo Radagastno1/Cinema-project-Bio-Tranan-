@@ -9,7 +9,7 @@
 
 <div class="menu">
     <a href="/home/movies">Alla filmer</a>
-    <a href="/home/schema">Biljetter</a>
+    <a href="/schema/index">Biljetter</a>
     <a href="/home/aboutus">Om oss</a>
 </div>
 
@@ -21,8 +21,8 @@
         @foreach (var movieScreening in Model)
         {
             <div class="movie-poster">
-                <a asp-controller="Movie" asp-action="Details" asp-route-movieId="@movieScreening.Movie.MovieId">
-                    <img src="@Html.Raw(movieScreening.Movie.ImageUrl)" />
+                <a asp-controller="Movie" asp-action="Details" asp-route-movieId="@movieScreening.MovieId">
+                    <img src="@Html.Raw(movieScreening.MovieImageUrl)" />
                 </a>
             </div>
         }

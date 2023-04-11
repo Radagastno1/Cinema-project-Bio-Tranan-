@@ -1,0 +1,38 @@
+@model List<TrananMVC.ViewModel.MovieScreeningViewModel>
+
+<table>
+    <thead>
+        <tr>
+            <th>Film</th>
+            <th>Datum</th>
+            <th>Tid</th>
+            <th>Salong</th>
+            <th>Platser kvar</th>
+            <th>Tillgänglig</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var screening in Model)
+        {
+            <tr>
+                <td>@screening.MovieTitle</td>
+                <td>@screening.DateAndTime.Date</td>
+                <td>@screening.DateAndTime.TimeOfDay</td>
+                <td>@screening.TheaterName</td>
+                <td>@screening.AvailebleSeats.Count</td>
+                <td>
+                    @if(screening.AvailebleSeats.Count > 0)
+                {
+                    <a asp-controller="Reservation" asp-action="Create" asp-route-movieScreeningId="@screening.MovieScreeningId">
+                        <p>Reservera</p>
+                    </a>
+                }
+                else
+                {
+                    <p>Fullreserverad</p>
+                }
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

@@ -18,7 +18,7 @@ public class HomeController : Controller
     {
         var movieScreeningViewModel = await _movieScreeningService.GetUpcomingScreenings();
         var distinctMovieScreenings = movieScreeningViewModel
-            .GroupBy(m => m.Movie.MovieId)
+            .GroupBy(m => m.MovieId)
             .Select(g => g.First())
             .ToList();
         return View(distinctMovieScreenings);
