@@ -11,10 +11,13 @@ public class SeatDTO
 
     public SeatDTO() { }
 
-    public SeatDTO(int seatId, int seatNumber, int row)
+    public SeatDTO(int seatId, int seatNumber, int row, bool isBooked, bool isNotBookable, bool isWheelChairSpace)
     {
         SeatId = seatId;
         SeatNumber = seatNumber;
         Row = row;
+        IsBooked = isBooked;
+        IsNotBookable = isNotBookable;
+        IsWheelChairSpace = isWheelChairSpace;
     }
 }

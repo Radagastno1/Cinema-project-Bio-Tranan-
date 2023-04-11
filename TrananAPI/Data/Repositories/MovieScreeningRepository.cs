@@ -30,6 +30,17 @@ public class MovieScreeningRepository
                 .ThenInclude(t => t.Seats)
                 .Where(s => s.DateAndTime > DateTime.Now)
                 .ToListAsync();
+
+            foreach (var screening in screenings)
+            {
+                var allReservedSeats = await _trananDbContext.Reservations
+                    .Where(r => r.MovieScreeningId == screening.MovieScreeningId)
+                    .SelectMany(r => r.Seats)
+                    .ToListAsync();
+
+                screening.ReservedSeats = allReservedSeats ?? new List<Seat>();
+            }
+
             return screenings;
         }
         catch (Exception e)
@@ -71,7 +82,7 @@ public class MovieScreeningRepository
         {
             throw new InvalidOperationException("Movie has maximum amount moviescreenings.");
         }
-        else if(await TheaterAvailable(movieScreening) == false)
+        else if (await TheaterAvailable(movieScreening) == false)
         {
             throw new InvalidOperationException("Theater not available at chosen time and day.");
         }

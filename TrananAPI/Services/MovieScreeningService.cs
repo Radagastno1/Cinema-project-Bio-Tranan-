@@ -11,7 +11,6 @@ public class MovieScreeningService
     public MovieScreeningService(MovieScreeningRepository movieScreeningRepository)
     {
         _movieScreeningsRepository = movieScreeningRepository;
-        UpdateMaxScreeningsPerMovie();
     }
 
     public async Task<IEnumerable<MovieScreeningOutgoingDTO>> GetUpcomingScreenings()
@@ -51,6 +50,7 @@ public class MovieScreeningService
             var addedMovieScreeningDTO = Mapper.GenerateMovieScreeningOutcomingDTO(
                 addedMovieScreening
             );
+            await UpdateMaxScreeningsPerMovie(); //man kan ju bara uppdatera den aktuella!!
             return addedMovieScreeningDTO;
         }
         catch (NullReferenceException e)
@@ -93,7 +93,7 @@ public class MovieScreeningService
         await _movieScreeningsRepository.DeleteMovieScreeningById(id);
     }
 
-    private async void UpdateMaxScreeningsPerMovie() //måste jag ha task ?
+    private async Task UpdateMaxScreeningsPerMovie() //måste jag ha task ?
     {
         var upcomingMovieScreenings = await _movieScreeningsRepository.GetUpcomingScreenings();
         var movieScreeningsToday = upcomingMovieScreenings.Where(

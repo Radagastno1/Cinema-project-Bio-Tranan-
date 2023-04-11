@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using TrananAPI.Data;
 
@@ -10,9 +11,11 @@ using TrananAPI.Data;
 namespace TrananAPI.Migrations
 {
     [DbContext(typeof(TrananDbContext))]
-    partial class TrananDbContextModelSnapshot : ModelSnapshot
+    [Migration("20230411152547_moviescreenseat-table")]
+    partial class moviescreenseattable
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder.HasAnnotation("ProductVersion", "7.0.4");
@@ -45,21 +48,6 @@ namespace TrananAPI.Migrations
                     b.HasIndex("MoviesMovieId");
 
                     b.ToTable("director_to_movie", (string)null);
-                });
-
-            modelBuilder.Entity("MovieScreeningSeat", b =>
-                {
-                    b.Property<int>("MovieScreeningsMovieScreeningId")
-                        .HasColumnType("INTEGER");
-
-                    b.Property<int>("ReservedSeatsSeatId")
-                        .HasColumnType("INTEGER");
-
-                    b.HasKey("MovieScreeningsMovieScreeningId", "ReservedSeatsSeatId");
-
-                    b.HasIndex("ReservedSeatsSeatId");
-
-                    b.ToTable("MovieScreeningSeat");
                 });
 
             modelBuilder.Entity("ReservationSeat", b =>
@@ -205,6 +193,30 @@ namespace TrananAPI.Migrations
                     b.ToTable("MovieScreenings");
                 });
 
+            modelBuilder.Entity("TrananAPI.Models.MovieScreeningSeat", b =>
+                {
+                    b.Property<int>("MovieScreeningSeatId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("INTEGER");
+
+                    b.Property<bool>("IsBooked")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<int>("MovieScreeningId")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<int>("SeatId")
+                        .HasColumnType("INTEGER");
+
+                    b.HasKey("MovieScreeningSeatId");
+
+                    b.HasIndex("MovieScreeningId");
+
+                    b.HasIndex("SeatId");
+
+                    b.ToTable("MovieScreeningSeat");
+                });
+
             modelBuilder.Entity("TrananAPI.Models.Reservation", b =>
                 {
                     b.Property<int>("ReservationId")
@@ -314,21 +326,6 @@ namespace TrananAPI.Migrations
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("MovieScreeningSeat", b =>
-                {
-                    b.HasOne("TrananAPI.Models.MovieScreening", null)
-                        .WithMany()
-                        .HasForeignKey("MovieScreeningsMovieScreeningId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("TrananAPI.Models.Seat", null)
-                        .WithMany()
-                        .HasForeignKey("ReservedSeatsSeatId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-                });
-
             modelBuilder.Entity("ReservationSeat", b =>
                 {
                     b.HasOne("TrananAPI.Models.Reservation", null)
@@ -361,6 +358,25 @@ namespace TrananAPI.Migrations
                     b.Navigation("Movie");
 
                     b.Navigation("Theater");
+                });
+
+            modelBuilder.Entity("TrananAPI.Models.MovieScreeningSeat", b =>
+                {
+                    b.HasOne("TrananAPI.Models.MovieScreening", "MovieScreening")
+                        .WithMany("MovieScreeningSeats")
+                        .HasForeignKey("MovieScreeningId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("TrananAPI.Models.Seat", "Seat")
+                        .WithMany("MovieScreeningSeats")
+                        .HasForeignKey("SeatId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("MovieScreening");
+
+                    b.Navigation("Seat");
                 });
 
             modelBuilder.Entity("TrananAPI.Models.Reservation", b =>
@@ -405,7 +421,14 @@ namespace TrananAPI.Migrations
 
             modelBuilder.Entity("TrananAPI.Models.MovieScreening", b =>
                 {
+                    b.Navigation("MovieScreeningSeats");
+
                     b.Navigation("Reservations");
+                });
+
+            modelBuilder.Entity("TrananAPI.Models.Seat", b =>
+                {
+                    b.Navigation("MovieScreeningSeats");
                 });
 
             modelBuilder.Entity("TrananAPI.Models.Theater", b =>

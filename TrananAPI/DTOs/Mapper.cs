@@ -69,7 +69,9 @@ public class Mapper
     }
 
     public static MovieScreening GenerateMovieScreeningFromIncomingDTO(
-        MovieScreeningIncomingDTO movieScreeningDTO, Movie movie, Theater theater
+        MovieScreeningIncomingDTO movieScreeningDTO,
+        Movie movie,
+        Theater theater
     )
     {
         var movieScreening = new MovieScreening(movieScreeningDTO.DateAndTime, movie, theater);
@@ -98,9 +100,36 @@ public class Mapper
             movieScreening.MovieScreeningId,
             movieScreening.DateAndTime,
             GenerateMovieDTO(movieScreening.Movie),
-            GenerateTheaterDTO(movieScreening.Theater)
+            // GenerateTheaterDTO(movieScreening.Theater),
+            movieScreening.Theater.Name,
+            GenerateAllSeats(movieScreening)
         );
         return movieScreeningDTO;
+    }
+
+    private static List<SeatDTO> GenerateAllSeats(MovieScreening movieScreening)
+    {
+        var allSeats = new List<SeatDTO>();
+        foreach (var seat in movieScreening.Theater.Seats)
+        {
+            bool isBooked = false;
+            if (movieScreening.ReservedSeats != null)
+            {
+                isBooked = movieScreening.ReservedSeats.Any(rs => rs.SeatId == seat.SeatId);
+            }
+            allSeats.Add(
+                new SeatDTO()
+                {
+                    SeatId = seat.SeatId,
+                    Row = seat.Row,
+                    SeatNumber = seat.SeatNumber,
+                    IsBooked = isBooked,
+                    IsNotBookable = seat.IsNotBookable,
+                    IsWheelChairSpace = seat.IsWheelChairSpace
+                }
+            );
+        }
+        return allSeats;
     }
 
     public static Theater GenerateTheater(TheaterDTO theaterDTO)
@@ -185,6 +214,18 @@ public class Mapper
 
     public static List<SeatDTO> GenerateSeatsDTO(List<Seat> seats)
     {
-        return seats.Select(s => new SeatDTO(s.SeatId ,s.SeatNumber, s.Row)).ToList();
+        return seats
+            .Select(
+                s =>
+                    new SeatDTO(
+                        s.SeatId,
+                        s.SeatNumber,
+                        s.Row,
+                        s.IsBooked,
+                        s.IsNotBookable,
+                        s.IsWheelChairSpace
+                    )
+            )
+            .ToList();
     }
 }

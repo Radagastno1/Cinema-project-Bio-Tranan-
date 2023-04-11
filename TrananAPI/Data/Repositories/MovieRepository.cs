@@ -12,6 +12,16 @@ public class MovieRepository
         _trananDbContext = trananDbContext;
     }
 
+    // private async Task ResetSeats()
+    // {
+    //     var seats = await _trananDbContext.Seats.ToListAsync();
+    //     foreach (var seat in seats)
+    //     {
+    //         seat.IsBooked = false;
+    //     }
+    //     await _trananDbContext.SaveChangesAsync();
+    // }
+
     public async Task<List<Movie>> GetMovies()
     {
         try

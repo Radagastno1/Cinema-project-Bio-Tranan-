@@ -30,14 +30,14 @@ public class TheaterController : ControllerBase
     }
 
     [HttpGet("{id:int}")]
-    public async Task<ActionResult<TheaterDTO>> GetTheaterById(int id) 
-    { 
+    public async Task<ActionResult<TheaterDTO>> GetTheaterById(int id)
+    {
         try
         {
             var theater = _theaterService.GetTheaterById(id);
             return Ok(theater);
         }
-        catch(Exception)
+        catch (Exception)
         {
             return NotFound();
         }
@@ -51,24 +51,26 @@ public class TheaterController : ControllerBase
             var addedTheater = _theaterService.CreateTheater(theaterDTO);
             return Ok(addedTheater);
         }
-        catch(Exception)
+        catch (Exception)
         {
             return NotFound();
         }
     }
+
     [HttpPut]
     public async Task<ActionResult<TheaterDTO>> PutTheater(TheaterDTO theaterDTO)
     {
         try
         {
             var updatedTheater = await _theaterService.UpdateTheater(theaterDTO);
-            return Ok(updatedTheater); 
+            return Ok(updatedTheater);
         }
-        catch(Exception)
+        catch (Exception)
         {
             return NotFound();
         }
     }
+
     [HttpDelete("{id:int}")]
     public async Task<IActionResult> DeleteTheater(int id)
     {
@@ -77,7 +79,7 @@ public class TheaterController : ControllerBase
             await _theaterService.DeleteTheaterById(id);
             return Ok();
         }
-        catch(Exception)
+        catch (Exception)
         {
             return NotFound();
         }

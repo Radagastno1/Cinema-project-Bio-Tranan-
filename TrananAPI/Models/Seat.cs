@@ -9,15 +9,15 @@ public class Seat
     public bool IsBooked { get; set; }
     public bool IsNotBookable { get; set; }
     public int TheaterId { get; set; }
-    public Theater Theater{get;set;}
+    public Theater Theater { get; set; }
     public List<Reservation> Reservations { get; set; }
-    public List<MovieScreening> MovieScreenings{get;set;} = new();
+    public List<MovieScreening> MovieScreenings { get; set; } = new();
 
     public Seat() { }
 
-    public Seat(int seatNumber, int row) 
-    { 
-        SeatNumber =seatNumber;
+    public Seat(int seatNumber, int row)
+    {
+        SeatNumber = seatNumber;
         Row = row;
     }
 }

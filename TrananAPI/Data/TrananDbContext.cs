@@ -15,7 +15,6 @@ public class TrananDbContext : DbContext
     public DbSet<Reservation> Reservations { get; set; }
     public DbSet<Seat> Seats { get; set; }
     public DbSet<Theater> Theaters { get; set; }
-    // public DbSet<ReservationSeat> ReservationSeat { get; set; }
 
     public TrananDbContext(DbContextOptions<TrananDbContext> options)
         : base(options) { }
@@ -23,6 +22,7 @@ public class TrananDbContext : DbContext
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
     {
         optionsBuilder.UseSqlite($"Data Source ={"tranandatabase.db"}");
+        optionsBuilder.EnableSensitiveDataLogging();
     }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
@@ -50,10 +50,6 @@ public class TrananDbContext : DbContext
             .Entity<MovieScreening>()
             .HasOne(m => m.Theater)
             .WithMany(t => t.MovieScreenings);
-            
-            modelBuilder.Entity<MovieScreening>()
-            .HasMany(m => m.Seats)
-            .WithMany(s => s.MovieScreenings);
 
         modelBuilder.Entity<Theater>().HasMany(m => m.Seats).WithOne(a => a.Theater);
 
