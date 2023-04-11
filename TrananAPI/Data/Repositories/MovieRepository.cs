@@ -168,7 +168,8 @@ public class MovieRepository
             movieToUpdate.MaxScreenings = movie.MaxScreenings;
             movieToUpdate.Language = movie.Language ?? movieToUpdate.Language;
             movieToUpdate.ReleaseYear = movie.ReleaseYear;
-            movieToUpdate.DurationSeconds = movie.DurationSeconds;
+            movieToUpdate.DurationMinutes = movie.DurationMinutes;
+            movieToUpdate.ImageUrl = movie.ImageUrl ?? movieToUpdate.ImageUrl;
 
             movieToUpdate.Actors = movie.Actors;
 

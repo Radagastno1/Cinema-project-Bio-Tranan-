@@ -138,7 +138,7 @@ public class MovieScreeningRepository
     private async Task<bool> TheaterAvailable(MovieScreening movieScreening)
     {
         var currentMovieScreeningTime = movieScreening.DateAndTime;
-        var currentMovieDuration = movieScreening.Movie.DurationSeconds;
+        var currentMovieDuration = movieScreening.Movie.DurationMinutes;
         var extraMinutes = 15;
 
         var overlappingScreenings =
@@ -150,7 +150,7 @@ public class MovieScreeningRepository
                             < currentMovieScreeningTime.AddSeconds(
                                 currentMovieDuration + extraMinutes
                             )
-                        && m.DateAndTime.AddSeconds(m.Movie.DurationSeconds + extraMinutes)
+                        && m.DateAndTime.AddSeconds(m.Movie.DurationMinutes + extraMinutes)
                             > currentMovieScreeningTime
                         && m.MovieScreeningId != movieScreening.MovieScreeningId
                 )

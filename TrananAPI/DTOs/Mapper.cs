@@ -11,10 +11,11 @@ public class Mapper
             movie.Title,
             movie.ReleaseYear,
             movie.Language,
-            movie.DurationSeconds,
+            movie.DurationMinutes,
             movie.Description,
             movie.AmountOfScreenings,
             movie.MaxScreenings,
+            movie.ImageUrl,
             movie.Actors.Select(a => GenerateActorDTO(a)).ToList(),
             movie.Directors.Select(d => GenerateDirectorDTO(d)).ToList()
         );
@@ -28,10 +29,11 @@ public class Mapper
             movieDTO.Title,
             movieDTO.ReleaseYear,
             movieDTO.Language,
-            movieDTO.DurationSeconds,
+            movieDTO.DurationMinutes,
             movieDTO.Description,
             movieDTO.AmountOfScreenings,
             movieDTO.MaxScreenings,
+            movieDTO.ImageUrl,
             movieDTO.ActorDTOs.Select(a => GenerateActor(a)).ToList(),
             movieDTO.DirectorDTOs.Select(d => GenerateDirector(d)).ToList()
         );

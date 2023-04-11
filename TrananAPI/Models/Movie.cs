@@ -17,7 +17,8 @@ public class Movie
 
     public int MaxScreenings { get; set; }
  
-    public int DurationSeconds { get; set; }
+    public int DurationMinutes { get; set; }
+    public string ImageUrl{get;set;}
     public List<Director> Directors { get; set; }
     public List<Actor> Actors { get; set; }
     public List<MovieScreening> MovieScreenings;
@@ -26,17 +27,18 @@ public class Movie
         int movieId,
         string title,
         int releaseYear,
-        string language, int durationSeconds, string description,int amountOfScreenings, int maxScreenings, List<Actor>actors, List<Director>directors
+        string language, int durationMinutes, string description,int amountOfScreenings, int maxScreenings,string imageUrl, List<Actor>actors, List<Director>directors
     )
     {
         MovieId = movieId;
         Title = title;
         ReleaseYear = releaseYear;
         Language = language;
-        DurationSeconds = durationSeconds;
+        DurationMinutes = durationMinutes;
         Description = description;
         AmountOfScreenings = amountOfScreenings;
         MaxScreenings = maxScreenings;
+        ImageUrl = imageUrl;
         Actors = actors;
         Directors = directors;
     }
