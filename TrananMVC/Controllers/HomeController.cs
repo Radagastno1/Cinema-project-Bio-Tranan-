@@ -19,7 +19,9 @@ public class HomeController : Controller
     public async Task<IActionResult> Index()
     {
         var movieScreeningViewModel = await _movieScreeningService.GetUpcomingScreenings();
-        return View(movieScreeningViewModel);
+        var distinctMovieScreenings = movieScreeningViewModel.GroupBy(m => m.Movie.MovieId)
+        .Select(g => g.First()).ToList();
+        return View(distinctMovieScreenings);
     }
 
     public async Task<IActionResult> Movies()

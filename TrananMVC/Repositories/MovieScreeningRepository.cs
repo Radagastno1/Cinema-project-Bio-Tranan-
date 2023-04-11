@@ -17,7 +17,8 @@ public class MovieScreeningRepository
         using HttpClient client = new();
         try
         {
-            var movieScreenings = await client.GetFromJsonAsync<List<MovieScreening>>(url + "/moviescreening");
+            var jsonString = await client.GetStringAsync(url + "/moviescreening");
+            var movieScreenings = JsonConvert.DeserializeObject<List<MovieScreening>>(jsonString);
             return movieScreenings;
         }
         catch (HttpRequestException)

@@ -6,6 +6,7 @@ public class Theater
     public int TheaterId { get; set; }
     public string Name { get; set; }
     public int Rows { get; set; }
+    [JsonProperty(PropertyName = "SeatDTOs")]
     public List<Seat> Seats { get; set; }
 
     [JsonIgnore]

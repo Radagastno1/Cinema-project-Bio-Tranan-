@@ -18,3 +18,21 @@ li
 {
     list-style: none;
 }
+
+.movies-header {
+    text-align: center;
+}
+
+.movies-container {
+    display: flex;
+    justify-content: center; /* add this */
+    overflow-x: scroll;
+    gap: 20px;
+  }
+  
+  .movie-poster img {
+    width: 200px; 
+    height: auto;
+    margin-top: 50px;  
+  }
+  

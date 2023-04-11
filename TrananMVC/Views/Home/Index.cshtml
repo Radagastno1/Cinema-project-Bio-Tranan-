@@ -13,12 +13,19 @@
     <a href="/home/aboutus">Om oss</a>
 </div>
 
-<div class="topmovies">
-    <h3>Topp-filmer på bio just nu</h3>
-    @foreach(var movieScreening in Model)
-    {
-        <li>@movieScreening.Movie.Title</li>
-    }
+<div class="currentmovies">
+    <div class="movies-header">
+        <h3>Filmer på bio just nu</h3>
+    </div>
+    <div class="movies-container">
+        @foreach (var movieScreening in Model)
+        {
+            <div class="movie-poster">
+                <img src="@Html.Raw(movieScreening.Movie.ImageUrl)" />
+            </div>
+        }
+    </div>
 </div>
- 
+
+
 

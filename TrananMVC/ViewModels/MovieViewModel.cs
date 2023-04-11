@@ -13,10 +13,13 @@ public class MovieViewModel
     public int DurationMinutes { get; set; }
     public int MaxScreenings { get; set; }
     public int AmountOfScreenings { get; set; }
+    public string ImageUrl { get; set; }
 
     public List<ActorViewModel> Actors { get; set; }
     public List<DirectorViewModel> Directors { get; set; }
-    public MovieViewModel(){}
+
+    public MovieViewModel() { }
+
     public MovieViewModel(
         int movieId,
         string title,
@@ -26,6 +29,7 @@ public class MovieViewModel
         string description,
         int amountOfScreenings,
         int maxScreenings,
+        string imageUrl,
         List<ActorViewModel> actors,
         List<DirectorViewModel> directors
     )
@@ -38,6 +42,7 @@ public class MovieViewModel
         Description = description;
         AmountOfScreenings = amountOfScreenings;
         MaxScreenings = maxScreenings;
+        ImageUrl = imageUrl;
         Actors = actors;
         Directors = directors;
     }
