@@ -66,7 +66,6 @@ public class Mapper
                 ImageUrl = movie.ImageUrl,
                 Actors = ActorsAsViewModels(movie.Actors),
                 Directors = DirectorsAsViewModels(movie.Directors)
-                
             };
     }
     public static List<ActorViewModel> ActorsAsViewModels(List<Actor>actors)
