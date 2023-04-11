@@ -20,13 +20,19 @@
     </div>
 
     <div class="movie-information">
-        <h2>Actors:</h2>
+        <h2>@Model.Title</h2>
+
+        <h6>@Model.DurationString | @Model.Language </h6>
+
+        <h8> @Model.Description</h8>
+
+        <h5>Actors:</h5>
         @foreach (var actor in @Model.Actors)
         {
             <li>@actor.FirstName @actor.LastName</li>
         }
 
-        <h2>Directors:</h2>
+        <h5>Directors:</h5>
         @foreach (var director in @Model.Directors)
         {
             <li>@director.FirstName @director.LastName</li>

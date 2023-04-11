@@ -11,6 +11,7 @@ public class MovieViewModel
     public string Description { get; set; }
 
     public int DurationMinutes { get; set; }
+    public string DurationString{get;set;}
     public int MaxScreenings { get; set; }
     public int AmountOfScreenings { get; set; }
     public string ImageUrl { get; set; }
@@ -25,8 +26,8 @@ public class MovieViewModel
         string title,
         int releaseYear,
         string language,
-        int durationMinutes,
         string description,
+        int durationMinutes,
         int amountOfScreenings,
         int maxScreenings,
         string imageUrl,
@@ -45,5 +46,13 @@ public class MovieViewModel
         ImageUrl = imageUrl;
         Actors = actors;
         Directors = directors;
+        DurationString = GenerateDurationString(DurationMinutes);
+    }
+
+    private string GenerateDurationString(int durationMinutes)
+    {
+        var hours = durationMinutes / 60;
+        var minutes = durationMinutes % 60;
+        return $"{hours} tim {minutes} min";
     }
 }

@@ -53,36 +53,52 @@ public class Mapper
 
     public static MovieViewModel GenerateMovieAsViewModel(Movie movie)
     {
-         return new MovieViewModel()
-            {
-                MovieId = movie.MovieId,
-                Title = movie.Title,
-                ReleaseYear = movie.ReleaseYear,
-                Language = movie.Language,
-                Description = movie.Description,
-                DurationMinutes = movie.DurationMinutes,
-                MaxScreenings = movie.MaxScreenings,
-                AmountOfScreenings = movie.AmountOfScreenings,
-                ImageUrl = movie.ImageUrl,
-                Actors = ActorsAsViewModels(movie.Actors),
-                Directors = DirectorsAsViewModels(movie.Directors)
-            };
+        return new MovieViewModel(
+            movie.MovieId,
+            movie.Title,
+            movie.ReleaseYear,
+            movie.Language,
+            movie.Description,
+            movie.DurationMinutes,
+            movie.MaxScreenings,
+            movie.AmountOfScreenings,
+            movie.ImageUrl,
+            ActorsAsViewModels(movie.Actors),
+            DirectorsAsViewModels(movie.Directors)
+        );
+        // {
+        //     MovieId = movie.MovieId,
+        //     Title = movie.Title,
+        //     ReleaseYear = movie.ReleaseYear,
+        //     Language = movie.Language,
+        //     Description = movie.Description,
+        //     DurationMinutes = movie.DurationMinutes,
+        //     MaxScreenings = movie.MaxScreenings,
+        //     AmountOfScreenings = movie.AmountOfScreenings,
+        //     ImageUrl = movie.ImageUrl,
+        //     Actors = ActorsAsViewModels(movie.Actors),
+        //     Directors = DirectorsAsViewModels(movie.Directors)
+        // };
     }
-    public static List<ActorViewModel> ActorsAsViewModels(List<Actor>actors)
+
+    public static List<ActorViewModel> ActorsAsViewModels(List<Actor> actors)
     {
-        List<ActorViewModel>actorViewModels = new();
-        foreach(var actor in actors)
+        List<ActorViewModel> actorViewModels = new();
+        foreach (var actor in actors)
         {
             actorViewModels.Add(new ActorViewModel(actor.ActorId, actor.FirstName, actor.LastName));
         }
         return actorViewModels;
     }
-       public static List<DirectorViewModel> DirectorsAsViewModels(List<Director>directors)
+
+    public static List<DirectorViewModel> DirectorsAsViewModels(List<Director> directors)
     {
-        List<DirectorViewModel>directorViewModels = new();
-        foreach(var director in directors)
+        List<DirectorViewModel> directorViewModels = new();
+        foreach (var director in directors)
         {
-            directorViewModels.Add(new DirectorViewModel(director.DirectorId, director.FirstName, director.LastName));
+            directorViewModels.Add(
+                new DirectorViewModel(director.DirectorId, director.FirstName, director.LastName)
+            );
         }
         return directorViewModels;
     }
