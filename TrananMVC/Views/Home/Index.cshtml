@@ -21,7 +21,7 @@
         @foreach (var movieScreening in Model)
         {
             <div class="movie-poster">
-                <a asp-controller="Movie" asp-action="About" asp-route-movieId="@movieScreening.Movie.MovieId">
+                <a asp-controller="Movie" asp-action="Details" asp-route-movieId="@movieScreening.Movie.MovieId">
                     <img src="@Html.Raw(movieScreening.Movie.ImageUrl)" />
                 </a>
             </div>

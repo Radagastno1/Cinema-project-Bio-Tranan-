@@ -14,26 +14,31 @@ public class MovieController : Controller
         _movieService = movieService;
     }
 
+    //visar alla filmer
     public async Task<IActionResult> Index()
     {
-        return View();
+        var moviesViewModel = await _movieService.GetAllMovies();
+        return View(moviesViewModel);
     }
 
-    // [HttpPost]
-    // [ValidateAntiForgeryToken]
-    // public async Task<IActionResult> Get(int movieId)
-    // {
-    //     var movie = await _movieService.GetMovieById(movieId);
-    //     if(movie == null)
-    //     {
-    //         return RedirectToAction("Index", "Movie");
-    //     }
-    //     return RedirectToAction("About", "Movie", new { MovieViewModel = movie });
-    // }
-
-    public async Task<IActionResult> About(int movieId)
+    //info om en film
+    public async Task<IActionResult> Details(int movieId)
     {
         var movieViewModel = await _movieService.GetMovieById(movieId);
         return View(movieViewModel);
     }
+
+    //visa sidan där man kan ge rate på movie
+    public async Task<IActionResult> Rate()
+    {
+        return View();
+    }
+
+    //skickar ratingen till api
+    [HttpPost]
+    public async Task<IActionResult> PostRating()
+    {
+        return View();
+    }
+
 }

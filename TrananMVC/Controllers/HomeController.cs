@@ -8,31 +8,37 @@ namespace TrananMVC.Controllers;
 public class HomeController : Controller
 {
     private readonly MovieScreeningService _movieScreeningService;
-    private readonly MovieService _movieService;
 
-    public HomeController(MovieScreeningService movieScreeningService, MovieService movieService)
+    public HomeController(MovieScreeningService movieScreeningService)
     {
         _movieScreeningService = movieScreeningService;
-        _movieService = movieService;
     }
 
     public async Task<IActionResult> Index()
     {
         var movieScreeningViewModel = await _movieScreeningService.GetUpcomingScreenings();
-        var distinctMovieScreenings = movieScreeningViewModel.GroupBy(m => m.Movie.MovieId)
-        .Select(g => g.First()).ToList();
+        var distinctMovieScreenings = movieScreeningViewModel
+            .GroupBy(m => m.Movie.MovieId)
+            .Select(g => g.First())
+            .ToList();
         return View(distinctMovieScreenings);
     }
 
-    public async Task<IActionResult> Movies()
+    public async Task<IActionResult> AboutUs()
     {
-        var moviesViewModel = await _movieService.GetAllMovies();
-        return View(moviesViewModel);
+        return View();
+    }
+
+    public async Task<IActionResult> Contact()
+    {
+        return View();
     }
 
     [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
     public IActionResult Error()
     {
-        return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
+        return View(
+            new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier }
+        );
     }
 }
