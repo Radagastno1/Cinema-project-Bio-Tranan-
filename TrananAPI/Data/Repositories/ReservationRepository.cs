@@ -125,6 +125,12 @@ public class ReservationRepository
     {
         var reservationToDelete = await _trananDbContext.Reservations.FindAsync(reservationId);
         _trananDbContext.Reservations.Remove(reservationToDelete);
+
+        var SeatsToReset = await _trananDbContext.Seats
+        .Where(s => s.Reservations.Any(r => r.ReservationId == reservationId)).ToListAsync();
+        
+        SeatsToReset.ForEach(s => s.IsBooked = false);
+
         await _trananDbContext.SaveChangesAsync();
     }
     // public async Task UpdateMovie(MovieDTO movieDTO)

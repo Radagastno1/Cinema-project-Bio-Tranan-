@@ -40,7 +40,7 @@ public class MovieScreeningRepository
 
                 screening.ReservedSeats = allReservedSeats ?? new List<Seat>();
             }
-
+            
             return screenings;
         }
         catch (Exception e)
@@ -98,7 +98,20 @@ public class MovieScreeningRepository
             .Include(s => s.Theater)
             .Include(s => s.Theater.Seats)
             .FirstOrDefault();
+
+        var movieToUpdate = recentlyAddedScreening.Movie;
+        if(movieToUpdate.AmountOfScreenings == 0)
+        {
+            movieToUpdate.AmountOfScreenings = 1;
+        }
+        else
+        {
+            movieToUpdate.AmountOfScreenings++;
+        }
+        _trananDbContext.Movies.Update(movieToUpdate);
+        await _trananDbContext.SaveChangesAsync();
         return recentlyAddedScreening;
+
     }
 
     public async Task<MovieScreening> UpdateMovieScreening(MovieScreening movieScreening)
