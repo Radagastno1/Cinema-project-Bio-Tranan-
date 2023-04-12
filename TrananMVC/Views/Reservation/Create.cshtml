@@ -1,0 +1,42 @@
+@model TrananMVC.ViewModel.CreateReservationViewModel
+<div class="menu">
+    <a href="/home/movies">Alla filmer</a>
+    <a href="/schema/index">Biljetter</a>
+    <a href="/home/aboutus">Om oss</a>
+</div>
+
+<div class="movie-poster">
+    <a asp-controller="Movie" asp-action="Details" asp-route-movieId="@Model.MovieScreeningViewModel.MovieId">
+        <img src="@Html.Raw(Model.MovieScreeningViewModel.MovieImageUrl)" />
+    </a>
+</div>
+
+@using (Html.BeginForm("PostReservation", "Reservation", FormMethod.Post))
+{
+    <h4>Välj stolar:</h4>
+    @foreach (var seat in Model.MovieScreeningViewModel.AvailebleSeats)
+    {
+        <input type="checkbox" name="ReservationViewModel.SeatIds" value="@seat.SeatId">
+        <label>Rad: @seat.Row Stolnummer: @seat.SeatNumber ID:@seat.SeatId</label>
+    }
+    
+    <input type="hidden" name="ReservationViewModel.SeatIds" value="@Model.ReservationViewModel.SeatIds">
+
+    <h4>Förnamn: </h4> <input type="text" name="ReservationViewModel.CustomerViewModel.FirstName"
+        value="@Model.ReservationViewModel.CustomerViewModel.FirstName">
+    <h4>Efternamn: </h4> <input type="text" name="ReservationViewModel.CustomerViewModel.LastName"
+        value="@Model.ReservationViewModel.CustomerViewModel.LastName">
+    <h4>Telefonnummer: </h4> <input type="number" name="ReservationViewModel.CustomerViewModel.PhoneNumber"
+        value="@Model.ReservationViewModel.CustomerViewModel.PhoneNumber">
+    <h4>Email: </h4> <input type="email" name="ReservationViewModel.CustomerViewModel.Email"
+        value="@Model.ReservationViewModel.CustomerViewModel.Email">
+
+    <input type="hidden" name="ReservationViewModel.MovieScreeningId"
+        value="@Model.ReservationViewModel.MovieScreeningId" />
+
+    <button type="submit">Reservera</button>
+}
+
+
+
+

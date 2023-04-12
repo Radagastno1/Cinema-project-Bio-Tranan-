@@ -16,14 +16,14 @@ public class Mapper
             MovieId = movieScreening.Movie.MovieId,
             MovieTitle = movieScreening.Movie.Title,
             MovieImageUrl = movieScreening.Movie.ImageUrl,
-            TheaterName = movieScreening.Theater.Name,
-            AvailebleSeats = GenerateSeatsToViewModels(movieScreening.Theater.Seats
-                .Where(s => s.IsBooked == false && s.IsNotBookable == false)
-                .ToList())  //om man nu ska välja detta redan här? kolla på det
-            // Movie = GenerateMovieAsViewModel(movieScreening.Movie),
-            // Theater = GenerateTheaterToViewModel(movieScreening.Theater)
+            TheaterName = movieScreening.TheaterName,
+            AvailebleSeats = GenerateSeatsToViewModels(
+                movieScreening.AllSeats
+                    .Where(s => s.IsBooked == false && s.IsNotBookable == false)
+                    .ToList()
+            ) //om man nu ska välja detta redan här? kolla på det
         };
-        return movieScreeningViewModel;
+        return movieScreeningViewModel ?? new MovieScreeningViewModel();
     }
 
     public static TheaterViewModel GenerateTheaterToViewModel(Theater theater)
@@ -73,20 +73,71 @@ public class Mapper
             ActorsAsViewModels(movie.Actors),
             DirectorsAsViewModels(movie.Directors)
         );
-        // {
-        //     MovieId = movie.MovieId,
-        //     Title = movie.Title,
-        //     ReleaseYear = movie.ReleaseYear,
-        //     Language = movie.Language,
-        //     Description = movie.Description,
-        //     DurationMinutes = movie.DurationMinutes,
-        //     MaxScreenings = movie.MaxScreenings,
-        //     AmountOfScreenings = movie.AmountOfScreenings,
-        //     ImageUrl = movie.ImageUrl,
-        //     Actors = ActorsAsViewModels(movie.Actors),
-        //     Directors = DirectorsAsViewModels(movie.Directors)
-        // };
     }
+
+    public static ReservationViewModel GenerateReservationViewModel(Reservation reservation)
+    {
+        return new ReservationViewModel()
+        {
+            ReservationId = reservation.ReservationId,
+            ReservationCode = reservation.ReservationCode,
+            Price = reservation.Price,
+            MovieScreeningId = reservation.MovieScreeningId,
+            CustomerViewModel = new CustomerViewModel()
+            {
+                CustomerId = reservation.Customer.CustomerId,
+                FirstName = reservation.Customer.FirstName,
+                LastName = reservation.Customer.LastName,
+                PhoneNumber = reservation.Customer.PhoneNumber,
+                Email = reservation.Customer.Email
+            },
+            SeatIds = reservation.SeatIds
+        };
+    }
+
+    public static Reservation GenerateReservation(ReservationViewModel reservationViewModel)
+    {
+        return new Reservation()
+        {
+            ReservationId = reservationViewModel.ReservationId,
+            ReservationCode = reservationViewModel.ReservationCode,
+            Price = reservationViewModel.Price,
+            MovieScreeningId = reservationViewModel.MovieScreeningId,
+            Customer = new Customer()
+            {
+                CustomerId = reservationViewModel.CustomerViewModel.CustomerId,
+                FirstName = reservationViewModel.CustomerViewModel.FirstName,
+                LastName = reservationViewModel.CustomerViewModel.LastName,
+                PhoneNumber = reservationViewModel.CustomerViewModel.PhoneNumber,
+                Email = reservationViewModel.CustomerViewModel.Email
+            },
+            SeatIds = reservationViewModel.SeatIds
+        };
+    }
+
+    public static CreateReservationViewModel GenerateCreateReservationViewModel(
+        Reservation reservation,
+        MovieScreening movieScreening
+    )
+    {
+        return new CreateReservationViewModel()
+        {
+            ReservationViewModel = GenerateReservationViewModel(reservation),
+            MovieScreeningViewModel = GenerateMovieScreeningToViewModel(movieScreening)
+        };
+    }
+
+    //   public static ReservationViewModel GenerateReservationViewModel(CreateReservationViewModel createReservationViewModel)
+    // {
+    //     return new ReservationViewModel()
+    //     {
+    //         ReservationId = createReservationViewModel.ReservationId,
+    //         ReservationCode = createReservationViewModel.ReservationCode,
+    //         MovieScreeningId = createReservationViewModel.MovieScreeningId,
+    //         SeatIds = createReservationViewModel.SeatIds,
+    //         CustomerViewModel = GenerateCustomerViewModel(createReservationViewModel.Customer)
+    //     };
+    // }
 
     public static List<ActorViewModel> ActorsAsViewModels(List<Actor> actors)
     {
@@ -108,5 +159,28 @@ public class Mapper
             );
         }
         return directorViewModels;
+    }
+
+    public static Customer GenerateCustomer(CustomerViewModel customerViewModel)
+    {
+        return new Customer(
+            customerViewModel.CustomerId,
+            customerViewModel.FirstName,
+            customerViewModel.LastName,
+            customerViewModel.PhoneNumber,
+            customerViewModel.Email
+        );
+    }
+
+    public static CustomerViewModel GenerateCustomerViewModel(Customer customer)
+    {
+        return new CustomerViewModel()
+        {
+            CustomerId = customer.CustomerId,
+            FirstName = customer.FirstName,
+            LastName = customer.LastName,
+            PhoneNumber = customer.PhoneNumber,
+            Email = customer.Email
+        };
     }
 }

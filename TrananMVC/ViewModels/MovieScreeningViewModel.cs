@@ -11,22 +11,8 @@ public class MovieScreeningViewModel
     // public int TheaterId { get; set; } //incoming
     public string TheaterName{get;set;}
     // public TheaterViewModel Theater { get; set; } //outgoing
-    public List<SeatViewModel> AvailebleSeats{get;set;}
+    public List<SeatViewModel> AvailebleSeats{get;set;} = new();
 
     public MovieScreeningViewModel() { }
 
-    // public MovieScreeningViewModel(
-    //     DateTime dateAndTime,
-    //     int movieId,
-    //     MovieViewModel movie,
-    //     int theaterId,
-    //     TheaterViewModel theater
-    // )
-    // {
-    //     DateAndTime = dateAndTime;
-    //     MovieId = movieId;
-    //     Movie = movie;
-    //     TheaterId = theaterId;
-    //     Theater = theater;
-    // }
 }

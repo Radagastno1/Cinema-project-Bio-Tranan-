@@ -7,28 +7,56 @@ namespace TrananMVC.Controllers;
 
 public class ReservationController : Controller
 {
+    private readonly MovieScreeningService _movieScreeningService;
+    private readonly ReservationService _reservationService;
 
-
-    public ReservationController()
+    public ReservationController(
+        MovieScreeningService movieScreeningService,
+        ReservationService reservationService
+    )
     {
-
+        _movieScreeningService = movieScreeningService;
+        _reservationService = reservationService;
     }
-    //sidan där man skapar reservationen
+
     public async Task<IActionResult> Create(int movieScreeningId)
     {
-        return View();
+        var movieScreeningViewModel = await _movieScreeningService.GetMovieScreeningById(
+            movieScreeningId
+        );
+        var reservationViewModel = new ReservationViewModel();
+        reservationViewModel.MovieScreeningId = movieScreeningId;
+
+        var createReservationViewModel = new CreateReservationViewModel()
+        {
+            MovieScreeningViewModel = movieScreeningViewModel,
+            ReservationViewModel = reservationViewModel
+        };
+        return View(createReservationViewModel);
     }
-    //skickar reservationen som skapades till api
+
     [HttpPost]
-    public async Task<IActionResult> PostReservation()
+    public async Task<IActionResult> PostReservation(
+        CreateReservationViewModel createReservationViewModel
+    )
     {
-        return View();
+        Console.WriteLine("post reservation anropas");
+        var reservationMade = await _reservationService.CreateReservation(
+            createReservationViewModel.ReservationViewModel
+        );
+        return RedirectToAction("ShowReservation", "Reservation", reservationMade);
     }
-    //visar sidan där man kan avboka sin reservation
+
+    public async Task<IActionResult> ShowReservation(ReservationViewModel reservationViewModel)
+    {
+        return View(reservationViewModel);
+    }
+
     public async Task<IActionResult> Cancel()
     {
         return View();
     }
+
     //skickar en delete reservation till api
     [HttpDelete]
     public async Task<IActionResult> PostCancelledReservation()

@@ -17,11 +17,26 @@ public class MovieScreeningService
         try
         {
             var movieScreenings = await _movieScreeningRepository.GetUpcomingMovieScreenings();
-            return movieScreenings.Select(m => Mapper.GenerateMovieScreeningToViewModel(m)).ToList();
+            return movieScreenings
+                .Select(m => Mapper.GenerateMovieScreeningToViewModel(m))
+                .ToList();
         }
         catch (Exception)
         {
             return new List<MovieScreeningViewModel>();
+        }
+    }
+
+    public async Task<MovieScreeningViewModel> GetMovieScreeningById(int movieScreeningId)
+    {
+        try
+        {
+            var movieScreening = await _movieScreeningRepository.GetMovieScreeningById(movieScreeningId);
+            return Mapper.GenerateMovieScreeningToViewModel(movieScreening);
+        }
+        catch (Exception)
+        {
+            return new MovieScreeningViewModel();
         }
     }
 }

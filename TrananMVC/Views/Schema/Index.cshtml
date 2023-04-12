@@ -1,5 +1,11 @@
 @model List<TrananMVC.ViewModel.MovieScreeningViewModel>
 
+<div class="menu">
+    <a href="/home/movies">Alla filmer</a>
+    <a href="/schema/index">Biljetter</a>
+    <a href="/home/aboutus">Om oss</a>
+</div>
+
 <table>
     <thead>
         <tr>
@@ -7,7 +13,7 @@
             <th>Datum</th>
             <th>Tid</th>
             <th>Salong</th>
-            <th>Platser kvar</th>
+            <th>Platser kvar</th> 
             <th>Tillgänglig</th>
         </tr>
     </thead>
@@ -16,8 +22,8 @@
         {
             <tr>
                 <td>@screening.MovieTitle</td>
-                <td>@screening.DateAndTime.Date</td>
-                <td>@screening.DateAndTime.TimeOfDay</td>
+                <td>@screening.DateAndTime.ToShortDateString()</td>
+               <td>@screening.DateAndTime.ToString("HH:mm")</td>
                 <td>@screening.TheaterName</td>
                 <td>@screening.AvailebleSeats.Count</td>
                 <td>

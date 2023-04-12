@@ -36,3 +36,8 @@ li
     margin-top: 50px;  
   }
   
+  td,th {padding: .5em 1em;}
+  table
+  {
+    margin-top: 50px;
+  }

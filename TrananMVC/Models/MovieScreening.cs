@@ -9,18 +9,19 @@ public class MovieScreening
 
     [JsonProperty(PropertyName = "MovieDTO")]
     public Movie Movie { get; set; }
+    public string TheaterName { get; set; }
 
-    [JsonProperty(PropertyName = "TheaterDTO")]
-    public Theater Theater { get; set; }
+    [JsonProperty(PropertyName = "AllSeatDTOs")]
+    public List<Seat> AllSeats { get; set; }
 
     public MovieScreening() { }
 
-    // [JsonConstructor]
-    public MovieScreening(int movieScreeningId, DateTime dateAndTime, Movie movie, Theater theater)
+    public MovieScreening(int movieScreeningId, DateTime dateAndTime, Movie movie, string theaterName, List<Seat> allSeats)
     {
         MovieScreeningId = movieScreeningId;
         DateAndTime = dateAndTime;
         Movie = movie;
-        Theater = theater;
+        TheaterName = theaterName;
+        AllSeats = allSeats;
     }
 }

@@ -7,6 +7,8 @@ builder.Services.AddScoped<TrananMVC.Repository.MovieScreeningRepository>();
 builder.Services.AddScoped<TrananMVC.Service.MovieScreeningService>();
 builder.Services.AddScoped<TrananMVC.Service.MovieService>();
 builder.Services.AddScoped<TrananMVC.Repository.MovieRepository>();
+builder.Services.AddScoped<TrananMVC.Repository.ReservationRepository>();
+builder.Services.AddScoped<TrananMVC.Service.ReservationService>();
 
 var app = builder.Build();
 
