@@ -54,11 +54,28 @@ public class MovieScreeningRepository
     {
         try
         {
-            var screening = await _trananDbContext.MovieScreenings.FindAsync(id);
-            var movie = await _trananDbContext.Movies.FindAsync(screening.MovieId);
-            var theater = await _trananDbContext.Theaters.FindAsync(screening.TheaterId);
-            screening.Movie = movie;
-            screening.Theater = theater;
+            if (_trananDbContext.MovieScreenings == null)
+            {
+                return new MovieScreening();
+            }
+            var screening = await _trananDbContext.MovieScreenings
+                .Include(s => s.Movie)
+                .ThenInclude(m => m.Actors)
+                .Include(s => s.Movie)
+                .ThenInclude(m => m.Directors)
+                .Include(s => s.Theater)
+                .ThenInclude(t => t.Seats)
+                .Where(s => s.DateAndTime > DateTime.Now)
+                .Where(s => s.MovieScreeningId == id)
+                .FirstOrDefaultAsync();
+
+                var allReservedSeats = await _trananDbContext.Reservations
+                    .Where(r => r.MovieScreeningId == screening.MovieScreeningId)
+                    .SelectMany(r => r.Seats)
+                    .ToListAsync();
+
+                screening.ReservedSeats = allReservedSeats ?? new List<Seat>();
+
             return screening;
         }
         catch (Exception e)
@@ -189,7 +206,7 @@ public class MovieScreeningRepository
                         m.DateAndTime.AddMinutes(m.Movie.DurationMinutes + extraMinutes)
                             > currentScreeningStartTime
                         && m.DateAndTime < currentScreeningEndTime
-                            && m.MovieScreeningId != movieScreening.MovieScreeningId
+                        && m.MovieScreeningId != movieScreening.MovieScreeningId
                 )
                 .ToListAsync() ?? new List<MovieScreening>();
 
