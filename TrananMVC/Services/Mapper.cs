@@ -18,9 +18,7 @@ public class Mapper
             MovieImageUrl = movieScreening.Movie.ImageUrl,
             TheaterName = movieScreening.Theater.Name,
             AvailebleSeats = GenerateSeatsToViewModels(
-                movieScreening.Theater.Seats
-                    .Where(s => s.IsBooked == false && s.IsNotBookable == false)
-                    .ToList()
+                movieScreening.Theater.Seats.Except(movieScreening.ReservedSeats).ToList()
             ) //om man nu ska välja detta redan här? kolla på det
         };
         return movieScreeningViewModel ?? new MovieScreeningViewModel();

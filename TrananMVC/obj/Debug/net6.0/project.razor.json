@@ -18389,6 +18389,11 @@
       "FileKind": "mvc"
     },
     {
+      "FilePath": "c:\\Users\\angel\\Documents\\SUVNET22\\OOP2\\INLÄMNINGAR\\bio-tranan-Radagastno1\\TrananMVC\\Views\\Movie\\TopMovies.cshtml",
+      "TargetPath": "Views\\Movie\\TopMovies.cshtml",
+      "FileKind": "mvc"
+    },
+    {
       "FilePath": "c:\\Users\\angel\\Documents\\SUVNET22\\OOP2\\INLÄMNINGAR\\bio-tranan-Radagastno1\\TrananMVC\\Views\\Movie\\Rate.cshtml",
       "TargetPath": "Views\\Movie\\Rate.cshtml",
       "FileKind": "mvc"
