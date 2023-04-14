@@ -1,4 +1,7 @@
-@model TrananMVC.ViewModel.ReservationViewModel
+@model TrananMVC.ViewModel.CreatedReservationViewModel
 
-<h4>Din reservation:</h4>
-<h4>Reservationskod:</h4>@Model.ReservationCode
+<h4>Din reservation</h4>
+
+<h4>Film:</h4>@Model.MovieTitle
+<h4>För och efternamn: @Model.ReservationViewModel.CustomerViewModel.FirstName @Model.ReservationViewModel.CustomerViewModel.LastName</h4>
+<h4>Reservationskod:</h4>@Model.ReservationViewModel.ReservationCode

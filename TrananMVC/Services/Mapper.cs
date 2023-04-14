@@ -1,4 +1,4 @@
-using TrananMVC.Models;
+using Core.Models;
 using TrananMVC.ViewModel;
 
 namespace TrananMVC.Service;
@@ -16,9 +16,9 @@ public class Mapper
             MovieId = movieScreening.Movie.MovieId,
             MovieTitle = movieScreening.Movie.Title,
             MovieImageUrl = movieScreening.Movie.ImageUrl,
-            TheaterName = movieScreening.TheaterName,
+            TheaterName = movieScreening.Theater.Name,
             AvailebleSeats = GenerateSeatsToViewModels(
-                movieScreening.AllSeats
+                movieScreening.Theater.Seats
                     .Where(s => s.IsBooked == false && s.IsNotBookable == false)
                     .ToList()
             ) //om man nu ska välja detta redan här? kolla på det
@@ -77,22 +77,23 @@ public class Mapper
 
     public static ReservationViewModel GenerateReservationViewModel(Reservation reservation)
     {
-        return new ReservationViewModel()
-        {
-            ReservationId = reservation.ReservationId,
-            ReservationCode = reservation.ReservationCode,
-            Price = reservation.Price,
-            MovieScreeningId = reservation.MovieScreeningId,
-            CustomerViewModel = new CustomerViewModel()
-            {
-                CustomerId = reservation.Customer.CustomerId,
-                FirstName = reservation.Customer.FirstName,
-                LastName = reservation.Customer.LastName,
-                PhoneNumber = reservation.Customer.PhoneNumber,
-                Email = reservation.Customer.Email
-            },
-            SeatIds = reservation.SeatIds
-        };
+        var customerViewModel = new CustomerViewModel(
+            reservation.Customer.CustomerId,
+            reservation.Customer.FirstName,
+            reservation.Customer.LastName,
+            reservation.Customer.PhoneNumber,
+            reservation.Customer.Email
+        );
+        var reservationViewModel = new ReservationViewModel(
+            reservation.ReservationId,
+            reservation.Price,
+            reservation.ReservationCode,
+            reservation.MovieScreeningId,
+            customerViewModel,
+            reservation.Seats.Select(s => s.SeatId).ToList()
+        ///ändrat här så kanske ej funkar
+        );
+        return reservationViewModel;
     }
 
     public static Reservation GenerateReservation(ReservationViewModel reservationViewModel)
@@ -103,41 +104,53 @@ public class Mapper
             ReservationCode = reservationViewModel.ReservationCode,
             Price = reservationViewModel.Price,
             MovieScreeningId = reservationViewModel.MovieScreeningId,
-            Customer = new Customer()
+            Customer = new Customer(
+                reservationViewModel.CustomerViewModel.FirstName,
+                reservationViewModel.CustomerViewModel.LastName,
+                reservationViewModel.CustomerViewModel.PhoneNumber,
+                reservationViewModel.CustomerViewModel.Email
+            )
             {
                 CustomerId = reservationViewModel.CustomerViewModel.CustomerId,
-                FirstName = reservationViewModel.CustomerViewModel.FirstName,
-                LastName = reservationViewModel.CustomerViewModel.LastName,
-                PhoneNumber = reservationViewModel.CustomerViewModel.PhoneNumber,
-                Email = reservationViewModel.CustomerViewModel.Email
             },
-            SeatIds = reservationViewModel.SeatIds
+            Seats = GenerateSeatsFromIds(reservationViewModel.SeatIds)
         };
     }
 
-    public static CreateReservationViewModel GenerateCreateReservationViewModel(
+    public static List<Seat> GenerateSeatsFromIds(List<int> ids)
+    {
+        List<Seat> seats = new();
+        ids.ForEach(id => seats.Add(new Seat() { SeatId = id }));
+        return seats;
+    }
+
+    public static MovieScreeningReservationViewModel GenerateMovieReservationViewModel(
         Reservation reservation,
         MovieScreening movieScreening
     )
     {
-        return new CreateReservationViewModel()
+        return new MovieScreeningReservationViewModel()
         {
             ReservationViewModel = GenerateReservationViewModel(reservation),
             MovieScreeningViewModel = GenerateMovieScreeningToViewModel(movieScreening)
         };
     }
 
-    //   public static ReservationViewModel GenerateReservationViewModel(CreateReservationViewModel createReservationViewModel)
-    // {
-    //     return new ReservationViewModel()
-    //     {
-    //         ReservationId = createReservationViewModel.ReservationId,
-    //         ReservationCode = createReservationViewModel.ReservationCode,
-    //         MovieScreeningId = createReservationViewModel.MovieScreeningId,
-    //         SeatIds = createReservationViewModel.SeatIds,
-    //         CustomerViewModel = GenerateCustomerViewModel(createReservationViewModel.Customer)
-    //     };
-    // }
+    public static CreatedReservationViewModel GenerateCreatedReservationViewModel(
+        MovieScreening movieScreening,
+        Reservation reservation
+    )
+    {
+        return new CreatedReservationViewModel()
+        {
+            MovieId = movieScreening.Movie.MovieId,
+            MovieTitle = movieScreening.Movie.Title,
+            MovieImageUrl = movieScreening.Movie.ImageUrl,
+            DateAndTime = movieScreening.DateAndTime,
+            TheaterName = movieScreening.Theater.Name,
+            ReservationViewModel = GenerateReservationViewModel(reservation)
+        };
+    }
 
     public static List<ActorViewModel> ActorsAsViewModels(List<Actor> actors)
     {
@@ -163,24 +176,13 @@ public class Mapper
 
     public static Customer GenerateCustomer(CustomerViewModel customerViewModel)
     {
-        return new Customer(
-            customerViewModel.CustomerId,
+        var customer =  new Customer(
             customerViewModel.FirstName,
             customerViewModel.LastName,
             customerViewModel.PhoneNumber,
             customerViewModel.Email
         );
-    }
-
-    public static CustomerViewModel GenerateCustomerViewModel(Customer customer)
-    {
-        return new CustomerViewModel()
-        {
-            CustomerId = customer.CustomerId,
-            FirstName = customer.FirstName,
-            LastName = customer.LastName,
-            PhoneNumber = customer.PhoneNumber,
-            Email = customer.Email
-        };
+        customer.CustomerId = customerViewModel.CustomerId;
+        return customer;
     }
 }

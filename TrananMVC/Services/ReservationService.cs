@@ -1,27 +1,32 @@
-using TrananMVC.Repository;
 using TrananMVC.ViewModel;
-using TrananMVC.Models;
+using Core.Services;
 
 namespace TrananMVC.Service;
 
 public class ReservationService
 {
-    private readonly ReservationRepository _reservationRepository;
-
-    public ReservationService(ReservationRepository reservationRepository)
+    private readonly ReservationCoreService _reservationCoreService;
+    private readonly MovieScreeningCoreService _movieScreeningCoreService;
+    public ReservationService(
+       ReservationCoreService reservationCoreService, MovieScreeningCoreService movieScreeningCoreService
+    )
     {
-        _reservationRepository = reservationRepository;
+        _reservationCoreService = reservationCoreService;
+        _movieScreeningCoreService = movieScreeningCoreService;
     }
 
-    public async Task<ReservationViewModel> CreateReservation(
+    public async Task<CreatedReservationViewModel> CreateReservation(
         ReservationViewModel reservationViewModel
     )
     {
         try
         {
             var reservation = Mapper.GenerateReservation(reservationViewModel);
-            var addedReservation = await _reservationRepository.PostReservation(reservation);
-            return Mapper.GenerateReservationViewModel(addedReservation);
+            var addedReservation = await _reservationCoreService.CreateReservation(reservation);
+            var movieScreening = await _movieScreeningCoreService.GetMovieScreeningById(
+                addedReservation.MovieScreeningId
+            );
+            return Mapper.GenerateCreatedReservationViewModel(movieScreening, addedReservation);
         }
         catch (Exception e)
         {

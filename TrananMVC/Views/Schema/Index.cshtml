@@ -13,7 +13,7 @@
             <th>Datum</th>
             <th>Tid</th>
             <th>Salong</th>
-            <th>Platser kvar</th> 
+            <th>Platser kvar</th>
             <th>Tillgänglig</th>
         </tr>
     </thead>
@@ -23,20 +23,21 @@
             <tr>
                 <td>@screening.MovieTitle</td>
                 <td>@screening.DateAndTime.ToShortDateString()</td>
-               <td>@screening.DateAndTime.ToString("HH:mm")</td>
+                <td>@screening.DateAndTime.ToString("HH:mm")</td>
                 <td>@screening.TheaterName</td>
                 <td>@screening.AvailebleSeats.Count</td>
                 <td>
-                    @if(screening.AvailebleSeats.Count > 0)
-                {
-                    <a asp-controller="Reservation" asp-action="Create" asp-route-movieScreeningId="@screening.MovieScreeningId">
-                        <p>Reservera</p>
-                    </a>
-                }
-                else
-                {
-                    <p>Fullreserverad</p>
-                }
+                    @if (screening.AvailebleSeats.Count > 0)
+                    {
+                        <a asp-controller="Reservation" asp-action="Create"
+                            asp-route-movieScreeningId="@screening.MovieScreeningId">
+                            <p>Reservera</p>
+                        </a>
+                    }
+                    else
+                    {
+                        <p>Fullreserverad</p>
+                    }
                 </td>
             </tr>
         }

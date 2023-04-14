@@ -14,12 +14,12 @@ public class MovieController : Controller
         _movieService = movieService;
     }
 
-    //visar alla filmer
-    public async Task<IActionResult> Index()
-    {
-        var moviesViewModel = await _movieService.GetAllMovies();
-        return View(moviesViewModel);
-    }
+    // //visar alla filmer
+    // public async Task<IActionResult> Index()
+    // {
+    //     var moviesViewModel = await _movieService.GetAllMovies();
+    //     return View(moviesViewModel);
+    // }
 
     //info om en film
     public async Task<IActionResult> Details(int movieId)

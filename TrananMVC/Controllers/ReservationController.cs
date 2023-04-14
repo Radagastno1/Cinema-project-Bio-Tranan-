@@ -27,29 +27,31 @@ public class ReservationController : Controller
         var reservationViewModel = new ReservationViewModel();
         reservationViewModel.MovieScreeningId = movieScreeningId;
 
-        var createReservationViewModel = new CreateReservationViewModel()
+        var movieScreeningReservationViewModel = new MovieScreeningReservationViewModel()
         {
             MovieScreeningViewModel = movieScreeningViewModel,
             ReservationViewModel = reservationViewModel
         };
-        return View(createReservationViewModel);
+        return View(movieScreeningReservationViewModel);
     }
 
     [HttpPost]
     public async Task<IActionResult> PostReservation(
-        CreateReservationViewModel createReservationViewModel
+        MovieScreeningReservationViewModel movieScreeningReservationViewModel
     )
     {
         Console.WriteLine("post reservation anropas");
-        var reservationMade = await _reservationService.CreateReservation(
-            createReservationViewModel.ReservationViewModel
+        var createdReservationViewModel = await _reservationService.CreateReservation(
+            movieScreeningReservationViewModel.ReservationViewModel
         );
-        return RedirectToAction("ShowReservation", "Reservation", reservationMade);
+        return RedirectToAction("ShowReservation", "Reservation", createdReservationViewModel);
     }
 
-    public async Task<IActionResult> ShowReservation(ReservationViewModel reservationViewModel)
+    public async Task<IActionResult> ShowReservation(
+        CreatedReservationViewModel createdReservationViewModel
+    )
     {
-        return View(reservationViewModel);
+        return View(createdReservationViewModel);
     }
 
     public async Task<IActionResult> Cancel()

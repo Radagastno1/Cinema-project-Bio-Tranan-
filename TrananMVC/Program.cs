@@ -1,13 +1,27 @@
+using Microsoft.EntityFrameworkCore;
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();
 
-builder.Services.AddScoped<TrananMVC.Repository.MovieScreeningRepository>();
+builder.Services.AddDbContext<Core.Data.TrananDbContext>(options =>
+    options.UseSqlite("Data Source=c:\\Users\\angel\\Documents\\SUVNET22\\OOP2\\INLÄMNINGAR\\bio-tranan-Radagastno1\\Core\\tranandatabase.db"));
+
+builder.Services.AddScoped<Core.Data.Repository.MovieRepository>();
+builder.Services.AddScoped<Core.Data.Repository.MovieScreeningRepository>();
+builder.Services.AddScoped<Core.Data.Repository.ReservationRepository>();
+builder.Services.AddScoped<Core.Data.Repository.TheaterRepository>();
+builder.Services.AddScoped<Core.Data.Repository.SeatRepository>();
+
+builder.Services.AddScoped<Core.Services.MovieCoreService>();
+builder.Services.AddScoped<Core.Services.MovieScreeningCoreService>();
+builder.Services.AddScoped<Core.Services.TheaterCoreService>();
+builder.Services.AddScoped<Core.Services.SeatCoreService>();
+builder.Services.AddScoped<Core.Services.ReservationCoreService>();
+
 builder.Services.AddScoped<TrananMVC.Service.MovieScreeningService>();
 builder.Services.AddScoped<TrananMVC.Service.MovieService>();
-builder.Services.AddScoped<TrananMVC.Repository.MovieRepository>();
-builder.Services.AddScoped<TrananMVC.Repository.ReservationRepository>();
 builder.Services.AddScoped<TrananMVC.Service.ReservationService>();
 
 var app = builder.Build();
@@ -27,8 +41,6 @@ app.UseRouting();
 
 app.UseAuthorization();
 
-app.MapControllerRoute(
-    name: "default",
-    pattern: "{controller=Home}/{action=Index}/{id?}");
+app.MapControllerRoute(name: "default", pattern: "{controller=Bio}/{action=Index}/{id?}");
 
 app.Run();

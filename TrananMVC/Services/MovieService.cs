@@ -1,23 +1,36 @@
-using TrananMVC.Models;
+using Core.Services;
 using TrananMVC.ViewModel;
-using TrananMVC.Repository;
 
 namespace TrananMVC.Service;
 
 public class MovieService
 {
-    private readonly MovieRepository _movieRepository;
+    private readonly MovieCoreService _movieCoreService;
 
-    public MovieService(MovieRepository movieRepository)
+    public MovieService(MovieCoreService movieCoreService)
     {
-        _movieRepository = movieRepository;
+        _movieCoreService = movieCoreService;
+    }
+      public async Task<List<MovieViewModel>> GetUpcomingMovies()
+    {
+        try
+        {
+            var movies = await _movieCoreService.GetAllMovies();
+            var upcomingMovies = movies.Where(m => m.AmountOfScreenings < m.MaxScreenings);
+            var moviesAsViewModels = movies.Select(m => Mapper.GenerateMovieAsViewModel(m)).ToList();
+            return moviesAsViewModels;
+        }
+        catch(Exception)
+        {
+            return new List<MovieViewModel>();
+        }
     }
 
     public async Task<List<MovieViewModel>> GetAllMovies()
     {
         try
         {
-            var movies = await _movieRepository.GetMovies();
+            var movies = await _movieCoreService.GetAllMovies();
             return movies.Select(m => Mapper.GenerateMovieAsViewModel(m)).ToList();
         }
         catch (Exception)
@@ -30,7 +43,7 @@ public class MovieService
     {
         try
         {
-            var movie = await _movieRepository.GetMovieById(movieId);
+            var movie = await _movieCoreService.GetMovieById(movieId);
             return Mapper.GenerateMovieAsViewModel(movie);
         }
         catch (Exception)
