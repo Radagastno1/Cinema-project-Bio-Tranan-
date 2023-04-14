@@ -24,7 +24,7 @@ public class ReservationService
     {
         try
         {
-            var reservation = Mapper.GenerateReservation(reservationViewModel);
+            var reservation = await Mapper.GenerateReservation(reservationViewModel);
             var addedReservation = await _reservationCoreService.CreateReservation(reservation);
             var movieScreening = await _movieScreeningCoreService.GetMovieScreeningById(
                 addedReservation.MovieScreeningId

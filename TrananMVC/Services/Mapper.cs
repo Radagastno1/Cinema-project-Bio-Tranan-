@@ -96,25 +96,37 @@ public class Mapper
         return reservationViewModel;
     }
 
-    public static Reservation GenerateReservation(ReservationViewModel reservationViewModel)
+    // public static Reservation GenerateReservation(ReservationViewModel reservationViewModel)
+    // {
+    //     return new Reservation()
+    //     {
+    //         ReservationId = reservationViewModel.ReservationId,
+    //         ReservationCode = reservationViewModel.ReservationCode,
+    //         Price = reservationViewModel.Price,
+    //         MovieScreeningId = reservationViewModel.MovieScreeningId,
+    //         Customer = new Customer(
+    //             reservationViewModel.CustomerViewModel.FirstName,
+    //             reservationViewModel.CustomerViewModel.LastName,
+    //             reservationViewModel.CustomerViewModel.PhoneNumber,
+    //             reservationViewModel.CustomerViewModel.Email
+    //         )
+    //         {
+    //             CustomerId = reservationViewModel.CustomerViewModel.CustomerId,
+    //         },
+    //         Seats = GenerateSeatsFromIds(reservationViewModel.SeatIds)
+    //     };
+    // }
+
+    public static async Task<Reservation> GenerateReservation(ReservationViewModel reservationViewModel)
     {
-        return new Reservation()
-        {
-            ReservationId = reservationViewModel.ReservationId,
-            ReservationCode = reservationViewModel.ReservationCode,
-            Price = reservationViewModel.Price,
-            MovieScreeningId = reservationViewModel.MovieScreeningId,
-            Customer = new Customer(
-                reservationViewModel.CustomerViewModel.FirstName,
-                reservationViewModel.CustomerViewModel.LastName,
-                reservationViewModel.CustomerViewModel.PhoneNumber,
-                reservationViewModel.CustomerViewModel.Email
-            )
-            {
-                CustomerId = reservationViewModel.CustomerViewModel.CustomerId,
-            },
-            Seats = GenerateSeatsFromIds(reservationViewModel.SeatIds)
-        };
+        var reservation = await Reservation.CreateReservationAsync(
+            reservationViewModel.Price,
+            reservationViewModel.MovieScreeningId,
+            GenerateCustomer(reservationViewModel.CustomerViewModel),
+            // await SeatService.GenerateSeatsFromIdsAsync(reservationDTO.SeatIds) //blir detta rätt async?
+            GenerateSeatsFromIds(reservationViewModel.SeatIds)
+        );
+        return reservation; //kollla upp om rätt
     }
 
     public static List<Seat> GenerateSeatsFromIds(List<int> ids)
@@ -138,7 +150,8 @@ public class Mapper
 
     public static CreatedReservationViewModel GenerateCreatedReservationViewModel(
         MovieScreening movieScreening,
-        Reservation reservation, Movie movie
+        Reservation reservation,
+        Movie movie
     )
     {
         return new CreatedReservationViewModel(
