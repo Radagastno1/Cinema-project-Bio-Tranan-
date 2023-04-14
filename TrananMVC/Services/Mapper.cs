@@ -138,18 +138,23 @@ public class Mapper
 
     public static CreatedReservationViewModel GenerateCreatedReservationViewModel(
         MovieScreening movieScreening,
-        Reservation reservation
+        Reservation reservation, Movie movie
     )
     {
-        return new CreatedReservationViewModel()
-        {
-            MovieId = movieScreening.Movie.MovieId,
-            MovieTitle = movieScreening.Movie.Title,
-            MovieImageUrl = movieScreening.Movie.ImageUrl,
-            DateAndTime = movieScreening.DateAndTime,
-            TheaterName = movieScreening.Theater.Name,
-            ReservationViewModel = GenerateReservationViewModel(reservation)
-        };
+        return new CreatedReservationViewModel(
+            reservation.ReservationId,
+            reservation.ReservationCode,
+            reservation.Price,
+            reservation.Customer.FirstName,
+            reservation.Customer.LastName,
+            reservation.Customer.PhoneNumber,
+            reservation.Customer.Email,
+            reservation.Seats.Select(s => s.SeatId).ToList(), //kund vill ej ha idn! fixa
+            movieScreening.DateAndTime,
+            movie.Title,
+            movie.ImageUrl,
+            movieScreening.Theater.Name
+        );
     }
 
     public static List<ActorViewModel> ActorsAsViewModels(List<Actor> actors)
@@ -176,7 +181,7 @@ public class Mapper
 
     public static Customer GenerateCustomer(CustomerViewModel customerViewModel)
     {
-        var customer =  new Customer(
+        var customer = new Customer(
             customerViewModel.FirstName,
             customerViewModel.LastName,
             customerViewModel.PhoneNumber,
