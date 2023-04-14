@@ -2,16 +2,21 @@ using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
 
-builder.Services.AddControllers().AddNewtonsoftJson(options =>
-    options.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore
-);
+builder.Services
+    .AddControllers()
+    .AddNewtonsoftJson(
+        options =>
+            options.SerializerSettings.ReferenceLoopHandling = Newtonsoft
+                .Json
+                .ReferenceLoopHandling
+                .Ignore
+    );
 
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
-builder.Services.AddDbContext<Core.Data.TrananDbContext>
-(o => o.UseSqlite("c:/Users/angel/Documents/SUVNET22/OOP2/INLÄMNINGAR/bio-tranan-Radagastno1/Core/tranandatabase.db"));
-
+builder.Services.AddDbContext<Core.Data.TrananDbContext>(options =>
+    options.UseSqlite("Data Source=c:\\Users\\angel\\Documents\\SUVNET22\\OOP2\\INLÄMNINGAR\\bio-tranan-Radagastno1\\Core\\tranandatabase.db"));
 
 builder.Services.AddScoped<TrananAPI.Services.MovieService>();
 builder.Services.AddScoped<TrananAPI.Services.TheaterService>();
