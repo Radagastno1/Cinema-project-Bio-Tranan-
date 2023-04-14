@@ -1,7 +1,24 @@
 @model TrananMVC.ViewModel.CreatedReservationViewModel
 
-<h4>Din reservation</h4>
+<div class="receipt">
+  <h2>Din reservation</h2>
+  <p>Film: @Model.MovieTitle</p>
+  <p>Dag: @Model.DateAndTime.ToShortDateString()</p>
+  <p>Tid: @Model.DateAndTime.ToString("HH:mm")</p>
+  <p>Salong: @Model.TheaterName</p>
+  <p>Namn: @Model.FirstName @Model.LastName</p>
+  <p>Telefonnummer: @Model.PhoneNumber</p>
+  @foreach (var seat in Model.SeatIds)
+  {
+    <p>Platser: Rad 5, säte 12-14 @seat</p>
+  }
+   <div class="confirmation-code">
+    <p>Din bokningsbekräftelse:</p>
+    <h1>@Model.ReservationCode</h1>
+    <p>Spara koden för att hämta ut dina biljetter i kassan.</p>
+  </div>
+</div>
+  <button type="button" onclick="sendEmail()">Skicka kopia på mail</button>
+  <button type="button" onclick="sendSms()">Skicka kopia på sms</button>
+</div>
 
-<h4>Film:</h4>@Model.MovieTitle
-<h4>För och efternamn: @Model.FirstName @Model.LastName</h4>
-<h4>Reservationskod:</h4>@Model.ReservationCode
