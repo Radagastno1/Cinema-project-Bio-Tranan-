@@ -1,0 +1,14 @@
+C:\Users\angel\Documents\SUVNET22\OOP2\INLÄMNINGAR\bio-tranan-Radagastno1\core\bin\Debug\net6.0\CORE.deps.json
+C:\Users\angel\Documents\SUVNET22\OOP2\INLÄMNINGAR\bio-tranan-Radagastno1\core\bin\Debug\net6.0\CORE.runtimeconfig.json
+C:\Users\angel\Documents\SUVNET22\OOP2\INLÄMNINGAR\bio-tranan-Radagastno1\core\bin\Debug\net6.0\CORE.dll
+C:\Users\angel\Documents\SUVNET22\OOP2\INLÄMNINGAR\bio-tranan-Radagastno1\core\bin\Debug\net6.0\CORE.pdb
+C:\Users\angel\Documents\SUVNET22\OOP2\INLÄMNINGAR\bio-tranan-Radagastno1\core\obj\Debug\net6.0\CORE.csproj.AssemblyReference.cache
+C:\Users\angel\Documents\SUVNET22\OOP2\INLÄMNINGAR\bio-tranan-Radagastno1\core\obj\Debug\net6.0\CORE.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\angel\Documents\SUVNET22\OOP2\INLÄMNINGAR\bio-tranan-Radagastno1\core\obj\Debug\net6.0\CORE.AssemblyInfoInputs.cache
+C:\Users\angel\Documents\SUVNET22\OOP2\INLÄMNINGAR\bio-tranan-Radagastno1\core\obj\Debug\net6.0\CORE.AssemblyInfo.cs
+C:\Users\angel\Documents\SUVNET22\OOP2\INLÄMNINGAR\bio-tranan-Radagastno1\core\obj\Debug\net6.0\CORE.csproj.CoreCompileInputs.cache
+C:\Users\angel\Documents\SUVNET22\OOP2\INLÄMNINGAR\bio-tranan-Radagastno1\core\obj\Debug\net6.0\CORE.dll
+C:\Users\angel\Documents\SUVNET22\OOP2\INLÄMNINGAR\bio-tranan-Radagastno1\core\obj\Debug\net6.0\refint\CORE.dll
+C:\Users\angel\Documents\SUVNET22\OOP2\INLÄMNINGAR\bio-tranan-Radagastno1\core\obj\Debug\net6.0\CORE.pdb
+C:\Users\angel\Documents\SUVNET22\OOP2\INLÄMNINGAR\bio-tranan-Radagastno1\core\obj\Debug\net6.0\CORE.genruntimeconfig.cache
+C:\Users\angel\Documents\SUVNET22\OOP2\INLÄMNINGAR\bio-tranan-Radagastno1\core\obj\Debug\net6.0\ref\CORE.dll
