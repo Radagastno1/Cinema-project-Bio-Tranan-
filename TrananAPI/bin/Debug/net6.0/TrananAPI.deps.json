@@ -9,10 +9,11 @@
       "TrananAPI/1.0.0": {
         "dependencies": {
           "Microsoft.AspNetCore.Mvc.NewtonsoftJson": "6.0.14",
+          "Microsoft.EntityFrameworkCore": "7.0.5",
           "Microsoft.EntityFrameworkCore.Design": "7.0.4",
           "Microsoft.EntityFrameworkCore.InMemory": "7.0.4",
-          "Microsoft.EntityFrameworkCore.Sqlite": "7.0.4",
-          "Swashbuckle.AspNetCore": "6.2.3",
+          "Microsoft.EntityFrameworkCore.Sqlite": "7.0.5",
+          "core": "1.0.0",
           "Newtonsoft.Json": "13.0.3"
         },
         "runtime": {
@@ -53,45 +54,45 @@
         }
       },
       "Microsoft.CSharp/4.7.0": {},
-      "Microsoft.Data.Sqlite.Core/7.0.4": {
+      "Microsoft.Data.Sqlite.Core/7.0.5": {
         "dependencies": {
           "SQLitePCLRaw.core": "2.1.4"
         },
         "runtime": {
           "lib/net6.0/Microsoft.Data.Sqlite.dll": {
-            "assemblyVersion": "7.0.4.0",
-            "fileVersion": "7.0.423.11504"
+            "assemblyVersion": "7.0.5.0",
+            "fileVersion": "7.0.523.16503"
           }
         }
       },
-      "Microsoft.EntityFrameworkCore/7.0.4": {
+      "Microsoft.EntityFrameworkCore/7.0.5": {
         "dependencies": {
-          "Microsoft.EntityFrameworkCore.Abstractions": "7.0.4",
-          "Microsoft.EntityFrameworkCore.Analyzers": "7.0.4",
+          "Microsoft.EntityFrameworkCore.Abstractions": "7.0.5",
+          "Microsoft.EntityFrameworkCore.Analyzers": "7.0.5",
           "Microsoft.Extensions.Caching.Memory": "7.0.0",
           "Microsoft.Extensions.DependencyInjection": "7.0.0",
           "Microsoft.Extensions.Logging": "7.0.0"
         },
         "runtime": {
           "lib/net6.0/Microsoft.EntityFrameworkCore.dll": {
-            "assemblyVersion": "7.0.4.0",
-            "fileVersion": "7.0.423.11504"
+            "assemblyVersion": "7.0.5.0",
+            "fileVersion": "7.0.523.16503"
           }
         }
       },
-      "Microsoft.EntityFrameworkCore.Abstractions/7.0.4": {
+      "Microsoft.EntityFrameworkCore.Abstractions/7.0.5": {
         "runtime": {
           "lib/net6.0/Microsoft.EntityFrameworkCore.Abstractions.dll": {
-            "assemblyVersion": "7.0.4.0",
-            "fileVersion": "7.0.423.11504"
+            "assemblyVersion": "7.0.5.0",
+            "fileVersion": "7.0.523.16503"
           }
         }
       },
-      "Microsoft.EntityFrameworkCore.Analyzers/7.0.4": {},
+      "Microsoft.EntityFrameworkCore.Analyzers/7.0.5": {},
       "Microsoft.EntityFrameworkCore.Design/7.0.4": {
         "dependencies": {
           "Humanizer.Core": "2.14.1",
-          "Microsoft.EntityFrameworkCore.Relational": "7.0.4",
+          "Microsoft.EntityFrameworkCore.Relational": "7.0.5",
           "Microsoft.Extensions.DependencyModel": "7.0.0",
           "Mono.TextTemplating": "2.2.1"
         },
@@ -104,7 +105,7 @@
       },
       "Microsoft.EntityFrameworkCore.InMemory/7.0.4": {
         "dependencies": {
-          "Microsoft.EntityFrameworkCore": "7.0.4"
+          "Microsoft.EntityFrameworkCore": "7.0.5"
         },
         "runtime": {
           "lib/net6.0/Microsoft.EntityFrameworkCore.InMemory.dll": {
@@ -113,38 +114,38 @@
           }
         }
       },
-      "Microsoft.EntityFrameworkCore.Relational/7.0.4": {
+      "Microsoft.EntityFrameworkCore.Relational/7.0.5": {
         "dependencies": {
-          "Microsoft.EntityFrameworkCore": "7.0.4",
+          "Microsoft.EntityFrameworkCore": "7.0.5",
           "Microsoft.Extensions.Configuration.Abstractions": "7.0.0"
         },
         "runtime": {
           "lib/net6.0/Microsoft.EntityFrameworkCore.Relational.dll": {
-            "assemblyVersion": "7.0.4.0",
-            "fileVersion": "7.0.423.11504"
+            "assemblyVersion": "7.0.5.0",
+            "fileVersion": "7.0.523.16503"
           }
         }
       },
-      "Microsoft.EntityFrameworkCore.Sqlite/7.0.4": {
+      "Microsoft.EntityFrameworkCore.Sqlite/7.0.5": {
         "dependencies": {
-          "Microsoft.EntityFrameworkCore.Sqlite.Core": "7.0.4",
+          "Microsoft.EntityFrameworkCore.Sqlite.Core": "7.0.5",
           "SQLitePCLRaw.bundle_e_sqlite3": "2.1.4"
         }
       },
-      "Microsoft.EntityFrameworkCore.Sqlite.Core/7.0.4": {
+      "Microsoft.EntityFrameworkCore.Sqlite.Core/7.0.5": {
         "dependencies": {
-          "Microsoft.Data.Sqlite.Core": "7.0.4",
-          "Microsoft.EntityFrameworkCore.Relational": "7.0.4",
+          "Microsoft.Data.Sqlite.Core": "7.0.5",
+          "Microsoft.EntityFrameworkCore.Relational": "7.0.5",
           "Microsoft.Extensions.DependencyModel": "7.0.0"
         },
         "runtime": {
           "lib/net6.0/Microsoft.EntityFrameworkCore.Sqlite.dll": {
-            "assemblyVersion": "7.0.4.0",
-            "fileVersion": "7.0.423.11504"
+            "assemblyVersion": "7.0.5.0",
+            "fileVersion": "7.0.523.16503"
           }
         }
       },
-      "Microsoft.Extensions.ApiDescription.Server/3.0.0": {},
+      "Microsoft.Extensions.ApiDescription.Server/6.0.5": {},
       "Microsoft.Extensions.Caching.Abstractions/7.0.0": {
         "dependencies": {
           "Microsoft.Extensions.Primitives": "7.0.0"
@@ -449,41 +450,41 @@
           }
         }
       },
-      "Swashbuckle.AspNetCore/6.2.3": {
+      "Swashbuckle.AspNetCore/6.5.0": {
         "dependencies": {
-          "Microsoft.Extensions.ApiDescription.Server": "3.0.0",
-          "Swashbuckle.AspNetCore.Swagger": "6.2.3",
-          "Swashbuckle.AspNetCore.SwaggerGen": "6.2.3",
-          "Swashbuckle.AspNetCore.SwaggerUI": "6.2.3"
+          "Microsoft.Extensions.ApiDescription.Server": "6.0.5",
+          "Swashbuckle.AspNetCore.Swagger": "6.5.0",
+          "Swashbuckle.AspNetCore.SwaggerGen": "6.5.0",
+          "Swashbuckle.AspNetCore.SwaggerUI": "6.5.0"
         }
       },
-      "Swashbuckle.AspNetCore.Swagger/6.2.3": {
+      "Swashbuckle.AspNetCore.Swagger/6.5.0": {
         "dependencies": {
           "Microsoft.OpenApi": "1.2.3"
         },
         "runtime": {
           "lib/net6.0/Swashbuckle.AspNetCore.Swagger.dll": {
-            "assemblyVersion": "6.2.3.0",
-            "fileVersion": "6.2.3.0"
+            "assemblyVersion": "6.5.0.0",
+            "fileVersion": "6.5.0.0"
           }
         }
       },
-      "Swashbuckle.AspNetCore.SwaggerGen/6.2.3": {
+      "Swashbuckle.AspNetCore.SwaggerGen/6.5.0": {
         "dependencies": {
-          "Swashbuckle.AspNetCore.Swagger": "6.2.3"
+          "Swashbuckle.AspNetCore.Swagger": "6.5.0"
         },
         "runtime": {
           "lib/net6.0/Swashbuckle.AspNetCore.SwaggerGen.dll": {
-            "assemblyVersion": "6.2.3.0",
-            "fileVersion": "6.2.3.0"
+            "assemblyVersion": "6.5.0.0",
+            "fileVersion": "6.5.0.0"
           }
         }
       },
-      "Swashbuckle.AspNetCore.SwaggerUI/6.2.3": {
+      "Swashbuckle.AspNetCore.SwaggerUI/6.5.0": {
         "runtime": {
           "lib/net6.0/Swashbuckle.AspNetCore.SwaggerUI.dll": {
-            "assemblyVersion": "6.2.3.0",
-            "fileVersion": "6.2.3.0"
+            "assemblyVersion": "6.5.0.0",
+            "fileVersion": "6.5.0.0"
           }
         }
       },
@@ -527,6 +528,16 @@
             "fileVersion": "7.0.22.51805"
           }
         }
+      },
+      "core/1.0.0": {
+        "dependencies": {
+          "Microsoft.EntityFrameworkCore.Sqlite": "7.0.5",
+          "Swashbuckle.AspNetCore": "6.5.0",
+          "Newtonsoft.Json": "13.0.3"
+        },
+        "runtime": {
+          "core.dll": {}
+        }
       }
     }
   },
@@ -564,33 +575,33 @@
       "path": "microsoft.csharp/4.7.0",
       "hashPath": "microsoft.csharp.4.7.0.nupkg.sha512"
     },
-    "Microsoft.Data.Sqlite.Core/7.0.4": {
+    "Microsoft.Data.Sqlite.Core/7.0.5": {
       "type": "package",
       "serviceable": true,
-      "sha512": "sha512-AUBM1KZ7EvmkYhC/ECXL4cjx+q55DJ3lmSf0NwAyRNArubNPRdroGono5uN6aW7Kqp+IUZwEK0Ywd1Gh7FDM2A==",
-      "path": "microsoft.data.sqlite.core/7.0.4",
-      "hashPath": "microsoft.data.sqlite.core.7.0.4.nupkg.sha512"
+      "sha512": "sha512-FTerRmQPqHrCrnoUzhBu+E+1DNGwyrAMLqHkAqOOOu5pGfyMOj8qQUBxI/gDtWtG11p49UxSfWmBzRNlwZqfUg==",
+      "path": "microsoft.data.sqlite.core/7.0.5",
+      "hashPath": "microsoft.data.sqlite.core.7.0.5.nupkg.sha512"
     },
-    "Microsoft.EntityFrameworkCore/7.0.4": {
+    "Microsoft.EntityFrameworkCore/7.0.5": {
       "type": "package",
       "serviceable": true,
-      "sha512": "sha512-eNcsY3rft5ERJJcen80Jyg57EScjWZmvhwmFLYXmEOTdVqHG+wQZiMOXnO1b5RH3u2qTQq+Tpci7KGfLAG5Gtg==",
-      "path": "microsoft.entityframeworkcore/7.0.4",
-      "hashPath": "microsoft.entityframeworkcore.7.0.4.nupkg.sha512"
+      "sha512": "sha512-RXbRLHHWP2Z3pq8qcL5nQ6LPeoOyp8hasM5bd0Te8PiQi3RjWQR4tcbdY5XMqQ+oTO9wA8/RLhZRn/hnxlTDnQ==",
+      "path": "microsoft.entityframeworkcore/7.0.5",
+      "hashPath": "microsoft.entityframeworkcore.7.0.5.nupkg.sha512"
     },
-    "Microsoft.EntityFrameworkCore.Abstractions/7.0.4": {
+    "Microsoft.EntityFrameworkCore.Abstractions/7.0.5": {
       "type": "package",
       "serviceable": true,
-      "sha512": "sha512-6GbYvs4L5oFpYpMzwF05kdDgvX09UmMX7MpDtDlGI5ymijFwquwv+yvdijbtodOuu0yLUpc4n71x6eBdJ8v1xQ==",
-      "path": "microsoft.entityframeworkcore.abstractions/7.0.4",
-      "hashPath": "microsoft.entityframeworkcore.abstractions.7.0.4.nupkg.sha512"
+      "sha512": "sha512-iwQso+hFRsEWjhH2WsEQj1D2QE5BlEXiXEt6A3SlYTPRPdZsyTNDeDDEdtxL+H/UJPQgQYY+9SMMRcEiXBmCAA==",
+      "path": "microsoft.entityframeworkcore.abstractions/7.0.5",
+      "hashPath": "microsoft.entityframeworkcore.abstractions.7.0.5.nupkg.sha512"
     },
-    "Microsoft.EntityFrameworkCore.Analyzers/7.0.4": {
+    "Microsoft.EntityFrameworkCore.Analyzers/7.0.5": {
       "type": "package",
       "serviceable": true,
-      "sha512": "sha512-YRD4bViuaEPEsaBIL52DzXGzLCt3jYoE3wztYEW1QZYDl89hQ+ca0nvBO2mnMHmCXpU/2wlErrUyDp4x5B/3mg==",
-      "path": "microsoft.entityframeworkcore.analyzers/7.0.4",
-      "hashPath": "microsoft.entityframeworkcore.analyzers.7.0.4.nupkg.sha512"
+      "sha512": "sha512-yMLM/aK1MikVqpjxd7PJ1Pjgztd3VAd26ZHxyjxG3RPeM9cHjvS5tCg9kAAayR6eHmBg0ffZsHdT28WfA5tTlA==",
+      "path": "microsoft.entityframeworkcore.analyzers/7.0.5",
+      "hashPath": "microsoft.entityframeworkcore.analyzers.7.0.5.nupkg.sha512"
     },
     "Microsoft.EntityFrameworkCore.Design/7.0.4": {
       "type": "package",
@@ -606,33 +617,33 @@
       "path": "microsoft.entityframeworkcore.inmemory/7.0.4",
       "hashPath": "microsoft.entityframeworkcore.inmemory.7.0.4.nupkg.sha512"
     },
-    "Microsoft.EntityFrameworkCore.Relational/7.0.4": {
+    "Microsoft.EntityFrameworkCore.Relational/7.0.5": {
       "type": "package",
       "serviceable": true,
-      "sha512": "sha512-L41+VonK6L0IurFHopoe5yY+m3MD26OMocKLPPR/XKxnazzZUcGPz0IGJpVnwpZyKVPfEIAnD5vmm60meYr1NA==",
-      "path": "microsoft.entityframeworkcore.relational/7.0.4",
-      "hashPath": "microsoft.entityframeworkcore.relational.7.0.4.nupkg.sha512"
+      "sha512": "sha512-u/33DC4S6g2hpMPgBc5Kdnlz//nqHR5c/ovgjtiP/wQ7sOd0EOdygVzUJAAOxCwbtAHDsJXS9Vc3jLFYq0yu8Q==",
+      "path": "microsoft.entityframeworkcore.relational/7.0.5",
+      "hashPath": "microsoft.entityframeworkcore.relational.7.0.5.nupkg.sha512"
     },
-    "Microsoft.EntityFrameworkCore.Sqlite/7.0.4": {
+    "Microsoft.EntityFrameworkCore.Sqlite/7.0.5": {
       "type": "package",
       "serviceable": true,
-      "sha512": "sha512-d1cIR5upwzTZmzycqWEoxfso5b3qD0G43IeECtfeMSPoG8JD4OJHHtbun0wS9RzwAORMa/4Zb3vuogTYY3mtaQ==",
-      "path": "microsoft.entityframeworkcore.sqlite/7.0.4",
-      "hashPath": "microsoft.entityframeworkcore.sqlite.7.0.4.nupkg.sha512"
+      "sha512": "sha512-2XPZB9OLF5/m13HgZp7/Dv0u8FWEJzcaBsMYR9Kp3R6aygkb3RnOijofPDTsmdhAqG9YTysCmh2bFaGs0TCc7A==",
+      "path": "microsoft.entityframeworkcore.sqlite/7.0.5",
+      "hashPath": "microsoft.entityframeworkcore.sqlite.7.0.5.nupkg.sha512"
     },
-    "Microsoft.EntityFrameworkCore.Sqlite.Core/7.0.4": {
+    "Microsoft.EntityFrameworkCore.Sqlite.Core/7.0.5": {
       "type": "package",
       "serviceable": true,
-      "sha512": "sha512-FeuV57+U4A4DO018Jy5Wkv0uYNZhyFVUUdwyVYz8TMghsZAj+3i+fOeFtD/jAWWMzDOFOF7eMni3YqLA+ufu9Q==",
-      "path": "microsoft.entityframeworkcore.sqlite.core/7.0.4",
-      "hashPath": "microsoft.entityframeworkcore.sqlite.core.7.0.4.nupkg.sha512"
+      "sha512": "sha512-4C+9ct6A/Bq61Ta9Uh2td4/XwNpRCiPI03SWTa3hPJjA/g8wCw2hetbh3DDe5HcydzgDq/lRRjU/eRy3UODklQ==",
+      "path": "microsoft.entityframeworkcore.sqlite.core/7.0.5",
+      "hashPath": "microsoft.entityframeworkcore.sqlite.core.7.0.5.nupkg.sha512"
     },
-    "Microsoft.Extensions.ApiDescription.Server/3.0.0": {
+    "Microsoft.Extensions.ApiDescription.Server/6.0.5": {
       "type": "package",
       "serviceable": true,
-      "sha512": "sha512-LH4OE/76F6sOCslif7+Xh3fS/wUUrE5ryeXAMcoCnuwOQGT5Smw0p57IgDh/pHgHaGz/e+AmEQb7pRgb++wt0w==",
-      "path": "microsoft.extensions.apidescription.server/3.0.0",
-      "hashPath": "microsoft.extensions.apidescription.server.3.0.0.nupkg.sha512"
+      "sha512": "sha512-Ckb5EDBUNJdFWyajfXzUIMRkhf52fHZOQuuZg/oiu8y7zDCVwD0iHhew6MnThjHmevanpxL3f5ci2TtHQEN6bw==",
+      "path": "microsoft.extensions.apidescription.server/6.0.5",
+      "hashPath": "microsoft.extensions.apidescription.server.6.0.5.nupkg.sha512"
     },
     "Microsoft.Extensions.Caching.Abstractions/7.0.0": {
       "type": "package",
@@ -760,33 +771,33 @@
       "path": "sqlitepclraw.provider.e_sqlite3/2.1.4",
       "hashPath": "sqlitepclraw.provider.e_sqlite3.2.1.4.nupkg.sha512"
     },
-    "Swashbuckle.AspNetCore/6.2.3": {
+    "Swashbuckle.AspNetCore/6.5.0": {
       "type": "package",
       "serviceable": true,
-      "sha512": "sha512-cnzQDn0Le+hInsw2SYwlOhOCPXpYi/szcvnyqZJ12v+QyrLBwAmWXBg6RIyHB18s/mLeywC+Rg2O9ndz0IUNYQ==",
-      "path": "swashbuckle.aspnetcore/6.2.3",
-      "hashPath": "swashbuckle.aspnetcore.6.2.3.nupkg.sha512"
+      "sha512": "sha512-FK05XokgjgwlCI6wCT+D4/abtQkL1X1/B9Oas6uIwHFmYrIO9WUD5aLC9IzMs9GnHfUXOtXZ2S43gN1mhs5+aA==",
+      "path": "swashbuckle.aspnetcore/6.5.0",
+      "hashPath": "swashbuckle.aspnetcore.6.5.0.nupkg.sha512"
     },
-    "Swashbuckle.AspNetCore.Swagger/6.2.3": {
+    "Swashbuckle.AspNetCore.Swagger/6.5.0": {
       "type": "package",
       "serviceable": true,
-      "sha512": "sha512-qOF7j1sL0bWm8g/qqHVPCvkO3JlVvUIB8WfC98kSh6BT5y5DAnBNctfac7XR5EZf+eD7/WasvANncTqwZYfmWQ==",
-      "path": "swashbuckle.aspnetcore.swagger/6.2.3",
-      "hashPath": "swashbuckle.aspnetcore.swagger.6.2.3.nupkg.sha512"
+      "sha512": "sha512-XWmCmqyFmoItXKFsQSwQbEAsjDKcxlNf1l+/Ki42hcb6LjKL8m5Db69OTvz5vLonMSRntYO1XLqz0OP+n3vKnA==",
+      "path": "swashbuckle.aspnetcore.swagger/6.5.0",
+      "hashPath": "swashbuckle.aspnetcore.swagger.6.5.0.nupkg.sha512"
     },
-    "Swashbuckle.AspNetCore.SwaggerGen/6.2.3": {
+    "Swashbuckle.AspNetCore.SwaggerGen/6.5.0": {
       "type": "package",
       "serviceable": true,
-      "sha512": "sha512-+Xq7WdMCCfcXlnbLJVFNgY8ITdP2TRYIlpbt6IKzDw5FwFxdi9lBfNDtcT+/wkKwX70iBBFmXldnnd02/VO72A==",
-      "path": "swashbuckle.aspnetcore.swaggergen/6.2.3",
-      "hashPath": "swashbuckle.aspnetcore.swaggergen.6.2.3.nupkg.sha512"
+      "sha512": "sha512-Y/qW8Qdg9OEs7V013tt+94OdPxbRdbhcEbw4NiwGvf4YBcfhL/y7qp/Mjv/cENsQ2L3NqJ2AOu94weBy/h4KvA==",
+      "path": "swashbuckle.aspnetcore.swaggergen/6.5.0",
+      "hashPath": "swashbuckle.aspnetcore.swaggergen.6.5.0.nupkg.sha512"
     },
-    "Swashbuckle.AspNetCore.SwaggerUI/6.2.3": {
+    "Swashbuckle.AspNetCore.SwaggerUI/6.5.0": {
       "type": "package",
       "serviceable": true,
-      "sha512": "sha512-bCRI87uKJVb4G+KURWm8LQrL64St04dEFZcF6gIM67Zc0Sr/N47EO83ybLMYOvfNdO1DCv8xwPcrz9J/VEhQ5g==",
-      "path": "swashbuckle.aspnetcore.swaggerui/6.2.3",
-      "hashPath": "swashbuckle.aspnetcore.swaggerui.6.2.3.nupkg.sha512"
+      "sha512": "sha512-OvbvxX+wL8skxTBttcBsVxdh73Fag4xwqEU2edh4JMn7Ws/xJHnY/JB1e9RoCb6XpDxUF3hD9A0Z1lEUx40Pfw==",
+      "path": "swashbuckle.aspnetcore.swaggerui/6.5.0",
+      "hashPath": "swashbuckle.aspnetcore.swaggerui.6.5.0.nupkg.sha512"
     },
     "System.CodeDom/4.4.0": {
       "type": "package",
@@ -822,6 +833,11 @@
       "sha512": "sha512-DaGSsVqKsn/ia6RG8frjwmJonfos0srquhw09TlT8KRw5I43E+4gs+/bZj4K0vShJ5H9imCuXupb4RmS+dBy3w==",
       "path": "system.text.json/7.0.0",
       "hashPath": "system.text.json.7.0.0.nupkg.sha512"
+    },
+    "core/1.0.0": {
+      "type": "project",
+      "serviceable": false,
+      "sha512": ""
     }
   }
 }

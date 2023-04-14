@@ -1,4 +1,4 @@
-using TrananAPI.Service;
+using TrananAPI.Services;
 using TrananAPI.DTO;
 using Microsoft.AspNetCore.Mvc; //kolla upp varför just mvc
 

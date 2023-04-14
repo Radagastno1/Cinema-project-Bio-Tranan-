@@ -9,18 +9,26 @@ builder.Services.AddControllers().AddNewtonsoftJson(options =>
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
-builder.Services.AddScoped<TrananAPI.Data.Repository.MovieRepository>();
-builder.Services.AddScoped<TrananAPI.Data.Repository.TheaterRepository>();
-builder.Services.AddScoped<TrananAPI.Data.Repository.MovieScreeningRepository>();
-builder.Services.AddScoped<TrananAPI.Data.Repository.ReservationRepository>();
-builder.Services.AddScoped<TrananAPI.Data.Repository.SeatRepository>();
-builder.Services.AddScoped<TrananAPI.Service.MovieService>();
-builder.Services.AddScoped<TrananAPI.Service.TheaterService>();
-builder.Services.AddScoped<TrananAPI.Service.MovieScreeningService>();
-builder.Services.AddScoped<TrananAPI.Service.ReservationService>();
-builder.Services.AddScoped<TrananAPI.Service.SeatService>();
-builder.Services.AddDbContext<TrananAPI.Data.TrananDbContext>
-(o => o.UseSqlite("tranandatabase.db"));
+builder.Services.AddDbContext<Core.Data.TrananDbContext>
+(o => o.UseSqlite("c:/Users/angel/Documents/SUVNET22/OOP2/INLÄMNINGAR/bio-tranan-Radagastno1/Core/tranandatabase.db"));
+
+
+builder.Services.AddScoped<TrananAPI.Services.MovieService>();
+builder.Services.AddScoped<TrananAPI.Services.TheaterService>();
+builder.Services.AddScoped<TrananAPI.Services.MovieScreeningService>();
+builder.Services.AddScoped<TrananAPI.Services.ReservationService>();
+
+builder.Services.AddScoped<Core.Data.Repository.MovieRepository>();
+builder.Services.AddScoped<Core.Data.Repository.MovieScreeningRepository>();
+builder.Services.AddScoped<Core.Data.Repository.ReservationRepository>();
+builder.Services.AddScoped<Core.Data.Repository.TheaterRepository>();
+builder.Services.AddScoped<Core.Data.Repository.SeatRepository>();
+
+builder.Services.AddScoped<Core.Services.MovieCoreService>();
+builder.Services.AddScoped<Core.Services.MovieScreeningCoreService>();
+builder.Services.AddScoped<Core.Services.TheaterCoreService>();
+builder.Services.AddScoped<Core.Services.SeatCoreService>();
+builder.Services.AddScoped<Core.Services.ReservationCoreService>();
 
 var app = builder.Build();
 

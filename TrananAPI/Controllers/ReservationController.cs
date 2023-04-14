@@ -1,5 +1,5 @@
 using Microsoft.AspNetCore.Mvc;
-using TrananAPI.Service;
+using TrananAPI.Services;
 using TrananAPI.DTO;
 
 namespace TrananAPI.Controllers;

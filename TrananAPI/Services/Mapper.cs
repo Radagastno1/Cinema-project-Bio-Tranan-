@@ -1,6 +1,7 @@
-using TrananAPI.Models;
+using Core.Models;
+using TrananAPI.DTO;
 
-namespace TrananAPI.DTO;
+namespace TrananAPI.Service;
 
 public class Mapper
 {

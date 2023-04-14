@@ -1,21 +1,22 @@
+using Core.Models;
+using Core.Services;
 using TrananAPI.DTO;
-using TrananAPI.Models;
-using TrananAPI.Data.Repository;
+using TrananAPI.Service;
 
-namespace TrananAPI.Service;
+namespace TrananAPI.Services;
 
 public class ReservationService
 {
-    private ReservationRepository _reservationRepository;
+        private readonly ReservationCoreService _reservationCoreService;
 
-    public ReservationService(ReservationRepository reservationRepository)
+    public ReservationService(ReservationCoreService reservationCoreService)
     {
-        _reservationRepository = reservationRepository;
+        _reservationCoreService = reservationCoreService;
     }
 
     public async Task<IEnumerable<ReservationDTO>> GetReservations()
     {
-        var reservations = await _reservationRepository.GetReservations();
+        var reservations = await _reservationCoreService.GetReservations();
         return reservations.Select(r => Mapper.GenerateReservationDTO(r));
     }
 
@@ -23,7 +24,7 @@ public class ReservationService
         int movieScreeningId
     )
     {
-        var reservationsForScreening = await _reservationRepository.GetReservationsByScreeningId(
+        var reservationsForScreening = await _reservationCoreService.GetReservationsByMovieScreening(
             movieScreeningId
         );
         return reservationsForScreening.Select(r => Mapper.GenerateReservationDTO(r));
@@ -34,7 +35,7 @@ public class ReservationService
         try
         {
             var newReservation = await Mapper.GenerateReservation(reservationDTO);
-            var addedReservation = await _reservationRepository.CreateReservation(newReservation);
+            var addedReservation = await _reservationCoreService.CreateReservation(newReservation);
             return Mapper.GenerateReservationDTO(addedReservation);
         }
         catch (InvalidOperationException e)
@@ -54,7 +55,7 @@ public class ReservationService
     public async Task<ReservationDTO> UpdateReservation(ReservationDTO reservationDTO)
     {
         var reservationToUpdate = await Mapper.GenerateReservation(reservationDTO);
-        var updatedReservation = await _reservationRepository.UpdateReservation(
+        var updatedReservation = await _reservationCoreService.UpdateReservation(
             reservationToUpdate
         );
         return Mapper.GenerateReservationDTO(reservationToUpdate);
@@ -62,7 +63,7 @@ public class ReservationService
 
     public async Task DeleteReservation(int reservationId)
     {
-        await _reservationRepository.DeleteReservation(reservationId);
+        await _reservationCoreService.DeleteReservation(reservationId);
     }
     // public async Task<Reservation> GenerateReservation(ReservationDTO reservationDTO)
     // {

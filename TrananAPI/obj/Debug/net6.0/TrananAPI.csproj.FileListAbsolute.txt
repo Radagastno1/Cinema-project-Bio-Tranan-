@@ -78,3 +78,5 @@ C:\Users\angel\Documents\SUVNET22\OOP2\INLÄMNINGAR\bio-tranan-Radagastno1\trana
 C:\Users\angel\Documents\SUVNET22\OOP2\INLÄMNINGAR\bio-tranan-Radagastno1\trananapi\bin\Debug\net6.0\Microsoft.AspNetCore.JsonPatch.dll
 C:\Users\angel\Documents\SUVNET22\OOP2\INLÄMNINGAR\bio-tranan-Radagastno1\trananapi\bin\Debug\net6.0\Microsoft.AspNetCore.Mvc.NewtonsoftJson.dll
 C:\Users\angel\Documents\SUVNET22\OOP2\INLÄMNINGAR\bio-tranan-Radagastno1\trananapi\bin\Debug\net6.0\Newtonsoft.Json.Bson.dll
+C:\Users\angel\Documents\SUVNET22\OOP2\INLÄMNINGAR\bio-tranan-Radagastno1\trananapi\bin\Debug\net6.0\core.dll
+C:\Users\angel\Documents\SUVNET22\OOP2\INLÄMNINGAR\bio-tranan-Radagastno1\trananapi\bin\Debug\net6.0\core.pdb

@@ -1,21 +1,21 @@
-using TrananAPI.Data.Repository;
+using TrananAPI.Service;
 using TrananAPI.DTO;
-using TrananAPI.Models;
+using Core.Services;
+using Core.Models;
 
-namespace TrananAPI.Service;
+namespace TrananAPI.Services;
 
 public class MovieScreeningService
 {
-    private MovieScreeningRepository _movieScreeningsRepository;
-
-    public MovieScreeningService(MovieScreeningRepository movieScreeningRepository)
+    private MovieScreeningCoreService _movieScreeningCoreService;
+    public MovieScreeningService(MovieScreeningCoreService movieScreeningCoreService)
     {
-        _movieScreeningsRepository = movieScreeningRepository;
+        _movieScreeningCoreService = movieScreeningCoreService;
     }
 
     public async Task<IEnumerable<MovieScreeningOutgoingDTO>> GetUpcomingScreenings()
     {
-        var screenings = await _movieScreeningsRepository.GetUpcomingScreenings();
+        var screenings = await _movieScreeningCoreService.GetUpcomingScreenings();
         var screeningsDTOSs = screenings
             .Select(s => Mapper.GenerateMovieScreeningOutcomingDTO(s))
             .ToList();
@@ -24,7 +24,7 @@ public class MovieScreeningService
 
     public async Task<MovieScreeningOutgoingDTO> GetMovieScreeningById(int movieScreeningId)
     {
-        var screening = await _movieScreeningsRepository.GetMovieScreeningById(movieScreeningId);
+        var screening = await _movieScreeningCoreService.GetMovieScreeningById(movieScreeningId);
         if (screening == null)
         {
             return new MovieScreeningOutgoingDTO();
@@ -44,7 +44,7 @@ public class MovieScreeningService
                 TheaterId = movieScreeningIncomingDTO.TheaterId,
                 DateAndTime = movieScreeningIncomingDTO.DateAndTime
             };
-            var addedMovieScreening = await _movieScreeningsRepository.CreateMovieScreening(
+            var addedMovieScreening = await _movieScreeningCoreService.CreateMovieScreening(
                 newMovieScreening
             );
             var addedMovieScreeningDTO = Mapper.GenerateMovieScreeningOutcomingDTO(
@@ -74,14 +74,14 @@ public class MovieScreeningService
         MovieScreeningIncomingDTO movieScreeningIncomingDTO
     )
     {
-        var movieScreeningToUpdate = new MovieScreening()
+        var movieScreeningToUpdate = new Core.Models.MovieScreening()
         {
             MovieScreeningId = movieScreeningIncomingDTO.MovieScreeningId,
             DateAndTime = movieScreeningIncomingDTO.DateAndTime,
             MovieId = movieScreeningIncomingDTO.MovieId,
             TheaterId = movieScreeningIncomingDTO.TheaterId
         };
-        var updatedMovieScreening = await _movieScreeningsRepository.UpdateMovieScreening(
+        var updatedMovieScreening = await _movieScreeningCoreService.UpdateMovieScreening(
             movieScreeningToUpdate
         );
         return Mapper.GenerateMovieScreeningOutcomingDTO(updatedMovieScreening);
@@ -89,6 +89,6 @@ public class MovieScreeningService
 
     public async Task DeleteMovieScreeningById(int id)
     {
-        await _movieScreeningsRepository.DeleteMovieScreeningById(id);
+       await _movieScreeningCoreService.DeleteMovieScreeningById(id);
     }
 }
