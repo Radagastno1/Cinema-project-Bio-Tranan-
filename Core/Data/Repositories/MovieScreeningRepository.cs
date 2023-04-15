@@ -21,23 +21,34 @@ public class MovieScreeningRepository : IRepository<MovieScreening>
             {
                 return new MovieScreening();
             }
+
             var screening = await _trananDbContext.MovieScreenings
                 .Include(s => s.Movie)
-                .ThenInclude(m => m.Actors)
-                .Include(s => s.Movie)
-                .ThenInclude(m => m.Directors)
-                .Include(s => s.Theater)
-                .ThenInclude(t => t.Seats)
+                .Include(s => s.Movie.Actors)
+                .Include(s => s.Movie.Directors)
                 .Where(s => s.DateAndTime > DateTime.Now)
-                .Where(s => s.MovieScreeningId == id)
-                .FirstOrDefaultAsync();
+                .FirstAsync(s => s.MovieScreeningId == id);
 
-            var allReservedSeats = await _trananDbContext.Reservations
-                .Where(r => r.MovieScreeningId == screening.MovieScreeningId)
-                .SelectMany(r => r.Seats)
-                .ToListAsync();
+            var theater = await _trananDbContext.Theaters.FindAsync(screening.TheaterId);
 
-            screening.ReservedSeats = allReservedSeats ?? new List<Seat>();
+            if (theater != null)
+            {
+                var seats = await _trananDbContext.Seats
+                    .Where(st => st.TheaterId == theater.TheaterId)
+                    .Distinct()
+                    .ToListAsync();
+
+                theater.Seats = seats;
+                Console.WriteLine(theater.Seats.Count());
+                screening.Theater = theater;
+
+                var allReservedSeats = await _trananDbContext.Reservations
+                    .Where(r => r.MovieScreeningId == screening.MovieScreeningId)
+                    .SelectMany(r => r.Seats)
+                    .ToListAsync();
+
+                screening.ReservedSeats = allReservedSeats;
+            }
 
             return screening;
         }

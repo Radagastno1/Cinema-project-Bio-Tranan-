@@ -20,6 +20,7 @@ public class Movie
     public int DurationMinutes { get; set; }
     public decimal Price{get;set;}
     public string ImageUrl{get;set;}
+    public string TrailerId{get;set;}
     public List<Director> Directors { get; set; }
     public List<Actor> Actors { get; set; }
     public List<MovieScreening> MovieScreenings;
@@ -28,7 +29,8 @@ public class Movie
         int movieId,
         string title,
         int releaseYear,
-        string language, int durationMinutes, string description,int amountOfScreenings, int maxScreenings,string imageUrl, List<Actor>actors, List<Director>directors, decimal price
+        string language, int durationMinutes, string description,int amountOfScreenings, int maxScreenings,string imageUrl, List<Actor>actors, List<Director>directors, decimal price,
+        string trailerId
     )
     {
         MovieId = movieId;
@@ -43,6 +45,7 @@ public class Movie
         Actors = actors;
         Directors = directors;
         Price = price;
+        TrailerId = trailerId;
     }
     public Movie(){}
 }

@@ -92,7 +92,6 @@ public class ReservationRepository : IRepository<Reservation>, IReservationRepos
             if (!allReservedSeats.Any(s => s.SeatId == foundSeat.SeatId))
             {
                 foundSeat.IsBooked = true;
-                foundSeat.MovieScreenings.Add(foundMovieScreening);
 
                 seats.Add(foundSeat);
             }

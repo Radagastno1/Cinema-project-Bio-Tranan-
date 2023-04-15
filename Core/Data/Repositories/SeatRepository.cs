@@ -1,8 +1,9 @@
 using Core.Models;
+using Core.Interface;
 
 namespace Core.Data.Repository;
 
-public class SeatRepository 
+public class SeatRepository : ISeatRepository
 {
     private readonly TrananDbContext _dbContext;
 
@@ -11,7 +12,7 @@ public class SeatRepository
         _dbContext = dbContext;
     }
 
-    public async Task<Seat> GetSeatById(int id)
+    public async Task<Seat> GetSeatByIdAsync(int id)
     {
         var seat = await _dbContext.Seats.FindAsync(id);
         return seat; //felchecka
