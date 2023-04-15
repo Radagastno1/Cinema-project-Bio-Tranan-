@@ -1,4 +1,5 @@
 using System.Net.Http.Json;
+
 namespace Core.Models;
 
 public class Reservation
@@ -52,7 +53,8 @@ public class Reservation
         }
         return randomNumber;
     }
-//denna i service klassen bättrE?
+
+    //denna i service klassen bättrE?
     private async Task<int> GetRandomNumberFromAPI()
     {
         string url = "http://www.randomnumberapi.com/api/v1.0/random?min=100&max=1000";

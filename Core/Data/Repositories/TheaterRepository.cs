@@ -1,9 +1,10 @@
 using Core.Models;
 using Microsoft.EntityFrameworkCore;
+using Core.Interface;
 
 namespace Core.Data.Repository;
 
-public class TheaterRepository
+public class TheaterRepository : IRepository<Theater>
 {
     //har hand om salong och dess stolar
     private readonly TrananDbContext _trananDbContext;
@@ -13,7 +14,7 @@ public class TheaterRepository
         _trananDbContext = trananDbContext;
     }
 
-    public async Task<List<Theater>> GetTheaters()
+    public async Task<List<Theater>> GetAsync()
     {
         try
         {
@@ -31,7 +32,7 @@ public class TheaterRepository
         return null;
     }
 
-    public async Task<Theater> GetTheaterById(int id)
+    public async Task<Theater> GetByIdAsync(int id)
     {
         try
         {
@@ -47,14 +48,15 @@ public class TheaterRepository
         }
     }
 
-    public async Task<Theater> CreateTheater(Theater theater)
+    public async Task<Theater> CreateAsync(Theater theater)
     {
         try
         {
             await _trananDbContext.Theaters.AddAsync(theater);
             await _trananDbContext.SaveChangesAsync();
-            var recentlyAddedTheater = await _trananDbContext.Theaters.OrderByDescending(t => t.TheaterId)
-            .FirstOrDefaultAsync();
+            var recentlyAddedTheater = await _trananDbContext.Theaters
+                .OrderByDescending(t => t.TheaterId)
+                .FirstOrDefaultAsync();
             return recentlyAddedTheater;
         }
         catch (Exception e)
@@ -64,7 +66,7 @@ public class TheaterRepository
         }
     }
 
-    public async Task<Theater> UpdateTheater(Theater theater)
+    public async Task<Theater> UpdateAsync(Theater theater)
     {
         try
         {
@@ -83,12 +85,18 @@ public class TheaterRepository
             Console.WriteLine(e.Message);
             return null;
         }
+
     }
 
-    public async Task DeleteTheaterById(int id)
+    public async Task DeleteByIdAsync(int id)
     {
         var theaterToDelete = await _trananDbContext.Theaters.FindAsync(id);
         _trananDbContext.Theaters.Remove(theaterToDelete);
         await _trananDbContext.SaveChangesAsync();
+    }
+
+    public async Task DeleteAsync()
+    {
+        throw new NotImplementedException();
     }
 }

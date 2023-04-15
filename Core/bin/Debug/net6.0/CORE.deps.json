@@ -6,16 +6,17 @@
   "compilationOptions": {},
   "targets": {
     ".NETCoreApp,Version=v6.0": {
-      "core/1.0.0": {
+      "CORE/1.0.0": {
         "dependencies": {
           "Microsoft.EntityFrameworkCore.Design": "7.0.5",
           "Microsoft.EntityFrameworkCore.Sqlite": "7.0.5",
           "Microsoft.EntityFrameworkCore.Tools": "7.0.5",
           "Swashbuckle.AspNetCore": "6.5.0",
+          "Microsoft.EntityFrameworkCore": "7.0.5",
           "Newtonsoft.Json": "13.0.3"
         },
         "runtime": {
-          "core.dll": {}
+          "CORE.dll": {}
         }
       },
       "Humanizer.Core/2.14.1": {
@@ -487,7 +488,7 @@
     }
   },
   "libraries": {
-    "core/1.0.0": {
+    "CORE/1.0.0": {
       "type": "project",
       "serviceable": false,
       "sha512": ""

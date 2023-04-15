@@ -1,22 +1,24 @@
-using Core.Data.Repository;
+using Core.Interface;
 using Core.Models;
 
 namespace Core.Services;
 
 public class MovieCoreService
 {
-    private MovieRepository _movieRepository;
+    private IRepository<Movie> _movieRepository;
+    private IActorRepository _actorRepository;
 
-    public MovieCoreService(MovieRepository movieRepository)
+    public MovieCoreService(IRepository<Movie> movieRepository, IActorRepository actorRepository)
     {
         _movieRepository = movieRepository;
+        _actorRepository = actorRepository;
     }
 
     public async Task<IEnumerable<Movie>> GetAllMovies()
     {
         try
         {
-            var allMovies = await _movieRepository.GetMovies();
+            var allMovies = await _movieRepository.GetAsync();
             if (allMovies == null)
             {
                 return new List<Movie>();
@@ -33,7 +35,7 @@ public class MovieCoreService
     {
         try
         {
-            var movieFound = await _movieRepository.GetMovieById(movieId);
+            var movieFound = await _movieRepository.GetByIdAsync(movieId);
             if (movieFound == null)
             {
                 return null;
@@ -53,7 +55,7 @@ public class MovieCoreService
             List<Actor> actorsOfMovie = new();
             foreach (var actor in movie.Actors)
             {
-                var actorInDB = await _movieRepository.GetActorById(actor.ActorId);
+                var actorInDB = await _actorRepository.GetActorByIdAsync(actor.ActorId);
                 if (actorInDB == null)
                 {
                     actorsOfMovie.Add(actor);
@@ -66,7 +68,7 @@ public class MovieCoreService
             List<Director> directorsOfMovie = new();
             foreach (var director in movie.Directors)
             {
-                var directorInDb = await _movieRepository.GetDirectorById(director.DirectorId);
+                var directorInDb = await _actorRepository.GetDirectorByIdAsync(director.DirectorId);
                 if (directorInDb == null)
                 {
                     directorsOfMovie.Add(director);
@@ -79,7 +81,7 @@ public class MovieCoreService
 
             movie.Actors = actorsOfMovie;
             movie.Directors = directorsOfMovie;
-            var recentlyAddedMovie = await _movieRepository.CreateMovie(movie);
+            var recentlyAddedMovie = await _movieRepository.CreateAsync(movie);
             return recentlyAddedMovie;
         }
         catch (Exception)
@@ -90,17 +92,17 @@ public class MovieCoreService
 
     public async Task<Movie> UpdateMovie(Movie movie)
     {
-        var updatedMovie = await _movieRepository.UpdateMovie(movie);
+        var updatedMovie = await _movieRepository.UpdateAsync(movie);
         return updatedMovie;
     }
 
     public async Task DeleteMovieById(int id)
     {
-        await _movieRepository.DeleteMovieById(id);
+        await _movieRepository.DeleteByIdAsync(id);
     }
 
     public async Task DeleteMovies()
     {
-        await _movieRepository.DeleteMovies();
+        await _movieRepository.DeleteAsync();
     }
 }

@@ -18,4 +18,5 @@ public class Actor
         FirstName = firstName;
         LastName = lastName;
     }
+    public Actor(){}
 }

@@ -11,8 +11,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace CORE.Migrations
 {
     [DbContext(typeof(TrananDbContext))]
-    [Migration("20230414075031_initialagain")]
-    partial class initialagain
+    [Migration("20230415102924_customers")]
+    partial class customers
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -32,7 +32,7 @@ namespace CORE.Migrations
 
                     b.HasIndex("MoviesMovieId");
 
-                    b.ToTable("actor_to_movie", (string)null);
+                    b.ToTable("ActorMovie");
                 });
 
             modelBuilder.Entity("Core.Models.Actor", b =>
@@ -127,6 +127,9 @@ namespace CORE.Migrations
                     b.Property<int>("MaxScreenings")
                         .HasColumnType("INTEGER");
 
+                    b.Property<decimal>("Price")
+                        .HasColumnType("TEXT");
+
                     b.Property<int>("ReleaseYear")
                         .HasColumnType("INTEGER");
 
@@ -150,6 +153,9 @@ namespace CORE.Migrations
 
                     b.Property<int>("MovieId")
                         .HasColumnType("INTEGER");
+
+                    b.Property<decimal>("PricePerPerson")
+                        .HasColumnType("TEXT");
 
                     b.Property<int>("TheaterId")
                         .HasColumnType("INTEGER");
@@ -187,7 +193,7 @@ namespace CORE.Migrations
 
                     b.HasIndex("MovieScreeningId");
 
-                    b.ToTable("Reservations");
+                    b.ToTable("Reservation");
                 });
 
             modelBuilder.Entity("Core.Models.Seat", b =>
@@ -237,6 +243,9 @@ namespace CORE.Migrations
                     b.Property<int>("Rows")
                         .HasColumnType("INTEGER");
 
+                    b.Property<decimal>("TheaterPrice")
+                        .HasColumnType("TEXT");
+
                     b.HasKey("TheaterId");
 
                     b.ToTable("Theaters");
@@ -254,7 +263,7 @@ namespace CORE.Migrations
 
                     b.HasIndex("MoviesMovieId");
 
-                    b.ToTable("director_to_movie", (string)null);
+                    b.ToTable("DirectorMovie");
                 });
 
             modelBuilder.Entity("MovieScreeningSeat", b =>
@@ -305,7 +314,7 @@ namespace CORE.Migrations
             modelBuilder.Entity("Core.Models.MovieScreening", b =>
                 {
                     b.HasOne("Core.Models.Movie", "Movie")
-                        .WithMany("MovieScreenings")
+                        .WithMany()
                         .HasForeignKey("MovieId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -399,11 +408,6 @@ namespace CORE.Migrations
             modelBuilder.Entity("Core.Models.Customer", b =>
                 {
                     b.Navigation("Reservations");
-                });
-
-            modelBuilder.Entity("Core.Models.Movie", b =>
-                {
-                    b.Navigation("MovieScreenings");
                 });
 
             modelBuilder.Entity("Core.Models.MovieScreening", b =>

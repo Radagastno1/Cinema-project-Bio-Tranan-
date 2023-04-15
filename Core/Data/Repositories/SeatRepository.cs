@@ -2,7 +2,7 @@ using Core.Models;
 
 namespace Core.Data.Repository;
 
-public class SeatRepository
+public class SeatRepository 
 {
     private readonly TrananDbContext _dbContext;
 

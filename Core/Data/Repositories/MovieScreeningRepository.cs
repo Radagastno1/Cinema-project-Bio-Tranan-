@@ -1,9 +1,10 @@
 using Microsoft.EntityFrameworkCore;
 using Core.Models;
+using Core.Interface;
 
 namespace Core.Data.Repository;
 
-public class MovieScreeningRepository
+public class MovieScreeningRepository : IRepository<MovieScreening>
 {
     private readonly TrananDbContext _trananDbContext;
 
@@ -12,7 +13,7 @@ public class MovieScreeningRepository
         _trananDbContext = trananDbContext;
     }
 
-    public async Task<List<MovieScreening>> GetUpcomingScreenings()
+    public async Task<List<MovieScreening>> GetAsync()
     {
         try
         {
@@ -49,7 +50,7 @@ public class MovieScreeningRepository
         return null;
     }
 
-    public async Task<MovieScreening> GetMovieScreeningById(int id)
+    public async Task<MovieScreening> GetByIdAsync(int id)
     {
         try
         {
@@ -68,12 +69,12 @@ public class MovieScreeningRepository
                 .Where(s => s.MovieScreeningId == id)
                 .FirstOrDefaultAsync();
 
-                var allReservedSeats = await _trananDbContext.Reservations
-                    .Where(r => r.MovieScreeningId == screening.MovieScreeningId)
-                    .SelectMany(r => r.Seats)
-                    .ToListAsync();
+            var allReservedSeats = await _trananDbContext.Reservations
+                .Where(r => r.MovieScreeningId == screening.MovieScreeningId)
+                .SelectMany(r => r.Seats)
+                .ToListAsync();
 
-                screening.ReservedSeats = allReservedSeats ?? new List<Seat>();
+            screening.ReservedSeats = allReservedSeats ?? new List<Seat>();
 
             return screening;
         }
@@ -82,9 +83,10 @@ public class MovieScreeningRepository
             Console.WriteLine(e.Message);
             return null;
         }
+
     }
 
-    public async Task<MovieScreening> CreateMovieScreening(MovieScreening movieScreening)
+    public async Task<MovieScreening> CreateAsync(MovieScreening movieScreening)
     {
         using (var transaction = await _trananDbContext.Database.BeginTransactionAsync())
         {
@@ -151,7 +153,7 @@ public class MovieScreeningRepository
         }
     }
 
-    public async Task<MovieScreening> UpdateMovieScreening(MovieScreening movieScreening)
+    public async Task<MovieScreening> UpdateAsync(MovieScreening movieScreening)
     {
         try
         {
@@ -177,11 +179,16 @@ public class MovieScreeningRepository
         }
     }
 
-    public async Task DeleteMovieScreeningById(int id)
+    public async Task DeleteByIdAsync(int id)
     {
         var movieScreeningToRemove = await _trananDbContext.MovieScreenings.FindAsync(id);
         _trananDbContext.MovieScreenings.Remove(movieScreeningToRemove);
         await _trananDbContext.SaveChangesAsync();
+    }
+
+    public async Task DeleteAsync()
+    {
+        throw new NotImplementedException();
     }
 
     public async Task SaveChanges()
@@ -211,4 +218,5 @@ public class MovieScreeningRepository
 
         return overlappingScreenings.Count == 0;
     }
+    
 }

@@ -18,6 +18,7 @@ public class Movie
     public int MaxScreenings { get; set; }
  
     public int DurationMinutes { get; set; }
+    public decimal Price{get;set;}
     public string ImageUrl{get;set;}
     public List<Director> Directors { get; set; }
     public List<Actor> Actors { get; set; }

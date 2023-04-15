@@ -1,9 +1,10 @@
 using Microsoft.EntityFrameworkCore;
 using Core.Models;
+using Core.Interface;
 
 namespace Core.Data.Repository;
 
-public class ReservationRepository
+public class ReservationRepository : IRepository<Reservation>, IReservationRepository
 {
     private readonly TrananDbContext _trananDbContext;
 
@@ -12,7 +13,7 @@ public class ReservationRepository
         _trananDbContext = trananDbContext;
     }
 
-    public async Task<List<Reservation>> GetReservations()
+    public async Task<List<Reservation>> GetAsync()
     {
         try
         {
@@ -33,7 +34,7 @@ public class ReservationRepository
         }
     }
 
-    public async Task<List<Reservation>> GetReservationsByScreeningId(int screeningId)
+    public async Task<List<Reservation>> GetByScreeningIdAsync(int screeningId)
     {
         try
         {
@@ -52,8 +53,12 @@ public class ReservationRepository
             return null;
         }
     }
+      public async Task<Reservation> GetByIdAsync(int reservationId)
+    {
+     throw new NotImplementedException();
+    }
 
-    public async Task<Reservation> CreateReservation(Reservation reservation)
+    public async Task<Reservation> CreateAsync(Reservation reservation)
     {
         List<Seat> seats = new List<Seat>();
 
@@ -104,7 +109,7 @@ public class ReservationRepository
         return reservation;
     }
 
-    public async Task<Reservation> UpdateReservation(Reservation reservation)
+    public async Task<Reservation> UpdateAsync(Reservation reservation)
     {
         var reservationToUpdate = await _trananDbContext.Reservations.FindAsync(
             reservation.ReservationId
@@ -121,17 +126,23 @@ public class ReservationRepository
         return reservationToUpdate;
     }
 
-    public async Task DeleteReservation(int reservationId)
+    public async Task DeleteByIdAsync(int reservationId)
     {
         var reservationToDelete = await _trananDbContext.Reservations.FindAsync(reservationId);
         _trananDbContext.Reservations.Remove(reservationToDelete);
 
         var SeatsToReset = await _trananDbContext.Seats
-        .Where(s => s.Reservations.Any(r => r.ReservationId == reservationId)).ToListAsync();
-        
+            .Where(s => s.Reservations.Any(r => r.ReservationId == reservationId))
+            .ToListAsync();
+
         SeatsToReset.ForEach(s => s.IsBooked = false);
 
         await _trananDbContext.SaveChangesAsync();
+    }
+
+    public async Task DeleteAsync()
+    {
+        throw new NotImplementedException();
     }
     // public async Task UpdateMovie(MovieDTO movieDTO)
     // {

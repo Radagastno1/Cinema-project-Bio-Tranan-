@@ -5,7 +5,7 @@
 namespace CORE.Migrations
 {
     /// <inheritdoc />
-    public partial class initialagain : Migration
+    public partial class onmodelcreating : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)

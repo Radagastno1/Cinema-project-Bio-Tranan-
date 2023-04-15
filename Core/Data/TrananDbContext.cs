@@ -1,21 +1,22 @@
 using Microsoft.EntityFrameworkCore;
 using Core.Models;
+using Core.Interface;
 using Microsoft.EntityFrameworkCore.Design;
 
 namespace Core.Data;
 
-public class TrananDbContext : DbContext
+public class TrananDbContext : DbContext, ITrananDbContext
 {
-    public DbSet<Movie> Movies { get; set; }
     public DbSet<Actor> Actors { get; set; }
     public DbSet<Director> Directors { get; set; }
+    public DbSet<Movie> Movies { get; set; }
+    public DbSet<Seat> Seats { get; set; }
+    public DbSet<Theater> Theaters { get; set; }
     public DbSet<MovieScreening> MovieScreenings { get; set; }
     public DbSet<Customer> Customers { get; set; }
 
-    //public DbSet<Admin> Admins { get; set; }
+    // // public DbSet<Admin> Admins { get; set; }
     public DbSet<Reservation> Reservations { get; set; }
-    public DbSet<Seat> Seats { get; set; }
-    public DbSet<Theater> Theaters { get; set; }
 
     public TrananDbContext(DbContextOptions<TrananDbContext> options)
         : base(options)
@@ -28,7 +29,9 @@ public class TrananDbContext : DbContext
         public TrananDbContext CreateDbContext(string[] args)
         {
             var optionsBuilder = new DbContextOptionsBuilder<TrananDbContext>();
-            optionsBuilder.UseSqlite($"Data Source=tranandatabase.db");
+            optionsBuilder.UseSqlite(
+                $"Data Source=path = C:/Users/angel/Documents/SUVNET22/OOP2/INLÄMNINGAR/bio-tranan-Radagastno1/Core/tranandatabase.db"
+            );
 
             return new TrananDbContext(optionsBuilder.Options);
         }
@@ -36,12 +39,10 @@ public class TrananDbContext : DbContext
 
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
     {
-        optionsBuilder.UseSqlite($"Data Source=tranandatabase.db");
+        optionsBuilder.UseSqlite(
+            @"Data Source=C:\Users\angel\Documents\SUVNET22\OOP2\INLÄMNINGAR\bio-tranan-Radagastno1\Core\tranandatabase.db"
+        );
         optionsBuilder.EnableSensitiveDataLogging();
-        if (!optionsBuilder.IsConfigured)
-        {
-            optionsBuilder.UseSqlite($"Data Source=tranandatabase.db");
-        }
     }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
@@ -49,14 +50,12 @@ public class TrananDbContext : DbContext
         modelBuilder
             .Entity<Movie>()
             .HasMany(m => m.Actors)
-            .WithMany(a => a.Movies)
-            .UsingEntity(x => x.ToTable("actor_to_movie"));
+            .WithMany(a => a.Movies);
 
         modelBuilder
             .Entity<Movie>()
             .HasMany(m => m.Directors)
-            .WithMany(d => d.Movies)
-            .UsingEntity(x => x.ToTable("director_to_movie"));
+            .WithMany(d => d.Movies);
 
         modelBuilder
             .Entity<Movie>()

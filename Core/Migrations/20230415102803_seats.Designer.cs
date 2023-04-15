@@ -3,6 +3,7 @@ using System;
 using Core.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -10,9 +11,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace CORE.Migrations
 {
     [DbContext(typeof(TrananDbContext))]
-    partial class TrananDbContextModelSnapshot : ModelSnapshot
+    [Migration("20230415102803_seats")]
+    partial class seats
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder.HasAnnotation("ProductVersion", "7.0.5");
@@ -75,7 +78,7 @@ namespace CORE.Migrations
 
                     b.HasKey("CustomerId");
 
-                    b.ToTable("Customers");
+                    b.ToTable("Customer");
                 });
 
             modelBuilder.Entity("Core.Models.Director", b =>
@@ -163,7 +166,7 @@ namespace CORE.Migrations
 
                     b.HasIndex("TheaterId");
 
-                    b.ToTable("MovieScreenings");
+                    b.ToTable("MovieScreening");
                 });
 
             modelBuilder.Entity("Core.Models.Reservation", b =>
@@ -190,7 +193,7 @@ namespace CORE.Migrations
 
                     b.HasIndex("MovieScreeningId");
 
-                    b.ToTable("Reservations");
+                    b.ToTable("Reservation");
                 });
 
             modelBuilder.Entity("Core.Models.Seat", b =>
@@ -245,7 +248,7 @@ namespace CORE.Migrations
 
                     b.HasKey("TheaterId");
 
-                    b.ToTable("Theaters");
+                    b.ToTable("Theater");
                 });
 
             modelBuilder.Entity("DirectorMovie", b =>
@@ -311,7 +314,7 @@ namespace CORE.Migrations
             modelBuilder.Entity("Core.Models.MovieScreening", b =>
                 {
                     b.HasOne("Core.Models.Movie", "Movie")
-                        .WithMany("MovieScreenings")
+                        .WithMany()
                         .HasForeignKey("MovieId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -405,11 +408,6 @@ namespace CORE.Migrations
             modelBuilder.Entity("Core.Models.Customer", b =>
                 {
                     b.Navigation("Reservations");
-                });
-
-            modelBuilder.Entity("Core.Models.Movie", b =>
-                {
-                    b.Navigation("MovieScreenings");
                 });
 
             modelBuilder.Entity("Core.Models.MovieScreening", b =>

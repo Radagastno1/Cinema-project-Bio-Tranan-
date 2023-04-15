@@ -6,6 +6,7 @@ public class Theater
     public string Name { get; set; }
     public int Rows { get; set; }
     public int MaxAmountAvailebleSeats{get;set;}
+    public decimal TheaterPrice{get;set;}
     public List<Seat> Seats { get; set; }
     public List<MovieScreening> MovieScreenings { get; set; }
     public Theater(){}

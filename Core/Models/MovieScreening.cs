@@ -5,6 +5,7 @@ public class MovieScreening
     public int MovieScreeningId { get; set; }
     public DateTime DateAndTime { get; set; }
     public int MovieId { get; set; }
+    public decimal PricePerPerson{get;set;}
     public Movie Movie { get; set; }
     public int TheaterId { get; set; }
     public Theater Theater { get; set; }
@@ -18,5 +19,6 @@ public class MovieScreening
         DateAndTime = dateAndTime;
         Movie = movie;
         Theater = theater;
+        PricePerPerson = movie.Price + theater.TheaterPrice;
     }
 }

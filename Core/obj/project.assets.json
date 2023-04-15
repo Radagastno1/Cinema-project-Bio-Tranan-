@@ -1817,6 +1817,7 @@
       "Microsoft.EntityFrameworkCore.Sqlite >= 7.0.5",
       "Microsoft.EntityFrameworkCore.Tools >= 7.0.5",
       "Swashbuckle.AspNetCore >= 6.5.0",
+      "microsoft.entityframeworkcore >= 7.0.5",
       "newtonsoft.json >= 13.0.3"
     ]
   },
@@ -1878,6 +1879,10 @@
           "Swashbuckle.AspNetCore": {
             "target": "Package",
             "version": "[6.5.0, )"
+          },
+          "microsoft.entityframeworkcore": {
+            "target": "Package",
+            "version": "[7.0.5, )"
           },
           "newtonsoft.json": {
             "target": "Package",

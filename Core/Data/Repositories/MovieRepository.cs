@@ -1,9 +1,10 @@
 using Microsoft.EntityFrameworkCore;
 using Core.Models;
+using Core.Interface;
 
 namespace Core.Data.Repository;
 
-public class MovieRepository
+public class MovieRepository : IRepository<Movie>
 {
     private readonly TrananDbContext _trananDbContext;
 
@@ -22,7 +23,7 @@ public class MovieRepository
     //     await _trananDbContext.SaveChangesAsync();
     // }
 
-    public async Task<List<Movie>> GetMovies()
+    public async Task<List<Movie>> GetAsync()
     {
         try
         {
@@ -41,7 +42,7 @@ public class MovieRepository
         }
     }
 
-    public async Task<Movie> GetMovieById(int id)
+    public async Task<Movie> GetByIdAsync(int id)
     {
         try //include
         {
@@ -59,7 +60,7 @@ public class MovieRepository
         }
     }
 
-    public async Task<Movie> CreateMovie(Movie movie)
+    public async Task<Movie> CreateAsync(Movie movie)
     {
         try
         {
@@ -77,25 +78,6 @@ public class MovieRepository
         }
     }
 
-    public async Task<Actor> GetActorById(int actorId)
-    {
-        var actor = await _trananDbContext.Actors.FindAsync(actorId);
-        if (actor == null)
-        {
-            return null;
-        }
-        return actor;
-    }
-
-    public async Task<Director> GetDirectorById(int directorId)
-    {
-        var director = await _trananDbContext.Directors.FindAsync(directorId);
-        if (director == null)
-        {
-            return null;
-        }
-        return director;
-    }
 
     // public async Task UpdateMovie(MovieDTO movieDTO)
     // {
@@ -160,7 +142,7 @@ public class MovieRepository
     //     }
     // }
 
-    public async Task<Movie> UpdateMovie(Movie movie)
+    public async Task<Movie> UpdateAsync(Movie movie)
     { //får vara ifyllda fält för uppdatering av filmen sen i mvc ??
         try
         {
@@ -204,7 +186,7 @@ public class MovieRepository
     //     return movieDTO;
     // }
 
-    public async Task DeleteMovieById(int id)
+    public async Task DeleteByIdAsync(int id)
     {
         var movieToDelete = await _trananDbContext.Movies.FindAsync(id);
         var deletedMovie = movieToDelete;
@@ -215,9 +197,10 @@ public class MovieRepository
         }
     }
 
-    public async Task DeleteMovies()
+    public async Task DeleteAsync()
     {
-        _trananDbContext.Movies.ToList().ForEach(m => _trananDbContext.Movies.Remove(m));
-        await _trananDbContext.SaveChangesAsync();
+        // _trananDbContext.Movies.ToList().ForEach(m => _trananDbContext.Movies.Remove(m));
+        // await _trananDbContext.SaveChangesAsync();
+        throw new NotImplementedException();
     }
 }

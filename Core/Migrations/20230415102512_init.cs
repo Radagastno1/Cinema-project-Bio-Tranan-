@@ -5,7 +5,7 @@
 namespace CORE.Migrations
 {
     /// <inheritdoc />
-    public partial class initialonemoretime : Migration
+    public partial class init : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)

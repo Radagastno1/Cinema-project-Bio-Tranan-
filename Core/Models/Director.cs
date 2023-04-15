@@ -15,4 +15,5 @@ public class Director
         this.FirstName = firstName;
         this.LastName = lastName;
     }
+    public Director(){}
 }

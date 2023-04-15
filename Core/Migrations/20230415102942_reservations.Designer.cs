@@ -3,6 +3,7 @@ using System;
 using Core.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -10,9 +11,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace CORE.Migrations
 {
     [DbContext(typeof(TrananDbContext))]
-    partial class TrananDbContextModelSnapshot : ModelSnapshot
+    [Migration("20230415102942_reservations")]
+    partial class reservations
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder.HasAnnotation("ProductVersion", "7.0.5");
@@ -311,7 +314,7 @@ namespace CORE.Migrations
             modelBuilder.Entity("Core.Models.MovieScreening", b =>
                 {
                     b.HasOne("Core.Models.Movie", "Movie")
-                        .WithMany("MovieScreenings")
+                        .WithMany()
                         .HasForeignKey("MovieId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -405,11 +408,6 @@ namespace CORE.Migrations
             modelBuilder.Entity("Core.Models.Customer", b =>
                 {
                     b.Navigation("Reservations");
-                });
-
-            modelBuilder.Entity("Core.Models.Movie", b =>
-                {
-                    b.Navigation("MovieScreenings");
                 });
 
             modelBuilder.Entity("Core.Models.MovieScreening", b =>
