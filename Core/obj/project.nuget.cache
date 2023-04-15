@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "5TkXvBtCovyonk9uxu+xTBwxzzIIAn9i+i83gma9yInukdSTrm6O9jD6ImvcblRGVRY8jGfAopTQvck9fu0bmA==",
+  "dgSpecHash": "kReNvkenBT7o5u5lKMIar7rKGLFr8C+U+x0jshWfqqRX11lL6BJb9EEUNv7SJgCULtyWMwyufLTlTwPnP8MWsQ==",
   "success": true,
-  "projectFilePath": "C:\\Users\\angel\\Documents\\SUVNET22\\OOP2\\INLÄMNINGAR\\bio-tranan-Radagastno1\\core\\CORE.csproj",
+  "projectFilePath": "C:\\Users\\angel\\Documents\\SUVNET22\\OOP2\\INLÄMNINGAR\\bio-tranan-Radagastno1\\core\\core.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\angel\\.nuget\\packages\\humanizer.core\\2.14.1\\humanizer.core.2.14.1.nupkg.sha512",
     "C:\\Users\\angel\\.nuget\\packages\\microsoft.data.sqlite.core\\7.0.5\\microsoft.data.sqlite.core.7.0.5.nupkg.sha512",

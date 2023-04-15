@@ -75,6 +75,7 @@ public class TheaterRepository : IRepository<Theater>
             theaterToUpdate.Rows = theater.Rows;
             theaterToUpdate.Seats = theater.Seats;
             theaterToUpdate.MaxAmountAvailebleSeats = theater.MaxAmountAvailebleSeats;
+            theaterToUpdate.TheaterPrice = theater.TheaterPrice;
 
             _trananDbContext.Theaters.Update(theaterToUpdate);
             await _trananDbContext.SaveChangesAsync();

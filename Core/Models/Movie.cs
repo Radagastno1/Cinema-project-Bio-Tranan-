@@ -28,7 +28,7 @@ public class Movie
         int movieId,
         string title,
         int releaseYear,
-        string language, int durationMinutes, string description,int amountOfScreenings, int maxScreenings,string imageUrl, List<Actor>actors, List<Director>directors
+        string language, int durationMinutes, string description,int amountOfScreenings, int maxScreenings,string imageUrl, List<Actor>actors, List<Director>directors, decimal price
     )
     {
         MovieId = movieId;
@@ -42,6 +42,7 @@ public class Movie
         ImageUrl = imageUrl;
         Actors = actors;
         Directors = directors;
+        Price = price;
     }
     public Movie(){}
 }

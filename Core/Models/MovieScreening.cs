@@ -19,6 +19,5 @@ public class MovieScreening
         DateAndTime = dateAndTime;
         Movie = movie;
         Theater = theater;
-        PricePerPerson = movie.Price + theater.TheaterPrice;
     }
 }

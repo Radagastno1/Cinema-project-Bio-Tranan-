@@ -162,6 +162,7 @@ public class MovieRepository : IRepository<Movie>
             movieToUpdate.ReleaseYear = movie.ReleaseYear;
             movieToUpdate.DurationMinutes = movie.DurationMinutes;
             movieToUpdate.ImageUrl = movie.ImageUrl ?? movieToUpdate.ImageUrl;
+            movieToUpdate.Price = movie.Price;
 
             movieToUpdate.Actors = movie.Actors;
 

@@ -10,11 +10,12 @@ public class Theater
     public List<Seat> Seats { get; set; }
     public List<MovieScreening> MovieScreenings { get; set; }
     public Theater(){}
-    public Theater(int theaterId, string name, int rows, List<Seat> seats)
+    public Theater(int theaterId, string name, int rows, List<Seat> seats, decimal theaterPrice)
     {
         TheaterId = theaterId;
         Name = name;
         Rows = rows;
         Seats = seats;
+        TheaterPrice = theaterPrice;
     }
 }
