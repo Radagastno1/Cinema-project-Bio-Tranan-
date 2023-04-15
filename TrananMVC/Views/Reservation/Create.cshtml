@@ -34,10 +34,33 @@
 
 
     <p id="total-price">Totala pris: @Model.ReservationViewModel.Price</p>
-    <input type="hidden" name="ReservationViewModel.MovieScreeningId" value="@Model.MovieScreeningViewModel.MovieScreeningId" />
+
+    <input type="hidden" name="ReservationViewModel.MovieScreeningId"
+        value="@Model.MovieScreeningViewModel.MovieScreeningId" />
     <input type="hidden" name="ReservationViewModel.Price" value="@Model.ReservationViewModel.Price" />
 
     <button type="submit" id="button">Reservera</button>
+
+    <script>
+        const checkboxes = document.querySelectorAll('input[type=checkbox]');
+        const currentPrice = document.getElementById('total-price');
+        const pricePerPerson = @Model.MovieScreeningViewModel.PricePerPerson;
+
+        let totalPrice = 0;
+
+        checkboxes.forEach(function (checkbox) {
+            checkbox.addEventListener('change', function () {
+                if (this.checked) {
+                    totalPrice += pricePerPerson;
+                } else {
+                    totalPrice -= pricePerPerson;
+                }
+                currentPrice.innerText = "Totala pris: " + totalPrice;
+            });
+        });
+
+
+    </script>
 }
 
 
