@@ -54,16 +54,15 @@ public class ReservationController : Controller
         return View(createdReservationViewModel);
     }
 
-    public async Task<IActionResult> Cancel()
+    public async Task<IActionResult> Cancel(int reservationId)
     {
-        return View();
-    }
-
-    //skickar en delete reservation till api
-    [HttpDelete]
-    public async Task<IActionResult> PostCancelledReservation()
-    {
-        return View();
+        var isDeleted = await _reservationService.DeleteReservationById(reservationId);
+        if (isDeleted)
+        {
+            return View();
+        }
+        //fixa en felsida:
+        return RedirectToAction("ShowReservation", "Reservation");
     }
 
     [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]

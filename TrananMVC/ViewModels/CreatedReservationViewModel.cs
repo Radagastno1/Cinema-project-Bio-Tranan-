@@ -11,14 +11,13 @@ public class CreatedReservationViewModel
     public string LastName{get;set;}
     public string PhoneNumber{get;set;}
     public string Email{get;set;}
-    public List<int> SeatIds { get; set; }
     public DateTime DateAndTime { get; set; }
-    // public int MovieId { get; set; } 
+    public List<SeatViewModel> ReservedSeats{get;set;} 
     public string MovieTitle { get; set; }
     public string MovieImageUrl { get; set; }
     public string TheaterName { get; set; }
 
-    public CreatedReservationViewModel(int reservationId, int reservationCode, decimal price, string firstName, string lastName, string phoneNumber, string email, List<int>seatIds, DateTime dateAndTime, string movieTitle, string movieImageUrl, string theaterName)
+    public CreatedReservationViewModel(int reservationId, int reservationCode, decimal price, string firstName, string lastName, string phoneNumber, string email, DateTime dateAndTime, string movieTitle, string movieImageUrl, string theaterName, List<SeatViewModel> reservedSeats)
     {
         ReservationId = reservationId;
         ReservationCode = reservationCode;
@@ -27,11 +26,11 @@ public class CreatedReservationViewModel
         LastName = lastName;
         PhoneNumber = phoneNumber;
         Email = email;
-        SeatIds = seatIds;
         DateAndTime = dateAndTime;
         MovieTitle = movieTitle;
         MovieImageUrl = movieImageUrl;
         TheaterName = theaterName;
+        ReservedSeats = reservedSeats;
     }
     public CreatedReservationViewModel(){}
 }

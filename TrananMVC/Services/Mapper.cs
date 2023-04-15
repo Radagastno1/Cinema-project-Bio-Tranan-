@@ -118,27 +118,6 @@ public class Mapper
         return reservationViewModel;
     }
 
-    // public static Reservation GenerateReservation(ReservationViewModel reservationViewModel)
-    // {
-    //     return new Reservation()
-    //     {
-    //         ReservationId = reservationViewModel.ReservationId,
-    //         ReservationCode = reservationViewModel.ReservationCode,
-    //         Price = reservationViewModel.Price,
-    //         MovieScreeningId = reservationViewModel.MovieScreeningId,
-    //         Customer = new Customer(
-    //             reservationViewModel.CustomerViewModel.FirstName,
-    //             reservationViewModel.CustomerViewModel.LastName,
-    //             reservationViewModel.CustomerViewModel.PhoneNumber,
-    //             reservationViewModel.CustomerViewModel.Email
-    //         )
-    //         {
-    //             CustomerId = reservationViewModel.CustomerViewModel.CustomerId,
-    //         },
-    //         Seats = GenerateSeatsFromIds(reservationViewModel.SeatIds)
-    //     };
-    // }
-
     public static async Task<Reservation> GenerateReservation(
         ReservationViewModel reservationViewModel
     )
@@ -186,11 +165,11 @@ public class Mapper
             reservation.Customer.LastName,
             reservation.Customer.PhoneNumber,
             reservation.Customer.Email,
-            reservation.Seats.Select(s => s.SeatId).ToList(), //kund vill ej ha idn! fixa
             movieScreening.DateAndTime,
             movie.Title,
             movie.ImageUrl,
-            movieScreening.Theater.Name
+            movieScreening.Theater.Name,
+           GenerateSeatsToViewModels(reservation.Seats)
         );
     }
 

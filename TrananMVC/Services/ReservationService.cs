@@ -8,9 +8,11 @@ public class ReservationService
     private readonly ReservationCoreService _reservationCoreService;
     private readonly MovieScreeningCoreService _movieScreeningCoreService;
     private readonly MovieCoreService _movieCoreService;
+
     public ReservationService(
-       ReservationCoreService reservationCoreService, MovieScreeningCoreService movieScreeningCoreService,
-       MovieCoreService movieCoreService
+        ReservationCoreService reservationCoreService,
+        MovieScreeningCoreService movieScreeningCoreService,
+        MovieCoreService movieCoreService
     )
     {
         _reservationCoreService = reservationCoreService;
@@ -30,15 +32,33 @@ public class ReservationService
                 addedReservation.MovieScreeningId
             );
             var movie = await _movieCoreService.GetMovieById(movieScreening.MovieId);
-            if(addedReservation == null || movieScreening == null)
+            if (addedReservation == null || movieScreening == null)
             {
                 throw new NullReferenceException("Något gick fel med att hämta reservationen.");
             }
-            return Mapper.GenerateCreatedReservationViewModel(movieScreening, addedReservation, movie);
+
+            return Mapper.GenerateCreatedReservationViewModel(
+                movieScreening,
+                addedReservation,
+                movie
+            );
         }
         catch (Exception e)
         {
             return null;
+        }
+    }
+
+    public async Task<bool> DeleteReservationById(int reservationId)
+    {//fixa så det returneras statuskod eller så
+        try
+        {
+            await _reservationCoreService.DeleteReservation(reservationId);
+            return true;
+        }
+        catch (Exception)
+        {
+            return false;
         }
     }
 }
