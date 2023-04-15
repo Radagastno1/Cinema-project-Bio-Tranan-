@@ -10,7 +10,7 @@ public class MovieScreening
     public int TheaterId { get; set; }
     public Theater Theater { get; set; }
     public List<Reservation> Reservations { get; set; }
-    public List<Seat> ReservedSeats { get; set; } = new();
+    public List<Seat> ReservedSeats { get; set; }
 
     public MovieScreening() { }
 

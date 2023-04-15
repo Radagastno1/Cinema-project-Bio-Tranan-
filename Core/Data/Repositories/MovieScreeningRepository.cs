@@ -13,43 +13,6 @@ public class MovieScreeningRepository : IRepository<MovieScreening>
         _trananDbContext = trananDbContext;
     }
 
-    public async Task<List<MovieScreening>> GetAsync()
-    {
-        try
-        {
-            if (_trananDbContext.MovieScreenings == null)
-            {
-                return new List<MovieScreening>();
-            }
-            var screenings = await _trananDbContext.MovieScreenings
-                .Include(s => s.Movie)
-                .ThenInclude(m => m.Actors)
-                .Include(s => s.Movie)
-                .ThenInclude(m => m.Directors)
-                .Include(s => s.Theater)
-                .ThenInclude(t => t.Seats)
-                .Where(s => s.DateAndTime > DateTime.Now)
-                .ToListAsync();
-
-            foreach (var screening in screenings)
-            {
-                var allReservedSeats = await _trananDbContext.Reservations
-                    .Where(r => r.MovieScreeningId == screening.MovieScreeningId)
-                    .SelectMany(r => r.Seats)
-                    .ToListAsync();
-
-                screening.ReservedSeats = allReservedSeats ?? new List<Seat>();
-            }
-
-            return screenings;
-        }
-        catch (Exception e)
-        {
-            Console.WriteLine(e.Message);
-        }
-        return null;
-    }
-
     public async Task<MovieScreening> GetByIdAsync(int id)
     {
         try
@@ -83,7 +46,56 @@ public class MovieScreeningRepository : IRepository<MovieScreening>
             Console.WriteLine(e.Message);
             return null;
         }
+    }
 
+    public async Task<List<MovieScreening>> GetAsync()
+    {
+        try
+        {
+            if (_trananDbContext.MovieScreenings == null)
+            {
+                return new List<MovieScreening>();
+            }
+
+            var screenings = await _trananDbContext.MovieScreenings
+                .Include(s => s.Movie)
+                .Include(s => s.Movie.Actors)
+                .Include(s => s.Movie.Directors)
+                .Where(s => s.DateAndTime > DateTime.Now)
+                .ToListAsync();
+
+            foreach (var screening in screenings)
+            {
+                var theater = await _trananDbContext.Theaters.FindAsync(screening.TheaterId);
+
+                if (theater != null)
+                {
+                    var seats = await _trananDbContext.Seats
+                        .Where(st => st.TheaterId == theater.TheaterId)
+                        .Distinct()
+                        .ToListAsync();
+
+                    theater.Seats = seats;
+                    Console.WriteLine(theater.Seats.Count());
+                    screening.Theater = theater;
+
+                    var allReservedSeats = await _trananDbContext.Reservations
+                        .Where(r => r.MovieScreeningId == screening.MovieScreeningId)
+                        .SelectMany(r => r.Seats)
+                        .ToListAsync();
+
+                    screening.ReservedSeats = allReservedSeats;
+                }
+            }
+
+            return screenings;
+        }
+        catch (Exception e)
+        {
+            Console.WriteLine(e.Message);
+        }
+
+        return null;
     }
 
     public async Task<MovieScreening> CreateAsync(MovieScreening movieScreening)
@@ -218,5 +230,4 @@ public class MovieScreeningRepository : IRepository<MovieScreening>
 
         return overlappingScreenings.Count == 0;
     }
-    
 }

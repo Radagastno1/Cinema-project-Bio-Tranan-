@@ -63,9 +63,7 @@ public class TrananDbContext : DbContext, ITrananDbContext
             .WithOne(s => s.Movie)
             .HasForeignKey(s => s.MovieId);
 
-        modelBuilder.Entity<Theater>().HasMany(m => m.MovieScreenings).WithOne(a => a.Theater);
-        modelBuilder
-            .Entity<MovieScreening>()
+            modelBuilder.Entity<MovieScreening>()
             .HasOne(m => m.Theater)
             .WithMany(t => t.MovieScreenings);
 
