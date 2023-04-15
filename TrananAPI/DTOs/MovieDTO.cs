@@ -16,6 +16,7 @@ public class MovieDTO
     public int MaxScreenings { get; set; }
     public int AmountOfScreenings { get; set; }
     public string ImageUrl { get; set; }
+    public decimal Price { get; set; }
     public List<ActorDTO> ActorDTOs { get; set; }
     public List<DirectorDTO> DirectorDTOs { get; set; }
 
@@ -30,7 +31,8 @@ public class MovieDTO
         int maxScreenings,
         string imageUrl,
         List<ActorDTO> actorDTOs,
-        List<DirectorDTO> directorDTOs
+        List<DirectorDTO> directorDTOs,
+        decimal price
     )
     {
         MovieId = movieId;
@@ -44,5 +46,6 @@ public class MovieDTO
         ImageUrl = imageUrl;
         ActorDTOs = actorDTOs;
         DirectorDTOs = directorDTOs;
+        Price = price;
     }
 }

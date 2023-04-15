@@ -18,7 +18,8 @@ public class Mapper
             movie.MaxScreenings,
             movie.ImageUrl,
             movie.Actors.Select(a => GenerateActorDTO(a)).ToList(),
-            movie.Directors.Select(d => GenerateDirectorDTO(d)).ToList()
+            movie.Directors.Select(d => GenerateDirectorDTO(d)).ToList(),
+            movie.Price
         );
         return movieDTO;
     }
@@ -36,7 +37,8 @@ public class Mapper
             movieDTO.MaxScreenings,
             movieDTO.ImageUrl,
             movieDTO.ActorDTOs.Select(a => GenerateActor(a)).ToList(),
-            movieDTO.DirectorDTOs.Select(d => GenerateDirector(d)).ToList()
+            movieDTO.DirectorDTOs.Select(d => GenerateDirector(d)).ToList(),
+            movieDTO.Price
         );
         return movie;
     }
@@ -101,9 +103,9 @@ public class Mapper
             movieScreening.MovieScreeningId,
             movieScreening.DateAndTime,
             GenerateMovieDTO(movieScreening.Movie),
-            // GenerateTheaterDTO(movieScreening.Theater),
             movieScreening.Theater.Name,
-            GenerateAllSeats(movieScreening)
+            GenerateAllSeats(movieScreening),
+            movieScreening.PricePerPerson
         );
         return movieScreeningDTO;
     }
@@ -139,7 +141,8 @@ public class Mapper
             theaterDTO.TheaterId,
             theaterDTO.Name,
             theaterDTO.Rows,
-            GenerateSeats(theaterDTO.SeatDTOs)
+            GenerateSeats(theaterDTO.SeatDTOs),
+            theaterDTO.TheaterPrice
         );
         return theater;
     }
@@ -150,7 +153,8 @@ public class Mapper
             theater.TheaterId,
             theater.Name,
             theater.Rows,
-            GenerateSeatsDTO(theater.Seats)
+            GenerateSeatsDTO(theater.Seats),
+            theater.TheaterPrice
         );
         return theaterDTO;
     }

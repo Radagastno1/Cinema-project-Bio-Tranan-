@@ -23,10 +23,11 @@ builder.Services.AddScoped<TrananAPI.Services.TheaterService>();
 builder.Services.AddScoped<TrananAPI.Services.MovieScreeningService>();
 builder.Services.AddScoped<TrananAPI.Services.ReservationService>();
 
-builder.Services.AddScoped<Core.Data.Repository.MovieRepository>();
-builder.Services.AddScoped<Core.Data.Repository.MovieScreeningRepository>();
-builder.Services.AddScoped<Core.Data.Repository.ReservationRepository>();
-builder.Services.AddScoped<Core.Data.Repository.TheaterRepository>();
+builder.Services.AddScoped<Core.Interface.IRepository<Core.Models.Movie>,Core.Data.Repository.MovieRepository>();
+builder.Services.AddScoped<Core.Interface.IRepository<Core.Models.MovieScreening>,Core.Data.Repository.MovieScreeningRepository>();
+builder.Services.AddScoped<Core.Interface.IRepository<Core.Models.Reservation>,Core.Data.Repository.ReservationRepository>();
+builder.Services.AddScoped<Core.Interface.IRepository<Core.Models.Theater>,Core.Data.Repository.TheaterRepository>();
+builder.Services.AddScoped<Core.Interface.IActorRepository,Core.Data.Repository.ActorRepository>();
 builder.Services.AddScoped<Core.Data.Repository.SeatRepository>();
 
 builder.Services.AddScoped<Core.Services.MovieCoreService>();

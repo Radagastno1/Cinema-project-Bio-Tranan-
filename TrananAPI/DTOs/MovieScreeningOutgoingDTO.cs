@@ -8,8 +8,7 @@ public class MovieScreeningOutgoingDTO
 
     public DateTime DateAndTime { get; set; }
     public MovieDTO MovieDTO { get; set; }
-
-    // public TheaterDTO TheaterDTO { get; set; }
+    public decimal PricePerPerson { get; set; }
     public string TheaterName { get; set; }
     public List<SeatDTO> AllSeatDTOs { get; set; }
 
@@ -20,14 +19,15 @@ public class MovieScreeningOutgoingDTO
         DateTime dateAndTime,
         MovieDTO movieDTO,
         string theaterName,
-        List<SeatDTO> allSeats
+        List<SeatDTO> allSeats,
+        decimal pricePerPerson
     )
     {
         MovieScreeningId = movieScreeningId;
         DateAndTime = dateAndTime;
         MovieDTO = movieDTO;
-        // TheaterDTO = theaterDTO;
         TheaterName = theaterName;
         AllSeatDTOs = allSeats;
+        PricePerPerson = pricePerPerson;
     }
 }
