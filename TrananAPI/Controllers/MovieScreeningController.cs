@@ -82,8 +82,8 @@ public class MovieScreeningController : ControllerBase
     {
         try
         {
-            await _movieScreeningService.UpdateMovieScreening(movieScreeningDTO);
-            return Ok();
+            var updatedMovieScreening = await _movieScreeningService.UpdateMovieScreening(movieScreeningDTO);
+            return Ok(updatedMovieScreening);
         }
         catch (Exception e)
         {
