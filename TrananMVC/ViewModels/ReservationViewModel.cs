@@ -7,7 +7,7 @@ public class ReservationViewModel
     public int ReservationCode { get; set; }
     public int MovieScreeningId { get; set; }
     public CustomerViewModel CustomerViewModel { get; set; } = new();
-    public List<int> SeatIds { get; set; }
+    public List<int> SeatIds { get; set; } = new();
 
     public ReservationViewModel() { }
 
