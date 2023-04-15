@@ -1,9 +1,7 @@
 @model TrananMVC.ViewModel.MovieScreeningReservationViewModel
-<div class="menu">
-    <a href="/home/movies">Alla filmer</a>
-    <a href="/schema/index">Biljetter</a>
-    <a href="/home/aboutus">Om oss</a>
-</div>
+@{
+    ViewData["Title"] = "Reservera biljetter";
+}
 
 <div class="movie-poster">
     <a asp-controller="Movie" asp-action="Details" asp-route-movieId="@Model.MovieScreeningViewModel.MovieId">
@@ -14,9 +12,9 @@
 @using (Html.BeginForm("PostReservation", "Reservation", FormMethod.Post))
 {
     <h4>Välj stolar:</h4>
-    @foreach (var seat in Model.MovieScreeningViewModel.AvailebleSeats)
+    @foreach (var seat in Model.MovieScreeningViewModel.AvailableSeats)
     {
-        <input type="checkbox" name="ReservationViewModel.SeatIds" value="@seat.SeatId">
+        <input type="checkbox" class="seats-checkbox" name="ReservationViewModel.SeatIds" value="@seat.SeatId">
         <label>Rad: @seat.Row Stolnummer: @seat.SeatNumber ID:@seat.SeatId</label>
     }
     
@@ -34,8 +32,31 @@
     <input type="hidden" name="ReservationViewModel.MovieScreeningId"
         value="@Model.ReservationViewModel.MovieScreeningId" />
 
+
+    <p id="total-price">Totala pris: @Model.ReservationViewModel.Price</p>
+
+     <input type="hidden" name="ReservationViewModel.Price"
+        value="@Model.ReservationViewModel.Price" />
+
     <button type="submit" id="button" >Reservera</button>
 }
+
+@section Scripts {
+    <script>
+        const seatCheckboxes = document.querySelectorAll('.seat-checkbox');
+        const totalPriceParagraph = document.querySelector('#total-price');
+        
+        function updateTotalPrice() {
+            const numSeatsSelected = Array.from(seatCheckboxes).filter(cb => cb.checked).length;
+            const pricePerSeat = @Model.ReservationViewModel.Price;
+            const totalPrice = numSeatsSelected * pricePerSeat;
+            totalPriceParagraph.innerText = `Totala pris: ${totalPrice} kr`;
+        }
+        
+        seatCheckboxes.forEach(cb => cb.addEventListener('change', updateTotalPrice));
+    </script>
+}
+
 
 
 

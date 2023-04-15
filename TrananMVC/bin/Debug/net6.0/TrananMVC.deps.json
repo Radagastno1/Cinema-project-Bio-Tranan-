@@ -440,6 +440,7 @@
         "dependencies": {
           "Microsoft.EntityFrameworkCore.Sqlite": "7.0.5",
           "Swashbuckle.AspNetCore": "6.5.0",
+          "Microsoft.EntityFrameworkCore": "7.0.5",
           "Newtonsoft.Json": "13.0.3"
         },
         "runtime": {

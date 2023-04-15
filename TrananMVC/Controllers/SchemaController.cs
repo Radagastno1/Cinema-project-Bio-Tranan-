@@ -13,8 +13,6 @@ public class SchemaController : Controller
     {
         _movieScreeningService = movieScreeningService;
     }
-    //visar schemat för kommande visningar, där man kan välja en knapp
-    // - reservera och komma till reservation controller
     public async Task<IActionResult> Index()
     {
         var movieScreeningViewModels = await _movieScreeningService.GetUpcomingScreenings();

@@ -5,23 +5,47 @@ namespace TrananMVC.Service;
 
 public class Mapper
 {
-    public static MovieScreeningViewModel GenerateMovieScreeningToViewModel(
+   public static MovieScreeningViewModel GenerateMovieScreeningToViewModel(
         MovieScreening movieScreening
     )
     {
-        var movieScreeningViewModel = new MovieScreeningViewModel()
-        {
-            MovieScreeningId = movieScreening.MovieScreeningId,
-            DateAndTime = movieScreening.DateAndTime,
-            MovieId = movieScreening.Movie.MovieId,
-            MovieTitle = movieScreening.Movie.Title,
-            MovieImageUrl = movieScreening.Movie.ImageUrl,
-            TheaterName = movieScreening.Theater.Name,
-            AvailebleSeats = GenerateSeatsToViewModels(
-                movieScreening.Theater.Seats.Except(movieScreening.ReservedSeats).ToList()
-            ) //om man nu ska välja detta redan här? kolla på det
-        };
+        var movieScreeningViewModel = new MovieScreeningViewModel(
+            movieScreening.MovieScreeningId,
+            movieScreening.DateAndTime,
+            movieScreening.Movie.MovieId,
+            movieScreening.Movie.Title,
+            movieScreening.Movie.ImageUrl,
+            movieScreening.Theater.Name,
+            movieScreening.PricePerPerson,
+            GenerateAllSeats(movieScreening)
+        );
+
         return movieScreeningViewModel ?? new MovieScreeningViewModel();
+    }
+
+    private static List<SeatViewModel> GenerateAllSeats(MovieScreening movieScreening)
+    {
+        var allSeats = new List<SeatViewModel>();
+        foreach (var seat in movieScreening.Theater.Seats)
+        {
+            bool isBooked = false;
+            if (movieScreening.ReservedSeats != null)
+            {
+                isBooked = movieScreening.ReservedSeats.Any(rs => rs.SeatId == seat.SeatId);
+            }
+            allSeats.Add(
+                new SeatViewModel()
+                {
+                    SeatId = seat.SeatId,
+                    Row = seat.Row,
+                    SeatNumber = seat.SeatNumber,
+                    IsBooked = isBooked,
+                    IsNotBookable = seat.IsNotBookable,
+                    IsWheelChairSpace = seat.IsWheelChairSpace
+                }
+            );
+        }
+        return allSeats;
     }
 
     public static TheaterViewModel GenerateTheaterToViewModel(Theater theater)
@@ -115,7 +139,9 @@ public class Mapper
     //     };
     // }
 
-    public static async Task<Reservation> GenerateReservation(ReservationViewModel reservationViewModel)
+    public static async Task<Reservation> GenerateReservation(
+        ReservationViewModel reservationViewModel
+    )
     {
         var reservation = await Reservation.CreateReservationAsync(
             reservationViewModel.Price,

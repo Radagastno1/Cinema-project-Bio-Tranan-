@@ -1,10 +1,7 @@
 @model List<TrananMVC.ViewModel.MovieScreeningViewModel>
-
-<div class="menu">
-    <a href="/home/movies">Alla filmer</a>
-    <a href="/schema/index">Biljetter</a>
-    <a href="/home/aboutus">Om oss</a>
-</div>
+@{
+    ViewData["Title"] = "Filmvisningar";
+}
 
 <table>
     <thead>
@@ -25,9 +22,9 @@
                 <td>@screening.DateAndTime.ToShortDateString()</td>
                 <td>@screening.DateAndTime.ToString("HH:mm")</td>
                 <td>@screening.TheaterName</td>
-                <td>@screening.AvailebleSeats.Count</td>
+                <td>@screening.AvailableSeats.Count</td>
                 <td>
-                    @if (screening.AvailebleSeats.Count > 0)
+                    @if (screening.AvailableSeats.Count > 0)
                     {
                         <a asp-controller="Reservation" asp-action="Create"
                             asp-route-movieScreeningId="@screening.MovieScreeningId">
