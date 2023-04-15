@@ -28,7 +28,7 @@ builder.Services.AddScoped<Core.Interface.IRepository<Core.Models.MovieScreening
 builder.Services.AddScoped<Core.Interface.IRepository<Core.Models.Reservation>,Core.Data.Repository.ReservationRepository>();
 builder.Services.AddScoped<Core.Interface.IRepository<Core.Models.Theater>,Core.Data.Repository.TheaterRepository>();
 builder.Services.AddScoped<Core.Interface.IActorRepository,Core.Data.Repository.ActorRepository>();
-builder.Services.AddScoped<Core.Data.Repository.SeatRepository>();
+builder.Services.AddScoped<Core.Interface.ISeatRepository,Core.Data.Repository.SeatRepository>();
 
 builder.Services.AddScoped<Core.Services.MovieCoreService>();
 builder.Services.AddScoped<Core.Services.MovieScreeningCoreService>();

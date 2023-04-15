@@ -17,6 +17,7 @@ public class MovieDTO
     public int AmountOfScreenings { get; set; }
     public string ImageUrl { get; set; }
     public decimal Price { get; set; }
+    public string TrailerId{get;set;}
     public List<ActorDTO> ActorDTOs { get; set; }
     public List<DirectorDTO> DirectorDTOs { get; set; }
 
@@ -32,7 +33,7 @@ public class MovieDTO
         string imageUrl,
         List<ActorDTO> actorDTOs,
         List<DirectorDTO> directorDTOs,
-        decimal price
+        decimal price, string trailerId
     )
     {
         MovieId = movieId;
@@ -47,5 +48,6 @@ public class MovieDTO
         ActorDTOs = actorDTOs;
         DirectorDTOs = directorDTOs;
         Price = price;
+        TrailerId = trailerId;
     }
 }

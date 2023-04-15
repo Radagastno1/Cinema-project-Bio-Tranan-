@@ -19,7 +19,8 @@ public class Mapper
             movie.ImageUrl,
             movie.Actors.Select(a => GenerateActorDTO(a)).ToList(),
             movie.Directors.Select(d => GenerateDirectorDTO(d)).ToList(),
-            movie.Price
+            movie.Price,
+            movie.TrailerId ?? null
         );
         return movieDTO;
     }
@@ -38,7 +39,8 @@ public class Mapper
             movieDTO.ImageUrl,
             movieDTO.ActorDTOs.Select(a => GenerateActor(a)).ToList(),
             movieDTO.DirectorDTOs.Select(d => GenerateDirector(d)).ToList(),
-            movieDTO.Price
+            movieDTO.Price,
+            movieDTO.TrailerId ?? null
         );
         return movie;
     }
@@ -126,7 +128,7 @@ public class Mapper
                     SeatId = seat.SeatId,
                     Row = seat.Row,
                     SeatNumber = seat.SeatNumber,
-                    IsBooked = isBooked,
+                    IsBooked = isBooked,  //för att sätta vilken stol som är bokad när det visas
                     IsNotBookable = seat.IsNotBookable,
                     IsWheelChairSpace = seat.IsWheelChairSpace
                 }
