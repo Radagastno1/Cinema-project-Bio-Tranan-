@@ -2,15 +2,16 @@
 using Microsoft.AspNetCore.Mvc;
 using TrananMVC.ViewModel;
 using TrananMVC.Service;
+using TrananMVC.Interface;
 
 namespace TrananMVC.Controllers;
 
 public class BioController : Controller
 {
     private readonly MovieScreeningService _movieScreeningService;
-    private readonly MovieService _movieService;
+    private readonly IMovieService _movieService;
 
-    public BioController(MovieScreeningService movieScreeningService, MovieService movieService)
+    public BioController(MovieScreeningService movieScreeningService, IMovieService movieService)
     {
         _movieScreeningService = movieScreeningService;
         _movieService = movieService;
@@ -18,7 +19,7 @@ public class BioController : Controller
 
     public async Task<IActionResult> Index()
     {
-        var upcomingMovies = await _movieService.GetUpcomingMovies();
+        var upcomingMovies = await _movieService.GetUpcomingMoviesAsync();
         return View(upcomingMovies);
     }
 

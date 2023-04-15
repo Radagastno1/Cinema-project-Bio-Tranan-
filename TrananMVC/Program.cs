@@ -22,8 +22,9 @@ builder.Services.AddScoped<Core.Services.SeatCoreService>();
 builder.Services.AddScoped<Core.Services.ReservationCoreService>();
 
 builder.Services.AddScoped<TrananMVC.Service.MovieScreeningService>();
-builder.Services.AddScoped<TrananMVC.Service.MovieService>();
+builder.Services.AddScoped<TrananMVC.Interface.IMovieService,TrananMVC.Service.MovieService>();
 builder.Services.AddScoped<TrananMVC.Service.ReservationService>();
+builder.Services.AddScoped<TrananMVC.Interface.IMovieTrailerService,TrananMVC.ApiServices.MovieTrailerService>();
 
 var app = builder.Build();
 

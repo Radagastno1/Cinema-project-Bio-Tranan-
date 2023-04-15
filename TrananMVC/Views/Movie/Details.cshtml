@@ -10,6 +10,13 @@
         <img src="@Html.Raw(@Model.ImageUrl)" />
     </div>
 
+    <div class="movie-trailer">
+        @if (@Model.TrailerLink != null)
+        {
+            <iframe width="560" height="315" src="@Model.TrailerLink" frameborder="0" allowfullscreen allow="autoplay; encrypted-media"></iframe>
+        }
+    </div>
+
     <div class="movie-information">
         <h2>@Model.Title</h2>
 

@@ -1,32 +1,37 @@
 using Core.Services;
 using TrananMVC.ViewModel;
+using TrananMVC.Interface;
 
 namespace TrananMVC.Service;
 
-public class MovieService
+public class MovieService : IMovieService
 {
     private readonly MovieCoreService _movieCoreService;
+    private readonly IMovieTrailerService _movieTrailerService;
 
-    public MovieService(MovieCoreService movieCoreService)
+    public MovieService(MovieCoreService movieCoreService, IMovieTrailerService movieTrailerService)
     {
         _movieCoreService = movieCoreService;
+        _movieTrailerService = movieTrailerService;
     }
-      public async Task<List<MovieViewModel>> GetUpcomingMovies()
+    public async Task<List<MovieViewModel>> GetUpcomingMoviesAsync()
     {
         try
         {
             var movies = await _movieCoreService.GetAllMovies();
             var upcomingMovies = movies.Where(m => m.AmountOfScreenings < m.MaxScreenings);
-            var moviesAsViewModels = movies.Select(m => Mapper.GenerateMovieAsViewModel(m)).ToList();
+            var moviesAsViewModels = movies
+                .Select(m => Mapper.GenerateMovieAsViewModel(m))
+                .ToList();
             return moviesAsViewModels;
         }
-        catch(Exception)
+        catch (Exception)
         {
             return new List<MovieViewModel>();
         }
     }
 
-    public async Task<List<MovieViewModel>> GetAllMovies()
+    public async Task<List<MovieViewModel>> GetAllMoviesAsync()
     {
         try
         {
@@ -39,12 +44,15 @@ public class MovieService
         }
     }
 
-    public async Task<MovieViewModel> GetMovieById(int movieId)
+    public async Task<MovieViewModel> GetMovieByIdAsync(int movieId)
     {
         try
         {
             var movie = await _movieCoreService.GetMovieById(movieId);
-            return Mapper.GenerateMovieAsViewModel(movie);
+            var movieViewModel = Mapper.GenerateMovieAsViewModel(movie);
+            movieViewModel.TrailerLink =
+                await _movieTrailerService.GetTrailerLinkByMovieId(movie) ?? null;
+            return movieViewModel;
         }
         catch (Exception)
         {

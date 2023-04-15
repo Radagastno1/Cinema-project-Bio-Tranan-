@@ -93,7 +93,8 @@ public class Mapper
             movie.AmountOfScreenings,
             movie.ImageUrl,
             ActorsAsViewModels(movie.Actors),
-            DirectorsAsViewModels(movie.Directors)
+            DirectorsAsViewModels(movie.Directors),
+            movie.TrailerId
         );
     }
 

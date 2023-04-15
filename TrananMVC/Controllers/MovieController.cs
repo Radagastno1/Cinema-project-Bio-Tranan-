@@ -1,22 +1,22 @@
 using System.Diagnostics;
 using Microsoft.AspNetCore.Mvc;
 using TrananMVC.ViewModel;
-using TrananMVC.Service;
+using TrananMVC.Interface;
 
 namespace TrananMVC.Controllers;
 
 public class MovieController : Controller
 {
-    private readonly MovieService _movieService;
+    private readonly IMovieService _movieService;
 
-    public MovieController(MovieService movieService)
+    public MovieController(IMovieService movieService)
     {
         _movieService = movieService;
     }
     //info om en film
     public async Task<IActionResult> Details(int movieId)
     {
-        var movieViewModel = await _movieService.GetMovieById(movieId);
+        var movieViewModel = await _movieService.GetMovieByIdAsync(movieId);
         return View(movieViewModel);
     }
     //visa sidan där man kan ge rate på movie
