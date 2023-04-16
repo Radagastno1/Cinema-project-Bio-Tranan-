@@ -29,12 +29,15 @@ builder.Services.AddScoped<Core.Interface.IRepository<Core.Models.Reservation>,C
 builder.Services.AddScoped<Core.Interface.IRepository<Core.Models.Theater>,Core.Data.Repository.TheaterRepository>();
 builder.Services.AddScoped<Core.Interface.IActorRepository,Core.Data.Repository.ActorRepository>();
 builder.Services.AddScoped<Core.Interface.ISeatRepository,Core.Data.Repository.SeatRepository>();
+builder.Services.AddScoped<Core.Interface.IRepository<Core.Models.Review>,Core.Data.Repository.ReviewRepository>();
+builder.Services.AddScoped<Core.Interface.IMovieScreeningRepository,Core.Data.Repository.MovieScreeningRepository>();
 
 builder.Services.AddScoped<Core.Services.MovieCoreService>();
 builder.Services.AddScoped<Core.Services.MovieScreeningCoreService>();
 builder.Services.AddScoped<Core.Services.TheaterCoreService>();
 builder.Services.AddScoped<Core.Services.SeatCoreService>();
 builder.Services.AddScoped<Core.Services.ReservationCoreService>();
+builder.Services.AddScoped<Core.Services.ReviewCoreService>();
 
 var app = builder.Build();
 
