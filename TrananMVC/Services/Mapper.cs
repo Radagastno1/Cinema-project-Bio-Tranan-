@@ -5,17 +5,18 @@ namespace TrananMVC.Service;
 
 public class Mapper
 {
-    public static Review GenerateReview(ReviewViewModel reviewViewModel)
+    public static Review GenerateReview(ReviewViewModel reviewViewModel, Reservation reservation)
     {
-        return new Review()
+        var review = new Review()
         {
             Rating = reviewViewModel.Rating,
             Comment = reviewViewModel.Comment,
             ReservationCode = reviewViewModel.ReservationCode,
-            MovieId = reviewViewModel.MovieViewModel.MovieId
+            MovieId = reviewViewModel.MovieViewModel.MovieId,
+            Reservation = reservation
         };
+        return review;
     }
-
     public static ReviewViewModel GenerateReviewAsViewModel(Review review)
     {
         var reviewViewModel = new ReviewViewModel(

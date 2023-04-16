@@ -10,12 +10,19 @@ public class MovieController : Controller
 {
     private readonly IMovieService _movieService;
     private readonly MovieScreeningService _movieScreeningService;
+    private readonly ReviewService _reviewService;
 
-    public MovieController(IMovieService movieService, MovieScreeningService movieScreeningService)
+    public MovieController(
+        IMovieService movieService,
+        MovieScreeningService movieScreeningService,
+        ReviewService reviewService
+    )
     {
         _movieService = movieService;
         _movieScreeningService = movieScreeningService;
+        _reviewService = reviewService;
     }
+
     public async Task<IActionResult> Details(int movieId)
     {
         var movieViewModel = await _movieService.GetMovieByIdAsync(movieId);
@@ -28,14 +35,23 @@ public class MovieController : Controller
         var movie = await _movieService.GetMovieByIdAsync(movieScreening.MovieId);
         var reviewViewModel = new ReviewViewModel();
         reviewViewModel.MovieViewModel = movie;
-        return View(reviewViewModel); 
+        return View(reviewViewModel);
     }
-    
+
     [HttpPost]
-    public async Task<IActionResult> PostRating(ReviewViewModel reviewViewModel)
+    public async Task<IActionResult> PostReview(ReviewViewModel reviewViewModel)
     {
-        // var createdReview = await 
-        return View();
+        var movieViewModel = await _movieService.GetMovieByIdAsync(
+            reviewViewModel.MovieViewModel.MovieId
+        );
+        reviewViewModel.MovieViewModel = movieViewModel;
+        var createdReview = await _reviewService.CreateReview(reviewViewModel);
+
+        return RedirectToAction(
+            "Details",
+            "Movie",
+            new { movieId = reviewViewModel.MovieViewModel.MovieId }
+        );
     }
     //  public async Task<IActionResult> TopMovies()
     // {
@@ -43,5 +59,4 @@ public class MovieController : Controller
     //     var topMovies = movies.OrderByDescending(m => m.Rating);
     //     return View(topMovies);
     // }
-
 }

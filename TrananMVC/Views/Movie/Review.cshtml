@@ -9,18 +9,17 @@
 
     <label>Alias:</label>
     <input type="text" name="Alias" value="@Model.Alias">
-
+    <br>
     <label>Betyg:</label>
-    <input type="range" name="Rating" min="1" max="10" value=@Model.Rating>
-
+    <input type="range" name="Rating" min="1" max="10" value="@Model.Rating">
+    <br>
     <label>Recension:</label>
     <input type="text" name="Comment" value="@Model.Comment">
-
+    <br>
     <label>ReservationsKod:</label>
     <input type="number" name="ReservationCode" value="@Model.ReservationCode">
-
-    <input type="hidden" name="MovieId" value="@Model.MovieViewModel.MovieId">
-
+    <br>
+    <input type="hidden" name="MovieViewModel.MovieId" value="@Model.MovieViewModel.MovieId">
+    <br>
     <button type="submit" id="button">Lämna min review</button>
-
 }

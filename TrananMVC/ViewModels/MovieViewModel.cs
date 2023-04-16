@@ -17,10 +17,9 @@ public class MovieViewModel
     public string ImageUrl { get; set; }
     public string TrailerId{get;set;}
     public string TrailerLink{get;set;}
-
     public List<ActorViewModel> Actors { get; set; }
     public List<DirectorViewModel> Directors { get; set; }
-
+    public List<ReviewViewModel> Reviews{get;set;} //hämta reviews till filmen direkt :)
     public MovieViewModel() { }
 
     public MovieViewModel(

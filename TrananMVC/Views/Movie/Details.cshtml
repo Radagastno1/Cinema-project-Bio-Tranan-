@@ -25,8 +25,6 @@
     }
 </div>
 
-
-
     <div class="movie-information">
         <h2>@Model.Title</h2>
 
@@ -46,6 +44,22 @@
             <li>@director.FirstName @director.LastName</li>
         }
     </div>
+ @if (Model.Reviews != null && Model.Reviews.Any())
+{
+    <h3>Kommentarer</h3>
+    <ul>
+        @foreach (var review in Model.Reviews)
+        {
+            <li>
+                <strong>@review.Alias</strong>
+                <br />
+                Betyg: @review.Rating / 10
+                <br />
+                @review.Comment
+            </li>
+        }
+    </ul>
+}
 
 </div>
 

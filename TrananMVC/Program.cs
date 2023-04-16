@@ -28,6 +28,7 @@ builder.Services.AddScoped<TrananMVC.Service.MovieScreeningService>();
 builder.Services.AddScoped<TrananMVC.Interface.IMovieService,TrananMVC.Service.MovieService>();
 builder.Services.AddScoped<TrananMVC.Service.ReservationService>();
 builder.Services.AddScoped<TrananMVC.Interface.IMovieTrailerService,TrananMVC.ApiServices.MovieTrailerService>();
+builder.Services.AddScoped<TrananMVC.Service.ReviewService>();
 
 var app = builder.Build();
 

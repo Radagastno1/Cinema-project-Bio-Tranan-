@@ -7,28 +7,32 @@ namespace TrananMVC.Service;
 public class ReviewService 
 {
     private readonly ReviewCoreService _reviewCoreService;
+    private readonly ReservationCoreService _reservationCoreService;
 
-    public ReviewService(ReviewCoreService reviewCoreService)
+    public ReviewService(ReviewCoreService reviewCoreService, ReservationCoreService reservationCoreService)
     {
         _reviewCoreService = reviewCoreService;
+        _reservationCoreService = reservationCoreService;
     }
 
     public async Task<ReviewViewModel> CreateReview(ReviewViewModel reviewViewModel)
     {
-        var review = Mapper.GenerateReview(reviewViewModel);
+        var reservation = await _reservationCoreService.GetReservationByReservationCode(reviewViewModel.ReservationCode);
+        var review = Mapper.GenerateReview(reviewViewModel, reservation);
         var createdReview = await _reviewCoreService.CreateReview(review);
         return Mapper.GenerateReviewAsViewModel(createdReview);
     }
-    // public async Task<List<MovieViewModel>> GetAllReviewsAsync()
-    // {
-    //     try
-    //     {
-    //         var movies = await _movieCoreService.GetAllMovies();
-    //         return movies.Select(m => Mapper.GenerateMovieAsViewModel(m)).ToList();
-    //     }
-    //     catch (Exception)
-    //     {
-    //         return new List<MovieViewModel>();
-    //     }
-    // }
+    public async Task<List<ReviewViewModel>> GetReviewsByMovieAsync(int movieId)
+    {
+        try
+        {
+            var allReviews = await _reviewCoreService.GetAllReviews();
+            var reviewsByMovieId = allReviews.Where(r => r.MovieId == movieId).ToList();
+            return reviewsByMovieId.Select(r => Mapper.GenerateReviewAsViewModel(r)).ToList(); 
+        }
+        catch (Exception)
+        {
+            return new List<ReviewViewModel>();
+        }
+    }
 }

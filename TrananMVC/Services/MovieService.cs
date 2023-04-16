@@ -8,11 +8,13 @@ public class MovieService : IMovieService
 {
     private readonly MovieCoreService _movieCoreService;
     private readonly IMovieTrailerService _movieTrailerService;
+    private readonly ReviewService _reviewService;
 
-    public MovieService(MovieCoreService movieCoreService, IMovieTrailerService movieTrailerService)
+    public MovieService(MovieCoreService movieCoreService, IMovieTrailerService movieTrailerService, ReviewCoreService reviewCoreService, ReviewService reviewService)
     {
         _movieCoreService = movieCoreService;
         _movieTrailerService = movieTrailerService;
+        _reviewService = reviewService;
     }
     public async Task<List<MovieViewModel>> GetUpcomingMoviesAsync()
     {
@@ -50,6 +52,7 @@ public class MovieService : IMovieService
         {
             var movie = await _movieCoreService.GetMovieById(movieId);
             var movieViewModel = Mapper.GenerateMovieAsViewModel(movie);
+            movieViewModel.Reviews = await _reviewService.GetReviewsByMovieAsync(movieId) ?? null;
             movieViewModel.TrailerLink =
                 await _movieTrailerService.GetYoutubeTrailerLinkByMovieId(movie) ?? null;
             return movieViewModel;
