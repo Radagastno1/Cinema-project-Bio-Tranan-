@@ -9,15 +9,14 @@
     </a>
 </div>
 
+<div class="text-container">
 @using (Html.BeginForm("PostReservation", "Reservation", FormMethod.Post))
 {
     <h4>Välj stolar:</h4>
     @foreach (var seat in Model.MovieScreeningViewModel.AvailableSeats)
     {
-        <div>
             <input type="checkbox" name="ReservationViewModel.SeatIds" value="@seat.SeatId">
             <label for="seat-@seat.SeatId">Rad: @seat.Row Stolnummer: @seat.SeatNumber</label>
-        </div>
     }
 
     <h4>Förnamn: </h4> <input type="text" name="ReservationViewModel.CustomerViewModel.FirstName"

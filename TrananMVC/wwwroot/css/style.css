@@ -13,6 +13,12 @@ a
 {
     text-decoration: none;
     border-bottom: none;
+    color: black;
+}
+a:hover
+{
+  color: black;
+  opacity:0.5;
 }
 li
 {
@@ -24,18 +30,19 @@ li
 }
 
 .movies-container {
-    display: flex;
-    justify-content: center; /* add this */
-    overflow-x: scroll;
-    gap: 20px;
-  }
+  display: flex;
+  justify-content: center;
+  overflow-x: hidden;
+  gap: 20px;
+}
   
-  .movie-poster img {
-    width: 200px; 
-    height: auto;
-    margin-top: 50px;  
-  }
-  
+.movie-poster img {
+  width: 200px;
+  height: auto;
+  margin-top: 50px;
+  box-shadow: 0 0 10px rgba(255, 255, 255, 0.5);
+}
+
   td,th {padding: .5em 1em;}
   table
   {
@@ -58,5 +65,48 @@ li
     border: none;
     font-size: 10px;
   }
+  body {
+    background-image: url("https://i.imgur.com/hwgwb4r.jpg");
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+  }
+  .container {
+    position: relative;
+    max-width: 960px;
+    margin: 0 auto;
+  }
   
+  header {
+    position: static;
+    top: 0;
+    left: 0;
+    width: 100%;
+    padding: 20px;
+    background-color: rgba(255, 255, 255, 0.5);
+  }
+  .text-container
+  {
+    position: static;
+    top: 0;
+    left: 0;
+    width: 100%;
+    padding: 20px;
+    background-color: rgba(255, 255, 255, 0.8);
+  }
+  
+  h1 {
+    font-size: 75px;
+    font-family: Arial, sans-serif;
+    font-weight: bold;
+    text-transform: uppercase;
+  }
+
+  .seat-selection {
+    display: flex;
+    flex-direction: column;
+  }
+  
+
+
   

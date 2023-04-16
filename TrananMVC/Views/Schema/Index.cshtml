@@ -5,7 +5,7 @@
 
 <table>
     <thead>
-        <tr>
+        <tr class="text-container">
             <th>Film</th>
             <th>Datum</th>
             <th>Tid</th>
@@ -17,7 +17,7 @@
     <tbody>
         @foreach (var screening in Model)
         {
-            <tr>
+            <tr class="text-container">
                 <td>@screening.MovieTitle</td>
                 <td>@screening.DateAndTime.ToShortDateString()</td>
                 <td>@screening.DateAndTime.ToString("HH:mm")</td>

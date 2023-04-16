@@ -5,21 +5,27 @@
 
 @using (Html.BeginForm("PostReview", "Movie", FormMethod.Post))
 {
-    <label>@Model.MovieViewModel.Title</label>
+    <div class="text-container">
+        <h2>@Model.MovieViewModel.Title</h2>
 
-    <label>Alias:</label>
-    <input type="text" name="Alias" value="@Model.Alias">
-    <br>
-    <label>Betyg:</label>
-    <input type="range" name="Rating" min="1" max="10" value="@Model.Rating">
-    <br>
-    <label>Recension:</label>
-    <input type="text" name="Comment" value="@Model.Comment">
-    <br>
-    <label>ReservationsKod:</label>
-    <input type="number" name="ReservationCode" value="@Model.ReservationCode">
-    <br>
-    <input type="hidden" name="MovieViewModel.MovieId" value="@Model.MovieViewModel.MovieId">
-    <br>
-    <button type="submit" id="button">Lämna min review</button>
+        <label>Alias:</label>
+        <br>
+        <input type="text" name="Alias" value="@Model.Alias">
+        <br>
+        <label>Betyg:</label>
+        <br>
+        <input type="range" name="Rating" min="1" max="10" value="@Model.Rating">
+        <br>
+        <label>Recension:</label>
+        <br>
+        <input type="text" name="Comment" value="@Model.Comment">
+        <br>
+        <label>ReservationsKod:</label>
+        <br>
+        <input type="number" name="ReservationCode" value="@Model.ReservationCode">
+        <br>
+        <input type="hidden" name="MovieViewModel.MovieId" value="@Model.MovieViewModel.MovieId">
+        <br>
+        <button type="submit" id="button">Lämna min review</button>
+    </div>
 }

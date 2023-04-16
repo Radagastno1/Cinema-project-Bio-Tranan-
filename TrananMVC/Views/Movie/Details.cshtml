@@ -25,7 +25,7 @@
     }
 </div>
 
-    <div class="movie-information">
+    <div class="text-container">
         <h2>@Model.Title</h2>
 
         <h6>@Model.DurationString | @Model.Language </h6>
@@ -46,15 +46,15 @@
     </div>
  @if (Model.Reviews != null && Model.Reviews.Any())
 {
-    <h3>Kommentarer</h3>
+    <h2>Reviews</h2>
     <ul>
         @foreach (var review in Model.Reviews)
         {
             <li>
-                <strong>@review.Alias</strong>
-                <br />
-                Betyg: @review.Rating / 10
-                <br />
+                <b>Namn:@review.Alias<b>
+                <br>
+                Betyg:@review.Rating / 10
+                <br>
                 @review.Comment
             </li>
         }

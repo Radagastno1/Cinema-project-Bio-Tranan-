@@ -1,10 +1,10 @@
 @model List<TrananMVC.ViewModel.MovieScreeningViewModel>
 
-<h2>Visade filmer senaste månaden</h2>
+<h2 class="text-container">Visade filmer senaste månaden</h2>
 
 <table>
     <thead>
-        <tr>
+        <tr class="text-container">
             <th>Film</th>
             <th>Lämna omdömde</th>
         </tr>
@@ -12,7 +12,7 @@
     <tbody>
         @foreach (var screening in Model)
         {
-            <tr>
+            <tr class="text-container">
                 <td>@screening.MovieTitle</td>
                 <td>
                      <a asp-controller="Movie" asp-action="Review"
