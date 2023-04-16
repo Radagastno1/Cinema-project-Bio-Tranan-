@@ -28,6 +28,20 @@ public class MovieScreeningService
             return new List<MovieScreeningViewModel>();
         }
     }
+     public async Task<List<MovieScreeningViewModel>> GetShownScreenings()
+    {
+        try
+        {
+            var movieScreenings = await _movieScreeningCoreService.GetShownScreenings();
+            return movieScreenings
+                .Select(m => Mapper.GenerateMovieScreeningToViewModel(m))
+                .ToList();
+        }
+        catch (Exception)
+        {
+            return new List<MovieScreeningViewModel>();
+        }
+    }
 
     public async Task<MovieScreeningViewModel> GetMovieScreeningById(int movieScreeningId)
     {

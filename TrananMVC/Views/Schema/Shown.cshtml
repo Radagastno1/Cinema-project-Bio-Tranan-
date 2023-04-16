@@ -1,0 +1,21 @@
+@model List<TrananMVC.ViewModel.MovieScreeningViewModel>
+
+<h2>Visade filmer senaste månaden</h2>
+
+<table>
+    <thead>
+        <tr>
+            <th>Film</th>
+            <th>Lämna omdömde</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var screening in Model)
+        {
+            <tr>
+                <td>@screening.MovieTitle</td>
+                <td><button type="button">Till review</button></td>
+            </tr>
+        }
+    </tbody>
+</table>

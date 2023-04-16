@@ -13,10 +13,16 @@ public class SchemaController : Controller
     {
         _movieScreeningService = movieScreeningService;
     }
+
     public async Task<IActionResult> Index()
     {
         var movieScreeningViewModels = await _movieScreeningService.GetUpcomingScreenings();
         return View(movieScreeningViewModels);
     }
 
+    public async Task<IActionResult> Shown()
+    {
+        var movieScreeningViewModels = await _movieScreeningService.GetShownScreenings();
+        return View(movieScreeningViewModels);
+    }
 }
