@@ -4,7 +4,7 @@ using Core.Interface;
 
 namespace Core.Data.Repository;
 
-public class MovieScreeningRepository : IRepository<MovieScreening>
+public class MovieScreeningRepository : IRepository<MovieScreening>, IMovieScreeningRepository
 {
     private readonly TrananDbContext _trananDbContext;
 
@@ -26,7 +26,7 @@ public class MovieScreeningRepository : IRepository<MovieScreening>
                 .Include(s => s.Movie)
                 .Include(s => s.Movie.Actors)
                 .Include(s => s.Movie.Directors)
-                .Where(s => s.DateAndTime > DateTime.Now)
+                // .Where(s => s.DateAndTime > DateTime.Now)
                 .FirstAsync(s => s.MovieScreeningId == id);
 
             var theater = await _trananDbContext.Theaters.FindAsync(screening.TheaterId);
@@ -73,6 +73,56 @@ public class MovieScreeningRepository : IRepository<MovieScreening>
                 .Include(s => s.Movie.Actors)
                 .Include(s => s.Movie.Directors)
                 .Where(s => s.DateAndTime > DateTime.Now)
+                .ToListAsync();
+
+            foreach (var screening in screenings)
+            {
+                var theater = await _trananDbContext.Theaters.FindAsync(screening.TheaterId);
+
+                if (theater != null)
+                {
+                    var seats = await _trananDbContext.Seats
+                        .Where(st => st.TheaterId == theater.TheaterId)
+                        .Distinct()
+                        .ToListAsync();
+
+                    theater.Seats = seats;
+                    Console.WriteLine(theater.Seats.Count());
+                    screening.Theater = theater;
+
+                    var allReservedSeats = await _trananDbContext.Reservations
+                        .Where(r => r.MovieScreeningId == screening.MovieScreeningId)
+                        .SelectMany(r => r.Seats)
+                        .ToListAsync();
+
+                    screening.ReservedSeats = allReservedSeats;
+                }
+            }
+
+            return screenings;
+        }
+        catch (Exception e)
+        {
+            Console.WriteLine(e.Message);
+        }
+
+        return null;
+    }
+
+    public async Task<List<MovieScreening>> GetShownAsync()
+    {
+        try 
+        {
+            if (_trananDbContext.MovieScreenings == null)
+            {
+                return new List<MovieScreening>();
+            }
+
+            var screenings = await _trananDbContext.MovieScreenings
+                .Include(s => s.Movie)
+                .Include(s => s.Movie.Actors)
+                .Include(s => s.Movie.Directors)
+                .Where(s => s.DateAndTime.AddMinutes(s.Movie.DurationMinutes) < DateTime.Now)
                 .ToListAsync();
 
             foreach (var screening in screenings)

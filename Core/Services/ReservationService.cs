@@ -27,6 +27,14 @@ public class ReservationCoreService
             await _reservationByScreeningRepository.GetByScreeningIdAsync(movieScreeningId);
         return reservationsForScreening;
     }
+       public async Task<Reservation> GetReservationByReservationCode(
+        int reservationCode
+    )//denna borde hämtas direkt från db, onödig process
+    {
+        var reservations = await _reservationRepository.GetAsync();
+        var reservation = reservations.Where(r => r.ReservationCode == reservationCode).First();
+        return reservation;
+    }
 
     public async Task<Reservation> CreateReservation(Reservation reservation)
     {

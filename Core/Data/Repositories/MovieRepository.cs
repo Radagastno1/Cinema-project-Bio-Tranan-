@@ -34,6 +34,7 @@ public class MovieRepository : IRepository<Movie>
             return await _trananDbContext.Movies
                 .Include(m => m.Actors)
                 .Include(m => m.Directors)
+                .Include(m => m.Reviews)
                 .ToListAsync();
         }
         catch (Exception e)

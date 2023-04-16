@@ -17,13 +17,30 @@ public class ReviewRepository : IRepository<Review>
     {
         try
         {
-            var existingReview = await _trananDbContext.Reviews
-                .Where(r => r.Reservation.ReservationCode == review.Reservation.ReservationCode)
+            //ser om vi hittar reservationen
+            var reservation = await _trananDbContext.Reservations
+                .Where(r => r.ReservationId == review.Reservation.ReservationId)
                 .FirstAsync();
-            if (existingReview == null)
+
+            if (reservation == null)
             {
+                throw new InvalidOperationException("Couldn't find reservation code.");
+            }
+
+            var existingReviewOnReservationCode = await _trananDbContext.Reviews
+                .Where(r => r.Reservation.ReservationCode == reservation.ReservationCode)
+                .FirstOrDefaultAsync();
+
+            if (existingReviewOnReservationCode == null)
+            {
+                var movie = await _trananDbContext.Movies.FindAsync(review.MovieId);
+
+                review.Reservation = reservation;
+                review.Movie = movie;
+
                 await _trananDbContext.Reviews.AddAsync(review);
                 await _trananDbContext.SaveChangesAsync();
+
                 var recentlyAddedReview = await _trananDbContext.Reviews
                     .OrderByDescending(r => r.ReviewId)
                     .FirstOrDefaultAsync();
@@ -32,7 +49,7 @@ public class ReviewRepository : IRepository<Review>
             else
             {
                 throw new InvalidOperationException(
-                    $"Reservationcode {existingReview.Reservation.ReservationCode} has already made a review."
+                    $"Reservationcode {existingReviewOnReservationCode.Reservation.ReservationCode} has already made a review."
                 );
             }
         }

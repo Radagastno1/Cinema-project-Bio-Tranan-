@@ -6,24 +6,33 @@ namespace Core.Services;
 public class MovieScreeningCoreService
 {
     private readonly IRepository<MovieScreening> _movieScreeningRepository;
+    private readonly IMovieScreeningRepository _shownMovieScreeningRepository;
     private readonly IRepository<Theater> _theaterRepository;
     private readonly IRepository<Movie> _movieRepository;
 
     public MovieScreeningCoreService(
         IRepository<MovieScreening> movieScreeningRepository,
         IRepository<Theater> theaterRepository,
-        IRepository<Movie> movieRepository
+        IRepository<Movie> movieRepository,
+        IMovieScreeningRepository shownMovieScreeningRepository
     )
     {
         _movieScreeningRepository = movieScreeningRepository;
         _theaterRepository = theaterRepository;
         _movieRepository = movieRepository;
+        _shownMovieScreeningRepository = shownMovieScreeningRepository;
     }
 
     public async Task<IEnumerable<MovieScreening>> GetUpcomingScreenings()
     {
         var screenings = await _movieScreeningRepository.GetAsync();
         return screenings;
+    }
+
+    public async Task<IEnumerable<MovieScreening>> GetShownScreenings()
+    {
+        var shownScreenings = await _shownMovieScreeningRepository.GetShownAsync();
+        return shownScreenings;
     }
 
     public async Task<MovieScreening> GetMovieScreeningById(int movieScreeningId)
