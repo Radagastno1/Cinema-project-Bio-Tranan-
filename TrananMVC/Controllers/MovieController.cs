@@ -13,7 +13,6 @@ public class MovieController : Controller
     {
         _movieService = movieService;
     }
-    //info om en film
     public async Task<IActionResult> Details(int movieId)
     {
         var movieViewModel = await _movieService.GetMovieByIdAsync(movieId);
@@ -22,7 +21,7 @@ public class MovieController : Controller
     //visa sidan där man kan ge rate på movie
     public async Task<IActionResult> Rate()
     {
-        return View();
+        return View(); 
     }
     //skickar ratingen till api
     [HttpPost]

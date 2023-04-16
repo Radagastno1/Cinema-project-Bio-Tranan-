@@ -51,7 +51,7 @@ public class MovieService : IMovieService
             var movie = await _movieCoreService.GetMovieById(movieId);
             var movieViewModel = Mapper.GenerateMovieAsViewModel(movie);
             movieViewModel.TrailerLink =
-                await _movieTrailerService.GetTrailerLinkByMovieId(movie) ?? null;
+                await _movieTrailerService.GetYoutubeTrailerLinkByMovieId(movie) ?? null;
             return movieViewModel;
         }
         catch (Exception)
