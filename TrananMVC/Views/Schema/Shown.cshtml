@@ -14,7 +14,12 @@
         {
             <tr>
                 <td>@screening.MovieTitle</td>
-                <td><button type="button">Till review</button></td>
+                <td>
+                     <a asp-controller="Movie" asp-action="Review"
+                            asp-route-movieScreeningId="@screening.MovieScreeningId">
+                            <button id="button">Till review</button>
+                        </a>
+                </td>
             </tr>
         }
     </tbody>

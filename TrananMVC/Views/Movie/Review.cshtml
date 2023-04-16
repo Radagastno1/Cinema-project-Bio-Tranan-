@@ -1,0 +1,26 @@
+@model ReviewViewModel
+@{
+    ViewData["Title"] = "Lämna review";
+}
+
+@using (Html.BeginForm("PostReview", "Movie", FormMethod.Post))
+{
+    <label>@Model.MovieViewModel.Title</label>
+
+    <label>Alias:</label>
+    <input type="text" name="Alias" value="@Model.Alias">
+
+    <label>Betyg:</label>
+    <input type="range" name="Rating" min="1" max="10" value=@Model.Rating>
+
+    <label>Recension:</label>
+    <input type="text" name="Comment" value="@Model.Comment">
+
+    <label>ReservationsKod:</label>
+    <input type="number" name="ReservationCode" value="@Model.ReservationCode">
+
+    <input type="hidden" name="MovieId" value="@Model.MovieViewModel.MovieId">
+
+    <button type="submit" id="button">Lämna min review</button>
+
+}

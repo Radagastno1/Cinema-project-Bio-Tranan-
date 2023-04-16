@@ -2,31 +2,39 @@ using System.Diagnostics;
 using Microsoft.AspNetCore.Mvc;
 using TrananMVC.ViewModel;
 using TrananMVC.Interface;
+using TrananMVC.Service;
 
 namespace TrananMVC.Controllers;
 
 public class MovieController : Controller
 {
     private readonly IMovieService _movieService;
+    private readonly MovieScreeningService _movieScreeningService;
 
-    public MovieController(IMovieService movieService)
+    public MovieController(IMovieService movieService, MovieScreeningService movieScreeningService)
     {
         _movieService = movieService;
+        _movieScreeningService = movieScreeningService;
     }
     public async Task<IActionResult> Details(int movieId)
     {
         var movieViewModel = await _movieService.GetMovieByIdAsync(movieId);
         return View(movieViewModel);
     }
-    //visa sidan där man kan ge rate på movie
-    public async Task<IActionResult> Rate()
+
+    public async Task<IActionResult> Review(int movieScreeningId)
     {
-        return View(); 
+        var movieScreening = await _movieScreeningService.GetMovieScreeningById(movieScreeningId);
+        var movie = await _movieService.GetMovieByIdAsync(movieScreening.MovieId);
+        var reviewViewModel = new ReviewViewModel();
+        reviewViewModel.MovieViewModel = movie;
+        return View(reviewViewModel); 
     }
-    //skickar ratingen till api
+    
     [HttpPost]
-    public async Task<IActionResult> PostRating()
+    public async Task<IActionResult> PostRating(ReviewViewModel reviewViewModel)
     {
+        // var createdReview = await 
         return View();
     }
     //  public async Task<IActionResult> TopMovies()

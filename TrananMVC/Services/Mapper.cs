@@ -5,7 +5,29 @@ namespace TrananMVC.Service;
 
 public class Mapper
 {
-   public static MovieScreeningViewModel GenerateMovieScreeningToViewModel(
+    public static Review GenerateReview(ReviewViewModel reviewViewModel)
+    {
+        return new Review()
+        {
+            Rating = reviewViewModel.Rating,
+            Comment = reviewViewModel.Comment,
+            ReservationCode = reviewViewModel.ReservationCode,
+            MovieId = reviewViewModel.MovieViewModel.MovieId
+        };
+    }
+
+    public static ReviewViewModel GenerateReviewAsViewModel(Review review)
+    {
+        var reviewViewModel = new ReviewViewModel(
+            review.Rating,
+            review.Comment,
+            review.ReservationCode,
+            Mapper.GenerateMovieAsViewModel(review.Movie)
+        );
+        return reviewViewModel;
+    }
+
+    public static MovieScreeningViewModel GenerateMovieScreeningToViewModel(
         MovieScreening movieScreening
     )
     {
@@ -170,7 +192,7 @@ public class Mapper
             movie.Title,
             movie.ImageUrl,
             movieScreening.Theater.Name,
-           GenerateSeatsToViewModels(reservation.Seats)
+            GenerateSeatsToViewModels(reservation.Seats)
         );
     }
 
