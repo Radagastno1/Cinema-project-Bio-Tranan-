@@ -17,6 +17,7 @@ public class TrananDbContext : DbContext, ITrananDbContext
 
     // // public DbSet<Admin> Admins { get; set; }
     public DbSet<Reservation> Reservations { get; set; }
+    public DbSet<Review> Reviews { get; set; }
 
     public TrananDbContext(DbContextOptions<TrananDbContext> options)
         : base(options)
@@ -47,15 +48,9 @@ public class TrananDbContext : DbContext, ITrananDbContext
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
-        modelBuilder
-            .Entity<Movie>()
-            .HasMany(m => m.Actors)
-            .WithMany(a => a.Movies);
+        modelBuilder.Entity<Movie>().HasMany(m => m.Actors).WithMany(a => a.Movies);
 
-        modelBuilder
-            .Entity<Movie>()
-            .HasMany(m => m.Directors)
-            .WithMany(d => d.Movies);
+        modelBuilder.Entity<Movie>().HasMany(m => m.Directors).WithMany(d => d.Movies);
 
         modelBuilder
             .Entity<Movie>()
@@ -63,7 +58,8 @@ public class TrananDbContext : DbContext, ITrananDbContext
             .WithOne(s => s.Movie)
             .HasForeignKey(s => s.MovieId);
 
-            modelBuilder.Entity<MovieScreening>()
+        modelBuilder
+            .Entity<MovieScreening>()
             .HasOne(m => m.Theater)
             .WithMany(t => t.MovieScreenings);
 
@@ -78,5 +74,9 @@ public class TrananDbContext : DbContext, ITrananDbContext
 
         modelBuilder.Entity<Customer>().HasMany(m => m.Reservations).WithOne(a => a.Customer);
         modelBuilder.Entity<Reservation>().HasOne(r => r.Customer).WithMany(c => c.Reservations);
+
+        modelBuilder.Entity<Review>().HasOne(r => r.Movie).WithMany(m => m.Reviews);
+
+        modelBuilder.Entity<Review>().HasOne(r => r.Reservation);
     }
 }

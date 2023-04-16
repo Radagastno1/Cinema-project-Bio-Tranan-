@@ -3,6 +3,7 @@ using System;
 using Core.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -10,9 +11,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace CORE.Migrations
 {
     [DbContext(typeof(TrananDbContext))]
-    partial class TrananDbContextModelSnapshot : ModelSnapshot
+    [Migration("20230416111938_reviewtable")]
+    partial class reviewtable
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder.HasAnnotation("ProductVersion", "7.0.5");
@@ -220,7 +223,8 @@ namespace CORE.Migrations
 
                     b.HasIndex("MovieId");
 
-                    b.HasIndex("ReservationId");
+                    b.HasIndex("ReservationId")
+                        .IsUnique();
 
                     b.ToTable("Reviews");
                 });
@@ -387,8 +391,8 @@ namespace CORE.Migrations
                         .IsRequired();
 
                     b.HasOne("Core.Models.Reservation", "Reservation")
-                        .WithMany()
-                        .HasForeignKey("ReservationId")
+                        .WithOne("Review")
+                        .HasForeignKey("Core.Models.Review", "ReservationId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
@@ -468,6 +472,12 @@ namespace CORE.Migrations
             modelBuilder.Entity("Core.Models.MovieScreening", b =>
                 {
                     b.Navigation("Reservations");
+                });
+
+            modelBuilder.Entity("Core.Models.Reservation", b =>
+                {
+                    b.Navigation("Review")
+                        .IsRequired();
                 });
 
             modelBuilder.Entity("Core.Models.Theater", b =>

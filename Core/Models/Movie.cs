@@ -24,6 +24,7 @@ public class Movie
     public List<Director> Directors { get; set; }
     public List<Actor> Actors { get; set; }
     public List<MovieScreening> MovieScreenings;
+    public List<Review> Reviews{get;set;}
 
      public Movie(
         int movieId,
