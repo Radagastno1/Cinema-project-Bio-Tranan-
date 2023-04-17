@@ -47,7 +47,7 @@ public class ReviewRepository : IRepository<Review>
             else
             {
                 throw new InvalidOperationException(
-                    $"Reservationcode {existingReviewOnReservationCode.ReservationCode} has already made a review."
+                    "Review with this reservationcode has allready made a review ."
                 );
             }
         }
@@ -73,6 +73,10 @@ public class ReviewRepository : IRepository<Review>
         try
         {
             var reviews = await _trananDbContext.Reviews.ToListAsync();
+            if (reviews == null)
+            {
+                return new List<Review>();
+            }
             return reviews;
         }
         catch (Exception e)
@@ -86,6 +90,10 @@ public class ReviewRepository : IRepository<Review>
         try
         {
             var review = await _trananDbContext.Reviews.Where(r => r.ReviewId == id).FirstAsync();
+            if(review == null)
+            {
+                throw new ArgumentNullException("Review not found.");
+            }
             return review;
         }
         catch (Exception e)

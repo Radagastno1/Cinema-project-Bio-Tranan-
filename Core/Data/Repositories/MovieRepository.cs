@@ -29,32 +29,29 @@ public class MovieRepository : IRepository<Movie>
         }
         catch (Exception e)
         {
-            return null;
+            throw new Exception(e.Message);
         }
     }
 
     public async Task<Movie> GetByIdAsync(int id)
     {
-        try 
+        try
         {
-                  var reviews = await _trananDbContext.Reviews.ToListAsync();
-        foreach(var item in reviews)
-        {
-            _trananDbContext.Reviews.Remove(item);
-            Console.WriteLine(item.Comment);
-        }
-
+            if (_trananDbContext.Movies.Count() < 1)
+            {
+                return new Movie();
+            }
             var movie = await _trananDbContext.Movies
                 .Include(m => m.Actors)
                 .Include(m => m.Directors)
+                .Include(m => m.Reviews)
                 .FirstAsync(m => m.MovieId == id);
 
             return movie;
         }
         catch (Exception e)
         {
-            Console.WriteLine(e.Message);
-            return null;
+            throw new Exception(e.Message);
         }
     }
 
@@ -69,15 +66,18 @@ public class MovieRepository : IRepository<Movie>
                 .FirstOrDefaultAsync();
             return recentlyAddedMovie;
         }
+        catch (DbUpdateException e)
+        {
+            throw new DbUpdateException(e.Message);
+        }
         catch (Exception e)
         {
-            Console.WriteLine(e.Message);
-            return null;
+            throw new Exception(e.Message);
         }
     }
 
     public async Task<Movie> UpdateAsync(Movie movie)
-    { 
+    {
         try
         {
             var movieToUpdate = await _trananDbContext.Movies
@@ -108,26 +108,52 @@ public class MovieRepository : IRepository<Movie>
             await _trananDbContext.SaveChangesAsync();
             return movieToUpdate;
         }
+        catch (DbUpdateException e)
+        {
+            throw new DbUpdateException(e.Message);
+        }
         catch (Exception e)
         {
-            Console.WriteLine(e.Message);
-            return null;
+            throw new Exception(e.Message);
         }
     }
+
     public async Task DeleteByIdAsync(int id)
     {
-        var movieToDelete = await _trananDbContext.Movies.FindAsync(id);
-        var deletedMovie = movieToDelete;
-        if (movieToDelete != null)
+        try
         {
-            _trananDbContext.Movies.Remove(movieToDelete);
-            await _trananDbContext.SaveChangesAsync();
+            var movieToDelete = await _trananDbContext.Movies.FindAsync(id);
+            var deletedMovie = movieToDelete;
+            if (movieToDelete != null)
+            {
+                _trananDbContext.Movies.Remove(movieToDelete);
+                await _trananDbContext.SaveChangesAsync();
+            }
+        }
+        catch (DbUpdateException e)
+        {
+            throw new DbUpdateException(e.Message);
+        }
+        catch (Exception e)
+        {
+            throw new Exception(e.Message);
         }
     }
 
     public async Task DeleteAsync()
     {
-        _trananDbContext.Movies.ToList().ForEach(m => _trananDbContext.Movies.Remove(m));
-        await _trananDbContext.SaveChangesAsync();
+        try
+        {
+            _trananDbContext.Movies.ToList().ForEach(m => _trananDbContext.Movies.Remove(m));
+            await _trananDbContext.SaveChangesAsync();
+        }
+        catch (DbUpdateException e)
+        {
+            throw new DbUpdateException(e.Message);
+        }
+        catch (Exception e)
+        {
+            throw new Exception(e.Message);
+        }
     }
 }

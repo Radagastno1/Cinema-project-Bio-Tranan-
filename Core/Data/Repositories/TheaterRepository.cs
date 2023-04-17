@@ -22,13 +22,16 @@ public class TheaterRepository : IRepository<Theater>
                 return new List<Theater>();
             }
             var theaters = await _trananDbContext.Theaters.Include(t => t.Seats).ToListAsync();
+            if (theaters == null)
+            {
+                return new List<Theater>();
+            }
             return theaters;
         }
         catch (Exception e)
         {
-            Console.WriteLine(e.Message);
+            throw new Exception(e.Message);
         }
-        return null;
     }
 
     public async Task<Theater> GetByIdAsync(int id)
@@ -38,12 +41,15 @@ public class TheaterRepository : IRepository<Theater>
             var theater = await _trananDbContext.Theaters
                 .Include(t => t.Seats)
                 .FirstAsync(t => t.TheaterId == id);
+                if(theater == null)
+                {
+
+                }
             return theater;
         }
         catch (Exception e)
         {
-            Console.WriteLine(e.Message);
-            return null;
+            throw new Exception(e.Message);
         }
     }
 
@@ -60,8 +66,7 @@ public class TheaterRepository : IRepository<Theater>
         }
         catch (Exception e)
         {
-            Console.WriteLine(e.Message);
-            return null;
+           throw new Exception(e.Message);
         }
     }
 
@@ -82,10 +87,8 @@ public class TheaterRepository : IRepository<Theater>
         }
         catch (Exception e)
         {
-            Console.WriteLine(e.Message);
-            return null;
+            throw new Exception(e.Message);
         }
-
     }
 
     public async Task DeleteByIdAsync(int id)

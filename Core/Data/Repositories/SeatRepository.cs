@@ -15,6 +15,10 @@ public class SeatRepository : ISeatRepository
     public async Task<Seat> GetSeatByIdAsync(int id)
     {
         var seat = await _dbContext.Seats.FindAsync(id);
+        if(seat == null)
+        {
+            return new Seat();
+        }
         return seat; 
     }
 }

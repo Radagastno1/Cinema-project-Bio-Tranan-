@@ -17,17 +17,16 @@ public class MovieScreeningRepository : IRepository<MovieScreening>, IMovieScree
     {
         try
         {
-            if (_trananDbContext.MovieScreenings == null)
-            {
-                return new MovieScreening();
-            }
-
             var screening = await _trananDbContext.MovieScreenings
                 .Include(s => s.Movie)
                 .Include(s => s.Movie.Actors)
                 .Include(s => s.Movie.Directors)
                 .FirstAsync(s => s.MovieScreeningId == id);
 
+            if (screening == null)
+            {
+                throw new ArgumentException("Moviescreening not found");
+            }
             var theater = await _trananDbContext.Theaters.FindAsync(screening.TheaterId);
 
             if (theater != null)
@@ -51,10 +50,13 @@ public class MovieScreeningRepository : IRepository<MovieScreening>, IMovieScree
 
             return screening;
         }
+        catch (ArgumentException e)
+        {
+            throw new ArgumentException(e.Message);
+        }
         catch (Exception e)
         {
-            Console.WriteLine(e.Message);
-            return null;
+            throw new Exception(e.Message);
         }
     }
 
@@ -97,33 +99,32 @@ public class MovieScreeningRepository : IRepository<MovieScreening>, IMovieScree
                     screening.ReservedSeats = allReservedSeats;
                 }
             }
-
             return screenings;
         }
         catch (Exception e)
         {
-            Console.WriteLine(e.Message);
+            throw new Exception(e.Message);
         }
-
-        return null;
     }
 
     public async Task<List<MovieScreening>> GetShownAsync()
     {
-        try 
+        try
         {
             if (_trananDbContext.MovieScreenings == null)
             {
                 return new List<MovieScreening>();
             }
-
             var screenings = await _trananDbContext.MovieScreenings
                 .Include(s => s.Movie)
                 .Include(s => s.Movie.Actors)
                 .Include(s => s.Movie.Directors)
                 .Where(s => s.DateAndTime.AddMinutes(s.Movie.DurationMinutes) < DateTime.Now)
                 .ToListAsync();
-
+            if (screenings == null)
+            {
+                return new List<MovieScreening>();
+            }
             foreach (var screening in screenings)
             {
                 var theater = await _trananDbContext.Theaters.FindAsync(screening.TheaterId);
@@ -147,15 +148,12 @@ public class MovieScreeningRepository : IRepository<MovieScreening>, IMovieScree
                     screening.ReservedSeats = allReservedSeats;
                 }
             }
-
             return screenings;
         }
         catch (Exception e)
         {
-            Console.WriteLine(e.Message);
+            throw new Exception(e.Message);
         }
-
-        return null;
     }
 
     public async Task<MovieScreening> CreateAsync(MovieScreening movieScreening)
@@ -188,7 +186,6 @@ public class MovieScreeningRepository : IRepository<MovieScreening>, IMovieScree
                         "Theater not available at chosen time and day."
                     );
                 }
-
                 await _trananDbContext.MovieScreenings.AddAsync(movieScreening);
                 await _trananDbContext.SaveChangesAsync();
 
@@ -220,7 +217,7 @@ public class MovieScreeningRepository : IRepository<MovieScreening>, IMovieScree
             catch (Exception e)
             {
                 await transaction.RollbackAsync();
-                throw e;
+                throw new Exception(e.Message);
             }
         }
     }
@@ -246,16 +243,22 @@ public class MovieScreeningRepository : IRepository<MovieScreening>, IMovieScree
         }
         catch (Exception e)
         {
-            Console.WriteLine(e.Message);
-            return null;
+            throw new Exception(e.Message);
         }
     }
 
     public async Task DeleteByIdAsync(int id)
     {
-        var movieScreeningToRemove = await _trananDbContext.MovieScreenings.FindAsync(id);
-        _trananDbContext.MovieScreenings.Remove(movieScreeningToRemove);
-        await _trananDbContext.SaveChangesAsync();
+        try
+        {
+            var movieScreeningToRemove = await _trananDbContext.MovieScreenings.FindAsync(id);
+            _trananDbContext.MovieScreenings.Remove(movieScreeningToRemove);
+            await _trananDbContext.SaveChangesAsync();
+        }
+        catch (Exception e)
+        {
+            throw new Exception(e.Message);
+        }
     }
 
     public async Task DeleteAsync()

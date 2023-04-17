@@ -1,4 +1,3 @@
-using Microsoft.EntityFrameworkCore;
 using Core.Models;
 using Core.Interface;
 
@@ -18,7 +17,7 @@ public class ActorRepository : IActorRepository
         var actor = await _trananDbContext.Actors.FindAsync(actorId);
         if (actor == null)
         {
-            return null;
+            throw new ArgumentNullException("Actor/Actress not found");
         }
         return actor;
     }
@@ -28,7 +27,7 @@ public class ActorRepository : IActorRepository
         var director = await _trananDbContext.Directors.FindAsync(directorId);
         if (director == null)
         {
-            return null;
+            throw new ArgumentNullException("Director not found");
         }
         return director;
     }

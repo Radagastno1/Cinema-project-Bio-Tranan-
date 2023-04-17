@@ -16,7 +16,12 @@ public class ReviewService : IService<Review>, IReviewService
     {
         try
         {
-            return await _reviewRepository.GetAsync();
+            var reviews = await _reviewRepository.GetAsync();
+            if (reviews == null)
+            {
+                return Enumerable.Empty<Review>();
+            }
+            return reviews;
         }
         catch (Exception e)
         {
@@ -30,6 +35,10 @@ public class ReviewService : IService<Review>, IReviewService
         {
             var reviews = await _reviewRepository.GetAsync();
             var review = reviews.Where(r => r.ReservationCode == reservationCode).First();
+            if (review == null)
+            {
+                return new Review();
+            }
             return review;
         }
         catch (Exception e)

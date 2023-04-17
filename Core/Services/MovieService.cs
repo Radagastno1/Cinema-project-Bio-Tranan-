@@ -84,20 +84,34 @@ public class MovieService : IService<Movie>
             var recentlyAddedMovie = await _movieRepository.CreateAsync(movie);
             return recentlyAddedMovie;
         }
-        catch (Exception)
+        catch (Exception e)
         {
-            throw new Exception();
+            throw new Exception(e.Message);
         }
     }
 
     public async Task<Movie> Update(Movie movie)
     {
-        var updatedMovie = await _movieRepository.UpdateAsync(movie);
-        return updatedMovie;
+        try
+        {
+            var updatedMovie = await _movieRepository.UpdateAsync(movie);
+            return updatedMovie;
+        }
+        catch (Exception e)
+        {
+            throw new Exception(e.Message);
+        }
     }
 
     public async Task DeleteById(int id)
     {
-        await _movieRepository.DeleteByIdAsync(id);
+        try
+        {
+            await _movieRepository.DeleteByIdAsync(id);
+        }
+        catch (Exception e)
+        {
+            throw new Exception(e.Message);
+        }
     }
 }

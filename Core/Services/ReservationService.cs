@@ -8,7 +8,10 @@ public class ReservationService : IService<Reservation>, IReservationService
     private IRepository<Reservation> _reservationRepository;
     private IReservationRepository _reservationByScreeningRepository;
 
-    public ReservationService(IRepository<Reservation> reservationRepository, IReservationRepository reservationByScreeningRepository)
+    public ReservationService(
+        IRepository<Reservation> reservationRepository,
+        IReservationRepository reservationByScreeningRepository
+    )
     {
         _reservationRepository = reservationRepository;
         _reservationByScreeningRepository = reservationByScreeningRepository;
@@ -16,24 +19,60 @@ public class ReservationService : IService<Reservation>, IReservationService
 
     public async Task<IEnumerable<Reservation>> Get()
     {
-        var reservations = await _reservationRepository.GetAsync();
-        return reservations;
+        try
+        {
+            var reservations = await _reservationRepository.GetAsync();
+            return reservations;
+        }
+        catch (Exception)
+        {
+            return Enumerable.Empty<Reservation>();
+        }
     }
 
     public async Task<IEnumerable<Reservation>> GetReservationsByMovieScreening(
         int movieScreeningId
     )
     {
-        var reservationsForScreening =
-            await _reservationByScreeningRepository.GetByScreeningIdAsync(movieScreeningId);
-        return reservationsForScreening;
+        try
+        {
+            var reservationsForScreening =
+                await _reservationByScreeningRepository.GetByScreeningIdAsync(movieScreeningId);
+            return reservationsForScreening;
+        }
+        catch (Exception)
+        {
+            return Enumerable.Empty<Reservation>();
+        }
     }
 
     public async Task<Reservation> GetReservationByReservationCode(int reservationCode) //denna borde hämtas direkt från db, onödig process
     {
-        var reservations = await _reservationRepository.GetAsync();
-        var reservation = reservations.Where(r => r.ReservationCode == reservationCode).First();
-        return reservation;
+        try
+        {
+            var reservations = await _reservationRepository.GetAsync();
+            var reservation = reservations.Where(r => r.ReservationCode == reservationCode).First();
+            return reservation;
+        }
+        catch (Exception)
+        {
+            return new Reservation();
+        }
+    }
+
+    public async Task<Reservation> CheckInReservationByCode(int code)
+    {
+        try
+        {
+            var checkedInReservation = await _reservationByScreeningRepository.CheckInReservation(
+                code
+            );
+            return checkedInReservation;
+        }
+        catch (Exception e)
+        {
+            throw new Exception(e.Message);
+        }
     }
 
     public async Task<Reservation> GetById(int id)
@@ -64,12 +103,26 @@ public class ReservationService : IService<Reservation>, IReservationService
 
     public async Task<Reservation> Update(Reservation reservation)
     {
-        var updatedReservation = await _reservationRepository.UpdateAsync(reservation);
-        return updatedReservation;
+        try
+        {
+            var updatedReservation = await _reservationRepository.UpdateAsync(reservation);
+            return updatedReservation;
+        }
+        catch (Exception e)
+        {
+            throw new Exception(e.Message);
+        }
     }
 
     public async Task DeleteById(int id)
     {
-        await _reservationRepository.DeleteByIdAsync(id);
+        try
+        {
+            await _reservationRepository.DeleteByIdAsync(id);
+        }
+        catch (Exception e)
+        {
+            throw new Exception(e.Message);
+        }
     }
 }

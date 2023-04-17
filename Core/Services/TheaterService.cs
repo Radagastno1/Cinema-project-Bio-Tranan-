@@ -14,31 +14,62 @@ public class TheaterService : IService<Theater>
 
     public async Task<IEnumerable<Theater>> Get()
     {
-        var theaters = await _theaterRepository.GetAsync();
-        return theaters;
+        try
+        {
+            var theaters = await _theaterRepository.GetAsync();
+            if (theaters == null)
+            {
+                return Enumerable.Empty<Theater>();
+            }
+            return theaters;
+        }
+        catch (Exception e)
+        {
+            throw new Exception(e.Message);
+        }
     }
 
     public async Task<Theater> GetById(int theaterId)
     {
-        var theater = await _theaterRepository.GetByIdAsync(theaterId);
-        if (theater == null)
+        try
         {
-            return null;
+            var theater = await _theaterRepository.GetByIdAsync(theaterId);
+            if (theater == null)
+            {
+                return new Theater();
+            }
+            return theater;
         }
-        return theater;
+        catch (Exception e)
+        {
+            throw new Exception(e.Message);
+        }
     }
 
     public async Task<Theater> Create(Theater theater)
     {
-        var addedTheater = await _theaterRepository.CreateAsync(theater);
-
-        return addedTheater;
+        try
+        {
+            var addedTheater = await _theaterRepository.CreateAsync(theater);
+            return addedTheater;
+        }
+        catch (Exception e)
+        {
+            throw new Exception(e.Message);
+        }
     }
 
     public async Task<Theater> Update(Theater theater)
     {
-        var updatedTheater = await _theaterRepository.UpdateAsync(theater);
-        return updatedTheater;
+        try
+        {
+            var updatedTheater = await _theaterRepository.UpdateAsync(theater);
+            return updatedTheater;
+        }
+        catch (Exception e)
+        {
+            throw new Exception(e.Message);
+        }
     }
 
     public async Task DeleteById(int theaterId)

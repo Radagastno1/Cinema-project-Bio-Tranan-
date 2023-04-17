@@ -12,13 +12,15 @@ public class Reservation
     public int CustomerId { get; set; }
     public Customer Customer { get; set; }
     public List<Seat> Seats { get; set; }
+    public bool IsCheckedIn{get;set;} 
 
     public Reservation() { }
     public static async Task<Reservation> CreateReservationAsync(
+        int reservationId,
         decimal price,
         int movieScreeningId,
         Customer customer,
-        List<Seat> seats
+        List<Seat> seats, bool isCheckedIn
     )
     {
         var reservation = new Reservation()
@@ -26,7 +28,8 @@ public class Reservation
             Price = price,
             MovieScreeningId = movieScreeningId,
             Customer = customer,
-            Seats = seats
+            Seats = seats,
+            IsCheckedIn = isCheckedIn
         };
 
         reservation.ReservationCode = await reservation.GenerateReservationCodeAsync();

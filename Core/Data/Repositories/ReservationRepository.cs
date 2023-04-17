@@ -29,8 +29,7 @@ public class ReservationRepository : IRepository<Reservation>, IReservationRepos
         }
         catch (Exception e)
         {
-            Console.WriteLine(e.Message);
-            return null;
+            throw new Exception(e.Message);
         }
     }
 
@@ -49,13 +48,11 @@ public class ReservationRepository : IRepository<Reservation>, IReservationRepos
             {
                 return reservations;
             }
-
             return new List<Reservation>();
         }
         catch (Exception e)
         {
-            Console.WriteLine(e.Message);
-            return null;
+            throw new Exception(e.Message);
         }
     }
 
@@ -66,87 +63,144 @@ public class ReservationRepository : IRepository<Reservation>, IReservationRepos
 
     public async Task<Reservation> CreateAsync(Reservation reservation)
     {
-        List<Seat> seats = new List<Seat>();
-
-        var foundMovieScreening = await _trananDbContext.MovieScreenings
-            .Include(m => m.Theater)
-            .ThenInclude(t => t.Seats)
-            .Where(m => m.MovieScreeningId == reservation.MovieScreeningId)
-            .FirstOrDefaultAsync();
-
-        if (foundMovieScreening == null)
+        try
         {
-            throw new InvalidOperationException("Movie screening not found.");
+            List<Seat> seats = new List<Seat>();
+
+            var foundMovieScreening = await _trananDbContext.MovieScreenings
+                .Include(m => m.Theater)
+                .ThenInclude(t => t.Seats)
+                .Where(m => m.MovieScreeningId == reservation.MovieScreeningId)
+                .FirstOrDefaultAsync();
+
+            if (foundMovieScreening == null)
+            {
+                throw new InvalidOperationException("Movie screening not found.");
+            }
+
+            var allReservedSeats = await _trananDbContext.Reservations
+                .Where(r => r.MovieScreeningId == foundMovieScreening.MovieScreeningId)
+                .SelectMany(r => r.Seats)
+                .ToListAsync();
+
+            foreach (var seat in reservation.Seats)
+            {
+                var foundSeat = foundMovieScreening.Theater.Seats.FirstOrDefault(
+                    s => s.SeatId == seat.SeatId
+                );
+
+                if (foundSeat == null)
+                {
+                    throw new InvalidOperationException("Seat not found.");
+                }
+
+                if (!allReservedSeats.Any(s => s.SeatId == foundSeat.SeatId))
+                {
+                    foundSeat.IsBooked = true;
+
+                    seats.Add(foundSeat);
+                }
+                else
+                {
+                    throw new InvalidOperationException("Seat is not available.");
+                }
+            }
+            reservation.Seats = seats;
+            await _trananDbContext.Reservations.AddAsync(reservation);
+            await _trananDbContext.SaveChangesAsync();
+
+            return reservation;
         }
-
-        var allReservedSeats = await _trananDbContext.Reservations
-            .Where(r => r.MovieScreeningId == foundMovieScreening.MovieScreeningId)
-            .SelectMany(r => r.Seats)
-            .ToListAsync();
-
-        foreach (var seat in reservation.Seats)
+        catch (Exception e)
         {
-            var foundSeat = foundMovieScreening.Theater.Seats.FirstOrDefault(
-                s => s.SeatId == seat.SeatId
-            );
-
-            if (foundSeat == null)
-            {
-                throw new InvalidOperationException("Seat not found.");
-            }
-
-            if (!allReservedSeats.Any(s => s.SeatId == foundSeat.SeatId))
-            {
-                foundSeat.IsBooked = true;
-
-                seats.Add(foundSeat);
-            }
-            else
-            {
-                throw new InvalidOperationException("Seat is not available.");
-            }
+            throw new Exception(e.Message);
         }
-
-        reservation.Seats = seats;
-        await _trananDbContext.Reservations.AddAsync(reservation);
-        await _trananDbContext.SaveChangesAsync();
-
-        return reservation;
     }
 
     public async Task<Reservation> UpdateAsync(Reservation reservation)
     {
-        var reservationToUpdate = await _trananDbContext.Reservations.FindAsync(
-            reservation.ReservationId
-        );
-        reservationToUpdate.Customer = reservation.Customer ?? reservationToUpdate.Customer;
-        reservationToUpdate.MovieScreening =
-            reservation.MovieScreening ?? reservationToUpdate.MovieScreening;
-        reservationToUpdate.Price = reservation.Price;
-        reservationToUpdate.Seats = reservation.Seats;
-        reservationToUpdate.ReservationCode = reservation.ReservationCode;
+        try
+        {
+            var reservationToUpdate = await _trananDbContext.Reservations.FindAsync(
+                reservation.ReservationId
+            );
+            if (reservationToUpdate == null)
+            {
+                throw new ArgumentNullException("Couldn't find reservation to update.");
+            }
+            reservationToUpdate.Customer = reservation.Customer ?? reservationToUpdate.Customer;
+            reservationToUpdate.MovieScreening =
+                reservation.MovieScreening ?? reservationToUpdate.MovieScreening;
+            reservationToUpdate.Price = reservation.Price;
+            reservationToUpdate.Seats = reservation.Seats;
+            reservationToUpdate.ReservationCode = reservation.ReservationCode;
+            reservationToUpdate.IsCheckedIn = reservation.IsCheckedIn;
 
-        _trananDbContext.Reservations.Update(reservationToUpdate);
-        await _trananDbContext.SaveChangesAsync();
-        return reservationToUpdate;
+            _trananDbContext.Reservations.Update(reservationToUpdate);
+            await _trananDbContext.SaveChangesAsync();
+            return reservationToUpdate;
+        }
+        catch (ArgumentNullException e)
+        {
+            throw new ArgumentException(e.Message);
+        }
     }
 
     public async Task DeleteByIdAsync(int reservationId)
     {
-        var reservationToDelete = await _trananDbContext.Reservations.FindAsync(reservationId);
-        _trananDbContext.Reservations.Remove(reservationToDelete);
+        try
+        {
+            var reservationToDelete = await _trananDbContext.Reservations.FindAsync(reservationId);
+            _trananDbContext.Reservations.Remove(reservationToDelete);
 
-        var SeatsToReset = await _trananDbContext.Seats
-            .Where(s => s.Reservations.Any(r => r.ReservationId == reservationId))
-            .ToListAsync();
+            if (reservationToDelete == null)
+            {
+                throw new ArgumentNullException("Couldn't find reservation to delete.");
+            }
+            var SeatsToReset = await _trananDbContext.Seats
+                .Where(s => s.Reservations.Any(r => r.ReservationId == reservationId))
+                .ToListAsync();
 
-        SeatsToReset.ForEach(s => s.IsBooked = false);
+            SeatsToReset.ForEach(s => s.IsBooked = false);
 
-        await _trananDbContext.SaveChangesAsync();
+            await _trananDbContext.SaveChangesAsync();
+        }
+        catch (Exception e)
+        {
+            throw new Exception(e.Message);
+        }
     }
 
     public async Task DeleteAsync()
     {
         throw new NotImplementedException();
+    }
+
+    public async Task<Reservation> CheckInReservation(int reservationCode)
+    {
+        try
+        {
+            var reservationToCheckIn = await _trananDbContext.Reservations
+                .Where(r => r.ReservationCode == reservationCode)
+                .FirstOrDefaultAsync();
+            if (reservationToCheckIn == null)
+            {
+                throw new NullReferenceException("No reservation found.");
+            }
+            reservationToCheckIn.IsCheckedIn = true;
+            _trananDbContext.Reservations.Update(reservationToCheckIn);
+            await _trananDbContext.SaveChangesAsync();
+            var updatedReservation = await _trananDbContext.Reservations
+                .Include(r => r.Seats)
+                .Include(r => r.Customer)
+                .Include(r => r.MovieScreening)
+                .Where(r => r.ReservationId == reservationToCheckIn.ReservationId)
+                .FirstOrDefaultAsync();
+            return updatedReservation;
+        }
+        catch (Exception e)
+        {
+            throw new Exception(e.Message);
+        }
     }
 }
