@@ -1,4 +1,5 @@
-using Core.Services;
+using Core.Interface;
+using Core.Models;
 using TrananAPI.Service;
 using TrananAPI.DTO;
 
@@ -6,23 +7,23 @@ namespace TrananAPI.Services;
 
 public class TheaterService
 {
-    private readonly TheaterCoreService _theaterCoreService;
+    private readonly IService<Theater> _coreTheaterService;
 
-    public TheaterService(TheaterCoreService theaterCoreService)
+    public TheaterService(IService<Theater> coreTheaterService)
     {
-        _theaterCoreService = theaterCoreService;
+        _coreTheaterService = coreTheaterService;
     }
 
     public async Task<IEnumerable<TheaterDTO>> GetTheaters()
     {
-        var theaters = await _theaterCoreService.GetTheaters();
+        var theaters = await _coreTheaterService.Get();
         var theaterDTOs = theaters.Select(t => Mapper.GenerateTheaterDTO(t)).ToList();
         return theaterDTOs;
     }
 
     public async Task<TheaterDTO> GetTheaterById(int theaterId)
     {
-        var theater = await _theaterCoreService.GetTheaterById(theaterId);
+        var theater = await _coreTheaterService.GetById(theaterId);
         if (theater == null)
         {
             return null;
@@ -33,7 +34,7 @@ public class TheaterService
     public async Task<TheaterDTO> CreateTheater(TheaterDTO theaterDTO)
     {
         var newTheater = Mapper.GenerateTheater(theaterDTO);
-        var addedTheater = await _theaterCoreService.CreateTheater(newTheater);
+        var addedTheater = await _coreTheaterService.Create(newTheater);
 
         return Mapper.GenerateTheaterDTO(addedTheater);
     }
@@ -41,12 +42,12 @@ public class TheaterService
     public async Task<TheaterDTO> UpdateTheater(TheaterDTO theaterDTO)
     {
         var theaterToUpdate = Mapper.GenerateTheater(theaterDTO);
-        var updatedTheater = await _theaterCoreService.UpdateTheater(theaterToUpdate);
+        var updatedTheater = await _coreTheaterService.Update(theaterToUpdate);
         return Mapper.GenerateTheaterDTO(updatedTheater);
     }
 
     public async Task DeleteTheaterById(int theaterId)
     {
-        await _theaterCoreService.DeleteTheaterById(theaterId);
+        await _coreTheaterService.DeleteById(theaterId);
     }
 }

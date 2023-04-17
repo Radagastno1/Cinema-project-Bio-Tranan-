@@ -1,21 +1,21 @@
 using TrananAPI.Service;
 using TrananAPI.DTO;
-using Core.Services;
+using Core.Interface;
 using Core.Models;
 
 namespace TrananAPI.Services;
 
 public class MovieScreeningService
 {
-    private MovieScreeningCoreService _movieScreeningCoreService;
-    public MovieScreeningService(MovieScreeningCoreService movieScreeningCoreService)
+    private readonly IService<MovieScreening> _coreScreeningService;
+    public MovieScreeningService(IService<MovieScreening> coreScreeningService)
     {
-        _movieScreeningCoreService = movieScreeningCoreService;
+        _coreScreeningService = coreScreeningService;
     }
 
     public async Task<IEnumerable<MovieScreeningOutgoingDTO>> GetUpcomingScreenings()
     {
-        var screenings = await _movieScreeningCoreService.GetUpcomingScreenings();
+        var screenings = await _coreScreeningService.Get();
         var screeningsDTOSs = screenings
             .Select(s => Mapper.GenerateMovieScreeningOutcomingDTO(s))
             .ToList();
@@ -24,7 +24,7 @@ public class MovieScreeningService
 
     public async Task<MovieScreeningOutgoingDTO> GetMovieScreeningById(int movieScreeningId)
     {
-        var screening = await _movieScreeningCoreService.GetMovieScreeningById(movieScreeningId);
+        var screening = await _coreScreeningService.GetById(movieScreeningId);
         if (screening == null)
         {
             return new MovieScreeningOutgoingDTO();
@@ -44,7 +44,7 @@ public class MovieScreeningService
                 TheaterId = movieScreeningIncomingDTO.TheaterId,
                 DateAndTime = movieScreeningIncomingDTO.DateAndTime
             };
-            var addedMovieScreening = await _movieScreeningCoreService.CreateMovieScreening(
+            var addedMovieScreening = await _coreScreeningService.Create(
                 newMovieScreening
             );
             var addedMovieScreeningDTO = Mapper.GenerateMovieScreeningOutcomingDTO(
@@ -81,7 +81,7 @@ public class MovieScreeningService
             MovieId = movieScreeningIncomingDTO.MovieId,
             TheaterId = movieScreeningIncomingDTO.TheaterId
         };
-        var updatedMovieScreening = await _movieScreeningCoreService.UpdateMovieScreening(
+        var updatedMovieScreening = await _coreScreeningService.Update(
             movieScreeningToUpdate
         );
         return Mapper.GenerateMovieScreeningOutcomingDTO(updatedMovieScreening);
@@ -89,6 +89,6 @@ public class MovieScreeningService
 
     public async Task DeleteMovieScreeningById(int id)
     {
-       await _movieScreeningCoreService.DeleteMovieScreeningById(id);
+       await _coreScreeningService.DeleteById(id);
     }
 }

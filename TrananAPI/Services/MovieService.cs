@@ -1,5 +1,5 @@
 using Core.Models;
-using Core.Services;
+using Core.Interface;
 using TrananAPI.DTO;
 using TrananAPI.Service;
 
@@ -7,18 +7,18 @@ namespace TrananAPI.Services;
 
 public class MovieService
 {
-    private readonly MovieCoreService _movieCoreService;
+    private readonly IService<Movie> _coreMovieService;
 
-    public MovieService(MovieCoreService movieCoreService)
+    public MovieService(IService<Movie> coreMovieService)
     {
-        _movieCoreService = movieCoreService;
+        _coreMovieService = coreMovieService;
     }
 
     public async Task<IEnumerable<MovieDTO>> GetAllMoviesAsDTOs()
     {
         try
         {
-            var allMovies = await _movieCoreService.GetAllMovies();
+            var allMovies = await _coreMovieService.Get();
             if (allMovies == null)
             {
                 return new List<MovieDTO>();
@@ -36,7 +36,7 @@ public class MovieService
     {
         try
         {
-            var movieFound = await _movieCoreService.GetMovieById(movieId);
+            var movieFound = await _coreMovieService.GetById(movieId);
             if (movieFound == null)
             {
                 return null;
@@ -54,7 +54,7 @@ public class MovieService
         try
         {
             var movie = Mapper.GenerateMovie(movieDTO);
-            var createdMovie = await _movieCoreService.CreateMovie(movie);
+            var createdMovie = await _coreMovieService.Create(movie);
             return Mapper.GenerateMovieDTO(movie);
             // List<Actor> actorsOfMovie = new();
             // foreach (var actor in movieDTO.ActorDTOs)
@@ -100,16 +100,11 @@ public class MovieService
     public async Task<MovieDTO> UpdateMovie(MovieDTO movieDTO)
     {
         var movieToUpdate = Mapper.GenerateMovie(movieDTO);
-        var updatedMovie = await _movieCoreService.UpdateMovie(movieToUpdate);
+        var updatedMovie = await _coreMovieService.Update(movieToUpdate);
         return Mapper.GenerateMovieDTO(updatedMovie);
     }
     public async Task DeleteMovieById(int id)
     {
-        await _movieCoreService.DeleteMovieById(id);
+        await _coreMovieService.DeleteById(id);
     }
-    public async Task DeleteMovies()
-    {
-        await _movieCoreService.DeleteMovies();
-    }
-
 }

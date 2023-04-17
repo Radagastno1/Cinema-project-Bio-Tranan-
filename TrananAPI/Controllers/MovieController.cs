@@ -90,20 +90,20 @@ public class MovieController : ControllerBase
         }
     }
 
-    [HttpDelete("delete-all")]
-    public async Task<IActionResult> DeleteMovies()
-    {
-        try
-        {
-            await _movieService.DeleteMovies();
-            return NoContent();
-        }
-        catch (Exception e)
-        {
-            Console.WriteLine(e);
-            return NotFound();
-        }
-    }
+    // [HttpDelete("delete-all")]
+    // public async Task<IActionResult> DeleteMovies()
+    // {
+    //     try
+    //     {
+    //         await _movieService.DeleteMovies();
+    //         return NoContent();
+    //     }
+    //     catch (Exception e)
+    //     {
+    //         Console.WriteLine(e);
+    //         return NotFound();
+    //     }
+    // }
 
  
 }

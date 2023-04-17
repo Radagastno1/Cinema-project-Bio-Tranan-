@@ -36,7 +36,7 @@ public class ReservationController : ControllerBase
     {
         try
         {
-            var reservations = _reservationService.GetReservationsByMovieScreening(screeningId);
+            var reservations = await _reservationService.GetReservationsByMovieScreening(screeningId);
             return Ok(reservations);
         }
         catch (Exception)
