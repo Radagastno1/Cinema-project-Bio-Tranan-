@@ -36,7 +36,9 @@ public class ReservationController : ControllerBase
     {
         try
         {
-            var reservations = await _reservationService.GetReservationsByMovieScreening(screeningId);
+            var reservations = await _reservationService.GetReservationsByMovieScreening(
+                screeningId
+            );
             return Ok(reservations);
         }
         catch (Exception)
@@ -92,6 +94,20 @@ public class ReservationController : ControllerBase
         catch (Exception)
         {
             return NotFound();
+        }
+    }
+
+    [HttpPost("/check-in/{code:int}")]
+    public async Task<IActionResult> CheckInReservationCode(int code)
+    {
+        try
+        {
+            var updatedReservation = await _reservationService.CheckInReservation(code);
+            return Ok(updatedReservation);
+        }
+        catch (Exception e)
+        {
+            return BadRequest(e.Message);
         }
     }
 }

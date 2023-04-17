@@ -1,6 +1,7 @@
 using TrananAPI.Services;
 using TrananAPI.DTO;
 using Microsoft.AspNetCore.Mvc; 
+using Microsoft.AspNetCore.Authorization;
 
 namespace TrananAPI.Controllers;
 
@@ -75,6 +76,7 @@ public class MovieController : ControllerBase
         }
     }
 
+    // [Authorize]
     [HttpDelete("{id:int}")]
     public async Task<IActionResult> DeleteMovieById(int id)
     {

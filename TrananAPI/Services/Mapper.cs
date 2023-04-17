@@ -169,7 +169,8 @@ public class Mapper
             reservation.MovieScreeningId,
             GenerateCustomerDTO(reservation.Customer),
             reservation.Seats.Select(s => s.SeatId).ToList(),
-            reservation.ReservationCode
+            reservation.ReservationCode,
+            reservation.IsCheckedIn
         );
         return reservationDTO;
     }
@@ -177,11 +178,13 @@ public class Mapper
     public static async Task<Reservation> GenerateReservation(ReservationDTO reservationDTO)
     {
         var reservation = await Reservation.CreateReservationAsync(
+            reservationDTO.ReservationId,
             reservationDTO.Price,
             reservationDTO.MovieScreeningId,
             GenerateCustomer(reservationDTO.CustomerDTO),
             // await SeatService.GenerateSeatsFromIdsAsync(reservationDTO.SeatIds) //blir detta rätt async?
-            GenerateSeatsFromIds(reservationDTO.SeatIds)
+            GenerateSeatsFromIds(reservationDTO.SeatIds),
+            reservationDTO.IsCheckedIn
         );
         return reservation; //kollla upp om rätt
     }

@@ -1,3 +1,4 @@
+using Microsoft.EntityFrameworkCore;
 using Core.Models;
 using Core.Interface;
 using TrananAPI.DTO;
@@ -7,10 +8,13 @@ namespace TrananAPI.Services;
 
 public class ReservationService
 {
-        private readonly IService<Reservation> _coreReservationService;
-        private readonly Core.Interface.IReservationService _coreReservationService2;
+    private readonly IService<Reservation> _coreReservationService;
+    private readonly Core.Interface.IReservationService _coreReservationService2;
 
-    public ReservationService(IService<Reservation> coreReservationService, IReservationService coreReservationService2)
+    public ReservationService(
+        IService<Reservation> coreReservationService,
+        IReservationService coreReservationService2
+    )
     {
         _coreReservationService = coreReservationService;
         _coreReservationService2 = coreReservationService2;
@@ -26,9 +30,8 @@ public class ReservationService
         int movieScreeningId
     )
     {
-        var reservationsForScreening = await _coreReservationService2.GetReservationsByMovieScreening(
-            movieScreeningId
-        );
+        var reservationsForScreening =
+            await _coreReservationService2.GetReservationsByMovieScreening(movieScreeningId);
         return reservationsForScreening.Select(r => Mapper.GenerateReservationDTO(r));
     }
 
@@ -57,9 +60,7 @@ public class ReservationService
     public async Task<ReservationDTO> UpdateReservation(ReservationDTO reservationDTO)
     {
         var reservationToUpdate = await Mapper.GenerateReservation(reservationDTO);
-        var updatedReservation = await _coreReservationService.Update(
-            reservationToUpdate
-        );
+        var updatedReservation = await _coreReservationService.Update(reservationToUpdate);
         return Mapper.GenerateReservationDTO(reservationToUpdate);
     }
 
@@ -67,23 +68,19 @@ public class ReservationService
     {
         await _coreReservationService.DeleteById(reservationId);
     }
-    // public async Task<Reservation> GenerateReservation(ReservationDTO reservationDTO)
-    // {
-    //     var movieScreening = await _trananDbContext.MovieScreenings.FindAsync(
-    //         reservationDTO.MovieScreeningId
-    //     );
-    //     var customer = await _trananDbContext.Customers.FindAsync(
-    //         reservationDTO.CustomerDTO.CustomerId
-    //     );
-    //     var seats = await _seatService.GenerateSeatsFromIdsAsync(reservationDTO.SeatIds);
 
-    //     var reservation = Reservation.CreateReservation(
-    //         reservationDTO.Price,
-    //         movieScreening,
-    //         customer,
-    //         seats
-    //     );
-
-    //     return reservation;
-    // }
+    public async Task<ReservationDTO> CheckInReservation(int code)
+    {
+        try
+        {
+            var checkedInReservation = await _coreReservationService2.CheckInReservationByCode(
+                code
+            );
+            return Mapper.GenerateReservationDTO(checkedInReservation);
+        }
+        catch (Exception e)
+        {
+            throw new Exception(e.Message);
+        }
+    }
 }
