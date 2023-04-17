@@ -3,6 +3,7 @@ using System;
 using Core.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -10,9 +11,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace CORE.Migrations
 {
     [DbContext(typeof(TrananDbContext))]
-    partial class TrananDbContextModelSnapshot : ModelSnapshot
+    [Migration("20230417105703_removerelationreservation-review")]
+    partial class removerelationreservationreview
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder.HasAnnotation("ProductVersion", "7.0.5");
@@ -382,11 +385,13 @@ namespace CORE.Migrations
 
             modelBuilder.Entity("Core.Models.Review", b =>
                 {
-                    b.HasOne("Core.Models.Movie", null)
+                    b.HasOne("Core.Models.Movie", "Movie")
                         .WithMany("Reviews")
                         .HasForeignKey("MovieId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+
+                    b.Navigation("Movie");
                 });
 
             modelBuilder.Entity("Core.Models.Seat", b =>

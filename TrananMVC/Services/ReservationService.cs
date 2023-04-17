@@ -1,23 +1,23 @@
 using TrananMVC.ViewModel;
-using Core.Services;
+using Core.Interface;
+using Core.Models;
 
 namespace TrananMVC.Service;
 
 public class ReservationService
 {
-    private readonly ReservationCoreService _reservationCoreService;
-    private readonly MovieScreeningCoreService _movieScreeningCoreService;
-    private readonly MovieCoreService _movieCoreService;
+    private readonly IService<Reservation> _coreReservationService;
+    private readonly IService<MovieScreening> _coreScreeningService;
+    private readonly IService<Movie> _coreMovieService;
 
     public ReservationService(
-        ReservationCoreService reservationCoreService,
-        MovieScreeningCoreService movieScreeningCoreService,
-        MovieCoreService movieCoreService
+      IService<Reservation> coreReservationService, IService<MovieScreening> coreScreeningService, 
+      IService<Movie> coreMovieService
     )
     {
-        _reservationCoreService = reservationCoreService;
-        _movieScreeningCoreService = movieScreeningCoreService;
-        _movieCoreService = movieCoreService;
+        _coreReservationService = coreReservationService;
+        _coreMovieService = coreMovieService;
+        _coreScreeningService = coreScreeningService;
     }
 
     public async Task<CreatedReservationViewModel> CreateReservation(
@@ -27,11 +27,11 @@ public class ReservationService
         try
         {
             var reservation = await Mapper.GenerateReservation(reservationViewModel);
-            var addedReservation = await _reservationCoreService.CreateReservation(reservation);
-            var movieScreening = await _movieScreeningCoreService.GetMovieScreeningById(
+            var addedReservation = await _coreReservationService.Create(reservation);
+            var movieScreening = await _coreScreeningService.GetById(
                 addedReservation.MovieScreeningId
             );
-            var movie = await _movieCoreService.GetMovieById(movieScreening.MovieId);
+            var movie = await _coreMovieService.GetById(movieScreening.MovieId);
             if (addedReservation == null || movieScreening == null)
             {
                 throw new NullReferenceException("Något gick fel med att hämta reservationen.");
@@ -50,10 +50,10 @@ public class ReservationService
     }
 
     public async Task<bool> DeleteReservationById(int reservationId)
-    {//fixa så det returneras statuskod eller så
+    {
         try
         {
-            await _reservationCoreService.DeleteReservation(reservationId);
+            await _coreReservationService.DeleteById(reservationId);
             return true;
         }
         catch (Exception)

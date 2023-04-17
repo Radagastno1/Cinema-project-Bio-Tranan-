@@ -3,10 +3,20 @@
     ViewData["Title"] = "Reservera biljetter";
 }
 
-<div class="movie-poster">
-    <a asp-controller="Movie" asp-action="Details" asp-route-movieId="@Model.MovieScreeningViewModel.MovieId">
-        <img src="@Html.Raw(Model.MovieScreeningViewModel.MovieImageUrl)" />
-    </a>
+<div style="display: flex; flex-direction: row;">
+    <div class="movie-details">
+    <div class="movie-poster">
+        <a asp-controller="Movie" asp-action="Details" asp-route-movieId="@Model.MovieScreeningViewModel.MovieId">
+            <img src="@Html.Raw(Model.MovieScreeningViewModel.MovieImageUrl)" />
+        </a>
+    </div>
+    <div class="movie-info">
+        <h3 class="text-container">@Model.MovieScreeningViewModel.MovieTitle</h3>
+        <h4 class="text-container">Dag: @Model.MovieScreeningViewModel.DateAndTime.ToShortDateString()</h4>
+        <h4 class="text-container">Tid: @Model.MovieScreeningViewModel.DateAndTime.ToString("HH:mm")</h4>
+        <h4 class="text-container">Biosalong: @Model.MovieScreeningViewModel.TheaterName</h4>
+    </div>
+</div>
 </div>
 
 <div class="text-container">

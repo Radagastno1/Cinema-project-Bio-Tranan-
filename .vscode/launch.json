@@ -1,0 +1,43 @@
+{
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "name": ".NET Core Launch (console)",
+            "type": "coreclr",
+            "request": "launch",
+            "preLaunchTask": "build",
+            "program": "${workspaceFolder}/TrananAPI/bin/Debug/net6.0/TrananAPI.dll",
+            "args": [],
+            "cwd": "${workspaceFolder}/TrananAPI",
+            "console": "internalConsole",
+            "stopAtEntry": false
+        },        
+        {
+            "name": ".NET Core Launch (web)",
+            "type": "coreclr",
+            "request": "launch",
+            "preLaunchTask": "build",
+            "program": "${workspaceFolder}/TrananMVC/bin/Debug/net6.0/TrananMVC.dll",
+            "args": [],
+            "cwd": "${workspaceFolder}",
+            "stopAtEntry": false,
+            "serverReadyAction": {
+                "action": "openExternally",
+                "pattern": "\\bNow listening on:\\s+(https?://\\S+)"
+            },
+            "env": {
+                "ASPNETCORE_ENVIRONMENT": "Development"
+            },
+            "sourceFileMap": {
+                "/Views": "${workspaceFolder}/Views"
+            },
+            "runtimeArgs": [
+                "--no-restart",
+                "--no-launch-profile"
+            ],
+            "logging": {
+                "moduleLoad": false
+            }
+        }
+    ]
+}

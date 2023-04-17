@@ -1,6 +1,6 @@
 # BioTranan
 Obligatorisk **självständig** inlämningsuppgift för BY-SUVNET OOP2
-### Inlämning: 19 april kl 09.00
+<!-- ### Inlämning: 19 april kl 09.00 -->
 
 Obligatoriskt kodgenomgång kommer att ske individuellt 19e och 20e April. 
 Kodgenomgången fokuserar på en eller flera frågor i stil med:
@@ -8,7 +8,7 @@ Kodgenomgången fokuserar på en eller flera frågor i stil med:
 * Beskriv hur API-funktion X fungerar från början till slut
 * Beskriv hur systemregel Y är implementerad
 
-### Betygskriterier
+<!-- ### Betygskriterier -->
 För G
 * Asp.Net med EF Core och SQLite används
 * Minst 3 av 3 krav för hemsidan
@@ -30,36 +30,36 @@ För VG
 Du har fått i uppdrag att ta fram Bio Tranans nya hemsida! Bio Tranan är en liten ideelt driven biograf som visar ett mindre antal filmer. De har två salonger där de kan visa filmer.
 
 Bio Tranan vill ha två saker, dels en publik hemsida där besökare skall kunna:
-- [ ] Se schemat för kommande filmvisningar
-- [ ] Få grundläggande information om filmerna som ska visas
-- [ ] Reservera platser på filmvisning
-
+- [x] Se schemat för kommande filmvisningar
+- [x] Få grundläggande information om filmerna som ska visas
+- [x] Reservera platser på filmvisning
+7629
 Utöver detta vill Bio Tranan, som drivs av erfarna utvecklare, ha ett REST API som kan fungera som administationsverktyg (i framtiden tänkte de skriva sin egen frontend för detta). REST API:et skall kunna:
-- [ ] Lägga till nya filmer
-- [ ] Ta bort filmer
-- [ ] Hämta en lista på filmer (Detta är alltså inte samma som att visa schemat för visningar!)
-- [ ] Lägga till nya salonger med ett visst antal platser
-- [ ] Uppdatera och ta bort salongsinformation
-- [ ] Lägga till nya visningar i schemat
-- [ ] Hämta hem schemat för alla **kommande** visningar
-- [ ] Lista alla reservationer
-- [ ] Lista alla reservationer för en viss visning
+- [x] Lägga till nya filmer
+- [x] Ta bort filmer
+- [x] Hämta en lista på filmer (Detta är alltså inte samma som att visa schemat för visningar!)
+- [x] Lägga till nya salonger med ett visst antal platser
+- [x] Uppdatera och ta bort salongsinformation
+- [x] Lägga till nya visningar i schemat
+- [x] Hämta hem schemat för alla **kommande** visningar
+- [x] Lista alla reservationer
+- [x] Lista alla reservationer för en viss visning
 
 Regler för systemet:
-- [ ] En film får bara visas ett visst antal gånger. Det skall alltså inte gå att lägga till en film i schemat för visningar, om den redan visats max antal gånger.
-- [ ] Det ska inte gå att lägga till en filmvisning i schemat samma tid som en annan film visas i samma salong
-- [ ] Det skall inte gå att reservera platser på en visning om det inte finns tillräckligt många platser kvar
+- [x] En film får bara visas ett visst antal gånger. Det skall alltså inte gå att lägga till en film i schemat för visningar, om den redan visats max antal gånger.
+- [x] Det ska inte gå att lägga till en filmvisning i schemat samma tid som en annan film visas i samma salong
+- [x] Det skall inte gå att reservera platser på en visning om det inte finns tillräckligt många platser kvar  
 
 ## Utöver dessa krav finns några extra VG-krav
 
 Hemsidan:
-- [ ] Visa det totala priset innan reservationen läggs (se bild)
-- [ ] Det skall gå att avboka en reservation
+- [x] Visa det totala priset innan reservationen läggs (se bild)
+- [x] Det skall gå att avboka en reservation
 - [ ] Använd ett externt api till något på hemsidan, exempelvis ett random advice från https://api.adviceslip.com/, eller mer avancerat: https://developers.themoviedb.org/3/getting-started/introduction
-- [ ] Reviews! Det skall gå att poängsätta filmer samt ge dem ett skriftligt omdöme genom att ange sin reservationskod, men bara efter att filmen visats.
+- [x] Reviews! Det skall gå att poängsätta filmer samt ge dem ett skriftligt omdöme genom att ange sin reservationskod, men bara efter att filmen visats.
 
 REST-API
-- [ ] Skapa en ny reservation
+- [x] Skapa en ny reservation
 - [ ] Det skall gå att lägga tillfälliga platsrestriktioner på en viss visning, utifall det blir nya pandemi-regler i höst
 - [ ] Kräv autentisering för att kunna användas (Valfri metod)
 - [ ] "Checka in" en reservationskod och sätt den som använd (Kommer att användas vid betalning)

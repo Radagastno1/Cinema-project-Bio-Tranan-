@@ -5,7 +5,7 @@ namespace TrananMVC.Service;
 
 public class Mapper
 {
-    public static Review GenerateReview(ReviewViewModel reviewViewModel, Reservation reservation)
+    public static Review GenerateReview(ReviewViewModel reviewViewModel)
     {
         var review = new Review()
         {
@@ -13,7 +13,6 @@ public class Mapper
             Comment = reviewViewModel.Comment,
             ReservationCode = reviewViewModel.ReservationCode,
             MovieId = reviewViewModel.MovieViewModel.MovieId,
-            Reservation = reservation
         };
         return review;
     }

@@ -18,7 +18,7 @@ public class ReviewRepository : IRepository<Review>
         try
         {
             var reservation = await _trananDbContext.Reservations
-                .Where(r => r.ReservationId == review.Reservation.ReservationId)
+                .Where(r => r.ReservationCode == review.ReservationCode)
                 .FirstAsync();
 
             if (reservation == null)
@@ -27,14 +27,13 @@ public class ReviewRepository : IRepository<Review>
             }
 
             var existingReviewOnReservationCode = await _trananDbContext.Reviews
-                .Where(r => r.Reservation.ReservationCode == reservation.ReservationCode)
+                .Where(r => r.ReservationCode == review.ReservationCode)
                 .FirstOrDefaultAsync();
 
             if (existingReviewOnReservationCode == null)
             {
                 var movie = await _trananDbContext.Movies.FindAsync(review.MovieId);
 
-                review.Reservation = reservation;
                 review.Movie = movie;
 
                 await _trananDbContext.Reviews.AddAsync(review);
@@ -48,7 +47,7 @@ public class ReviewRepository : IRepository<Review>
             else
             {
                 throw new InvalidOperationException(
-                    $"Reservationcode {existingReviewOnReservationCode.Reservation.ReservationCode} has already made a review."
+                    $"Reservationcode {existingReviewOnReservationCode.ReservationCode} has already made a review."
                 );
             }
         }
@@ -60,7 +59,8 @@ public class ReviewRepository : IRepository<Review>
 
     public async Task DeleteAsync()
     {
-        throw new NotImplementedException();
+        var reviews = await _trananDbContext.Reviews.ToListAsync();
+        _trananDbContext.RemoveRange(reviews);
     }
 
     public async Task DeleteByIdAsync(int id)

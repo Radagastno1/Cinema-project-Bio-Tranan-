@@ -75,8 +75,10 @@ public class TrananDbContext : DbContext, ITrananDbContext
         modelBuilder.Entity<Customer>().HasMany(m => m.Reservations).WithOne(a => a.Customer);
         modelBuilder.Entity<Reservation>().HasOne(r => r.Customer).WithMany(c => c.Reservations);
 
-        modelBuilder.Entity<Review>().HasOne(r => r.Movie).WithMany(m => m.Reviews);
+        modelBuilder.Entity<Movie>()
+        .HasMany(m => m.Reviews)
+        .WithOne(r => r.Movie)
+        .OnDelete(DeleteBehavior.Cascade);
 
-        modelBuilder.Entity<Review>().HasOne(r => r.Reservation);
     }
 }

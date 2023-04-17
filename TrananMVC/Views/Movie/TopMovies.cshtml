@@ -1,0 +1,35 @@
+@model List<TrananMVC.ViewModel.MovieViewModel>
+
+<div class="text-container">
+    <h2>Top Femman</h2>
+
+    @if (!Model.Any())
+    {
+        <h4>Det verkar inte som att någon har lämnat omdömen än.</h4>
+    }
+    else
+    {
+        <table>
+            <tr>
+                <th>Title</th>
+                <th>Rating</th>
+            </tr>
+
+            @foreach (var movie in Model.Take(5))
+            {
+                <tr>
+                    <td>
+                        <div class="movie-poster">
+                            <a asp-controller="Movie" asp-action="Details" asp-route-movieId="@movie.MovieId">
+                                <img src="@Html.Raw(movie.ImageUrl)" />
+                            </a>
+                        </div>
+                    </td>
+                    <td>@movie.Reviews.Average(r => r.Rating)</td>
+                </tr>
+            }
+        </table>
+    }
+
+</div>
+

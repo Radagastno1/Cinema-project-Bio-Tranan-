@@ -44,8 +44,10 @@
             <li>@director.FirstName @director.LastName</li>
         }
     </div>
+    <br>
+
  @if (Model.Reviews != null && Model.Reviews.Any())
-{
+{   <div class="text-container">
     <h2>Reviews</h2>
     <ul>
         @foreach (var review in Model.Reviews)
@@ -59,6 +61,7 @@
             </li>
         }
     </ul>
+    </div>
 }
 
 </div>

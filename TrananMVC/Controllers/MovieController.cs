@@ -1,4 +1,3 @@
-using System.Diagnostics;
 using Microsoft.AspNetCore.Mvc;
 using TrananMVC.ViewModel;
 using TrananMVC.Interface;
@@ -53,10 +52,18 @@ public class MovieController : Controller
             new { movieId = reviewViewModel.MovieViewModel.MovieId }
         );
     }
-    //  public async Task<IActionResult> TopMovies()
-    // {
-    //     var movies = await _movieService.GetAllMovies();
-    //     var topMovies = movies.OrderByDescending(m => m.Rating);
-    //     return View(topMovies);
-    // }
+
+    public async Task<IActionResult> TopMovies()
+    {
+        var movies = await _movieService.GetAllMoviesAsync();
+        try
+        {
+            var topMovies = movies.OrderByDescending(m => m.Reviews.Max(r => r.Rating)).ToList();
+            return View(topMovies);
+        }
+        catch (ArgumentNullException)
+        {
+            return View(new List<MovieViewModel>());
+        }
+    }
 }

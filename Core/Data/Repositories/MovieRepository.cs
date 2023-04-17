@@ -37,6 +37,13 @@ public class MovieRepository : IRepository<Movie>
     {
         try 
         {
+                  var reviews = await _trananDbContext.Reviews.ToListAsync();
+        foreach(var item in reviews)
+        {
+            _trananDbContext.Reviews.Remove(item);
+            Console.WriteLine(item.Comment);
+        }
+
             var movie = await _trananDbContext.Movies
                 .Include(m => m.Actors)
                 .Include(m => m.Directors)

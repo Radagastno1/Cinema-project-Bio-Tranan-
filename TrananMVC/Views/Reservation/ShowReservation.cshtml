@@ -4,6 +4,7 @@
     ViewData["Title"] = "Din reservation";
 }
 
+<div class="text-container">
 <div class="receipt">
   <h2>Din reservation</h2>
   <p>Film: @Model.MovieTitle</p>
@@ -27,4 +28,6 @@
   <button type="button" id="button" onclick="sendSms()">Skicka kopia på sms</button>
   <a asp-controller="reservation" asp-action="Cancel" asp-route-reservationId=@Model.ReservationId><button type="button" id="cancel-button">Ångra</button></a>
 </div>
+</div>
+
 

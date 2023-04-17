@@ -1,24 +1,27 @@
-using Core.Services;
+using Core.Interface;
+using Core.Models;
 using TrananMVC.ViewModel;
 
 namespace TrananMVC.Service;
 
 public class MovieScreeningService
 {
-    private readonly MovieScreeningCoreService _movieScreeningCoreService;
-    private readonly MovieCoreService _movieCoreService;
+    private readonly IService<MovieScreening> _coreScreeningService;
+    private readonly IMovieScreeningService _coreScreeningService2;
+    private readonly IService<Movie> _coreMovieService;
 
-    public MovieScreeningService(MovieScreeningCoreService movieScreeningCoreService,MovieCoreService movieCoreService)
+    public MovieScreeningService(IService<MovieScreening> coreScreeningService,IMovieScreeningService coreScreeningService2,IService<Movie> coreMovieService)
     {
-        _movieScreeningCoreService = movieScreeningCoreService;
-        _movieCoreService = movieCoreService;
+        _coreScreeningService = coreScreeningService;
+        _coreScreeningService2 = coreScreeningService2;
+        _coreMovieService = coreMovieService;
     }
 
     public async Task<List<MovieScreeningViewModel>> GetUpcomingScreenings()
     {
         try
         {
-            var movieScreenings = await _movieScreeningCoreService.GetUpcomingScreenings();
+            var movieScreenings = await _coreScreeningService.Get();
             return movieScreenings
                 .Select(m => Mapper.GenerateMovieScreeningToViewModel(m))
                 .ToList();
@@ -32,7 +35,7 @@ public class MovieScreeningService
     {
         try
         {
-            var movieScreenings = await _movieScreeningCoreService.GetShownScreenings();
+            var movieScreenings = await _coreScreeningService2.GetShownScreenings();
             return movieScreenings
                 .Select(m => Mapper.GenerateMovieScreeningToViewModel(m))
                 .ToList();
@@ -47,7 +50,7 @@ public class MovieScreeningService
     {
         try
         {
-            var movieScreening = await _movieScreeningCoreService.GetMovieScreeningById(movieScreeningId);
+            var movieScreening = await _coreScreeningService.GetById(movieScreeningId);
             return Mapper.GenerateMovieScreeningToViewModel(movieScreening);
         }
         catch (Exception)
