@@ -16,12 +16,12 @@ public class ReviewViewModel
         int rating,
         string comment,
         int reservationCode,
-        MovieViewModel movieViewModel
+         string alias
     )
     {
         Rating = rating;
         Comment = comment;
         ReservationCode = reservationCode;
-        MovieViewModel = movieViewModel;
+        Alias = alias;
     }
 }

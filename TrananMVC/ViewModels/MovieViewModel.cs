@@ -19,7 +19,7 @@ public class MovieViewModel
     public string TrailerLink{get;set;}
     public List<ActorViewModel> Actors { get; set; }
     public List<DirectorViewModel> Directors { get; set; }
-    public List<ReviewViewModel> Reviews{get;set;} //hämta reviews till filmen direkt :)
+    public List<ReviewViewModel> Reviews{get;set;} = new();
     public MovieViewModel() { }
 
     public MovieViewModel(
@@ -34,7 +34,8 @@ public class MovieViewModel
         string imageUrl,
         List<ActorViewModel> actors,
         List<DirectorViewModel> directors,
-        string trailerId
+        string trailerId,
+        List<ReviewViewModel> reviewViewModels
     )
     {
         MovieId = movieId;
@@ -50,6 +51,7 @@ public class MovieViewModel
         Directors = directors;
         DurationString = GenerateDurationString(DurationMinutes);
         TrailerId = trailerId;
+        Reviews = reviewViewModels;
     }
 
     private string GenerateDurationString(int durationMinutes)

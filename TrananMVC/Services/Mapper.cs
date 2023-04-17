@@ -24,7 +24,7 @@ public class Mapper
             review.Rating,
             review.Comment,
             review.ReservationCode,
-            Mapper.GenerateMovieAsViewModel(review.Movie)
+            review.Alias
         );
         return reviewViewModel;
     }
@@ -118,7 +118,8 @@ public class Mapper
             movie.ImageUrl,
             ActorsAsViewModels(movie.Actors),
             DirectorsAsViewModels(movie.Directors),
-            movie.TrailerId
+            movie.TrailerId,
+            movie.Reviews.Select(r => new ReviewViewModel(r.Rating, r.Comment, r.ReservationCode, r.Alias)).ToList()
         );
     }
 
