@@ -6,7 +6,6 @@ namespace Core.Data.Repository;
 
 public class TheaterRepository : IRepository<Theater>
 {
-    //har hand om salong och dess stolar
     private readonly TrananDbContext _trananDbContext;
 
     public TheaterRepository(TrananDbContext trananDbContext)

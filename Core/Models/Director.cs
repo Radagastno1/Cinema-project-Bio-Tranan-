@@ -12,8 +12,8 @@ public class Director
 
     public Director(string firstName, string lastName)
     {
-        this.FirstName = firstName;
-        this.LastName = lastName;
+        FirstName = firstName;
+        LastName = lastName;
     }
     public Director(){}
 }

@@ -3,10 +3,10 @@ using Core.Models;
 
 namespace Core.Services;
 
-public class SeatCoreService
+public class SeatService
 {
     private static ISeatRepository _seatRepository;
-    public SeatCoreService(ISeatRepository seatRepository)
+    public SeatService(ISeatRepository seatRepository)
     {
         _seatRepository = seatRepository;
     }

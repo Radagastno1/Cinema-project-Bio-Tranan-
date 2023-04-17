@@ -3,17 +3,18 @@ using Core.Interface;
 
 namespace Core.Services;
 
-public class ReservationCoreService
+public class ReservationService : IService<Reservation>, IReservationService
 {
     private IRepository<Reservation> _reservationRepository;
     private IReservationRepository _reservationByScreeningRepository;
 
-    public ReservationCoreService(IRepository<Reservation> reservationRepository)
+    public ReservationService(IRepository<Reservation> reservationRepository, IReservationRepository reservationByScreeningRepository)
     {
         _reservationRepository = reservationRepository;
+        _reservationByScreeningRepository = reservationByScreeningRepository;
     }
 
-    public async Task<IEnumerable<Reservation>> GetReservations()
+    public async Task<IEnumerable<Reservation>> Get()
     {
         var reservations = await _reservationRepository.GetAsync();
         return reservations;
@@ -27,16 +28,20 @@ public class ReservationCoreService
             await _reservationByScreeningRepository.GetByScreeningIdAsync(movieScreeningId);
         return reservationsForScreening;
     }
-       public async Task<Reservation> GetReservationByReservationCode(
-        int reservationCode
-    )//denna borde hämtas direkt från db, onödig process
+
+    public async Task<Reservation> GetReservationByReservationCode(int reservationCode) //denna borde hämtas direkt från db, onödig process
     {
         var reservations = await _reservationRepository.GetAsync();
         var reservation = reservations.Where(r => r.ReservationCode == reservationCode).First();
         return reservation;
     }
 
-    public async Task<Reservation> CreateReservation(Reservation reservation)
+    public async Task<Reservation> GetById(int id)
+    {
+        throw new NotImplementedException();
+    }
+
+    public async Task<Reservation> Create(Reservation reservation)
     {
         try
         {
@@ -57,14 +62,14 @@ public class ReservationCoreService
         }
     }
 
-    public async Task<Reservation> UpdateReservation(Reservation reservation)
+    public async Task<Reservation> Update(Reservation reservation)
     {
         var updatedReservation = await _reservationRepository.UpdateAsync(reservation);
         return updatedReservation;
     }
 
-    public async Task DeleteReservation(int reservationId)
+    public async Task DeleteById(int id)
     {
-        await _reservationRepository.DeleteByIdAsync(reservationId);
+        await _reservationRepository.DeleteByIdAsync(id);
     }
 }

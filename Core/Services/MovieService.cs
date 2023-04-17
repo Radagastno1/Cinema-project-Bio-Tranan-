@@ -3,18 +3,18 @@ using Core.Models;
 
 namespace Core.Services;
 
-public class MovieCoreService
+public class MovieService : IService<Movie>
 {
     private IRepository<Movie> _movieRepository;
     private IActorRepository _actorRepository;
 
-    public MovieCoreService(IRepository<Movie> movieRepository, IActorRepository actorRepository)
+    public MovieService(IRepository<Movie> movieRepository, IActorRepository actorRepository)
     {
         _movieRepository = movieRepository;
         _actorRepository = actorRepository;
     }
 
-    public async Task<IEnumerable<Movie>> GetAllMovies()
+    public async Task<IEnumerable<Movie>> Get()
     {
         try
         {
@@ -31,7 +31,7 @@ public class MovieCoreService
         }
     }
 
-    public async Task<Movie> GetMovieById(int movieId)
+    public async Task<Movie> GetById(int movieId)
     {
         try
         {
@@ -48,7 +48,7 @@ public class MovieCoreService
         }
     }
 
-    public async Task<Movie> CreateMovie(Movie movie)
+    public async Task<Movie> Create(Movie movie)
     {
         try
         {
@@ -90,19 +90,14 @@ public class MovieCoreService
         }
     }
 
-    public async Task<Movie> UpdateMovie(Movie movie)
+    public async Task<Movie> Update(Movie movie)
     {
         var updatedMovie = await _movieRepository.UpdateAsync(movie);
         return updatedMovie;
     }
 
-    public async Task DeleteMovieById(int id)
+    public async Task DeleteById(int id)
     {
         await _movieRepository.DeleteByIdAsync(id);
-    }
-
-    public async Task DeleteMovies()
-    {
-        await _movieRepository.DeleteAsync();
     }
 }

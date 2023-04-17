@@ -3,14 +3,14 @@ using Core.Models;
 
 namespace Core.Services;
 
-public class MovieScreeningCoreService
+public class MovieScreeningService : IService<MovieScreening>, IMovieScreeningService
 {
     private readonly IRepository<MovieScreening> _movieScreeningRepository;
     private readonly IMovieScreeningRepository _shownMovieScreeningRepository;
     private readonly IRepository<Theater> _theaterRepository;
     private readonly IRepository<Movie> _movieRepository;
 
-    public MovieScreeningCoreService(
+    public MovieScreeningService(
         IRepository<MovieScreening> movieScreeningRepository,
         IRepository<Theater> theaterRepository,
         IRepository<Movie> movieRepository,
@@ -23,7 +23,8 @@ public class MovieScreeningCoreService
         _shownMovieScreeningRepository = shownMovieScreeningRepository;
     }
 
-    public async Task<IEnumerable<MovieScreening>> GetUpcomingScreenings()
+    //Get upcoming screenings
+    public async Task<IEnumerable<MovieScreening>> Get()
     {
         var screenings = await _movieScreeningRepository.GetAsync();
         return screenings;
@@ -35,7 +36,7 @@ public class MovieScreeningCoreService
         return shownScreenings;
     }
 
-    public async Task<MovieScreening> GetMovieScreeningById(int movieScreeningId)
+    public async Task<MovieScreening> GetById(int movieScreeningId)
     {
         var screening = await _movieScreeningRepository.GetByIdAsync(movieScreeningId);
         if (screening == null)
@@ -45,7 +46,7 @@ public class MovieScreeningCoreService
         return screening;
     }
 
-    public async Task<MovieScreening> CreateMovieScreening(MovieScreening movieScreening)
+    public async Task<MovieScreening> Create(MovieScreening movieScreening)
     {
         try
         {
@@ -73,13 +74,13 @@ public class MovieScreeningCoreService
         }
     }
 
-    public async Task<MovieScreening> UpdateMovieScreening(MovieScreening movieScreening)
+    public async Task<MovieScreening> Update(MovieScreening movieScreening)
     {
         var updatedMovieScreening = await _movieScreeningRepository.UpdateAsync(movieScreening);
         return updatedMovieScreening;
     }
 
-    public async Task DeleteMovieScreeningById(int id)
+    public async Task DeleteById(int id)
     {
         await _movieScreeningRepository.DeleteByIdAsync(id);
     }

@@ -13,16 +13,6 @@ public class MovieRepository : IRepository<Movie>
         _trananDbContext = trananDbContext;
     }
 
-    // private async Task ResetSeats()
-    // {
-    //     var seats = await _trananDbContext.Seats.ToListAsync();
-    //     foreach (var seat in seats)
-    //     {
-    //         seat.IsBooked = false;
-    //     }
-    //     await _trananDbContext.SaveChangesAsync();
-    // }
-
     public async Task<List<Movie>> GetAsync()
     {
         try
@@ -45,7 +35,7 @@ public class MovieRepository : IRepository<Movie>
 
     public async Task<Movie> GetByIdAsync(int id)
     {
-        try //include
+        try 
         {
             var movie = await _trananDbContext.Movies
                 .Include(m => m.Actors)
@@ -79,72 +69,8 @@ public class MovieRepository : IRepository<Movie>
         }
     }
 
-
-    // public async Task UpdateMovie(MovieDTO movieDTO)
-    // {
-    //     try
-    //     {
-    //         var movie = await _trananDbContext.Movies
-    //             .Include(m => m.Actors)
-    //             .Include(m => m.Directors)
-    //             .FirstAsync(m => m.MovieId == movieDTO.MovieId);
-    //         if (movie == null)
-    //         {
-    //             throw new Exception("No movie found");
-    //         }
-
-    //         //får göra såhär annars skapar ny instans och då skapas ny film ist för upppdatera
-    //         movie.Title = movieDTO.Title;
-    //         movie.Language = movieDTO.Language;
-    //         movie.ReleaseYear = movieDTO.ReleaseYear;
-    //         movie.DurationSeconds = movieDTO.DurationSeconds;
-
-    //         List<Actor> updatedActors = new();
-    //         foreach (var actorDTO in movieDTO.ActorDTOs)
-    //         {
-    //             var existingActor = await _trananDbContext.Actors.FindAsync(actorDTO.ActorId);
-    //             if (existingActor == null)
-    //             {
-    //                 _trananDbContext.Actors.Add(Mapper.GenerateActor(actorDTO));
-    //                 var recentlyAddedActor = movie.Actors
-    //                     .OrderByDescending(a => a.ActorId)
-    //                     .FirstOrDefault();
-    //                 updatedActors.Add(recentlyAddedActor);
-    //             }
-    //             else
-    //             {
-    //                 updatedActors.Add(existingActor);
-    //             }
-    //         }
-    //           List<Director> updatedDirectors = new();
-    //         foreach (var directorDTO in movieDTO.DirectorDTOs)
-    //         {
-    //             var existingDirector = await _trananDbContext.Directors.FindAsync(directorDTO.DirectorId);
-    //             if (existingDirector == null)
-    //             {
-    //                 _trananDbContext.Directors.Add(Mapper.GenerateDirector(directorDTO));
-    //                 var recentlyAddedDirector = movie.Directors
-    //                     .OrderByDescending(d => d.DirectorId)
-    //                     .FirstOrDefault();
-    //                 updatedDirectors.Add(recentlyAddedDirector);
-    //             }
-    //             else
-    //             {
-    //                 updatedDirectors.Add(existingDirector);
-    //             }
-    //         }
-    //         movie.Actors = updatedActors;
-    //         _trananDbContext.Movies.Update(movie);
-    //         await _trananDbContext.SaveChangesAsync();
-    //     }
-    //     catch (Exception e)
-    //     {
-    //         Console.WriteLine(e.Message);
-    //     }
-    // }
-
     public async Task<Movie> UpdateAsync(Movie movie)
-    { //får vara ifyllda fält för uppdatering av filmen sen i mvc ??
+    { 
         try
         {
             var movieToUpdate = await _trananDbContext.Movies
@@ -181,14 +107,6 @@ public class MovieRepository : IRepository<Movie>
             return null;
         }
     }
-
-    // public async Task<MovieDTO> AddMovie(MovieDTO movieDTO)
-    // {
-    //     await _trananDbContext.Movies.AddAsync(Mapper.GenerateMovie(movieDTO));
-    //     await _trananDbContext.SaveChangesAsync();
-    //     return movieDTO;
-    // }
-
     public async Task DeleteByIdAsync(int id)
     {
         var movieToDelete = await _trananDbContext.Movies.FindAsync(id);
@@ -202,8 +120,7 @@ public class MovieRepository : IRepository<Movie>
 
     public async Task DeleteAsync()
     {
-        // _trananDbContext.Movies.ToList().ForEach(m => _trananDbContext.Movies.Remove(m));
-        // await _trananDbContext.SaveChangesAsync();
-        throw new NotImplementedException();
+        _trananDbContext.Movies.ToList().ForEach(m => _trananDbContext.Movies.Remove(m));
+        await _trananDbContext.SaveChangesAsync();
     }
 }

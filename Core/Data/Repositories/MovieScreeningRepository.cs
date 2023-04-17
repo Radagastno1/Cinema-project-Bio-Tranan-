@@ -26,7 +26,6 @@ public class MovieScreeningRepository : IRepository<MovieScreening>, IMovieScree
                 .Include(s => s.Movie)
                 .Include(s => s.Movie.Actors)
                 .Include(s => s.Movie.Directors)
-                // .Where(s => s.DateAndTime > DateTime.Now)
                 .FirstAsync(s => s.MovieScreeningId == id);
 
             var theater = await _trananDbContext.Theaters.FindAsync(screening.TheaterId);

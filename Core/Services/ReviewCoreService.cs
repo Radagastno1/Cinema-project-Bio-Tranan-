@@ -3,16 +3,16 @@ using Core.Models;
 
 namespace Core.Services;
 
-public class ReviewCoreService
+public class ReviewService : IService<Review>, IReviewService
 {
     private IRepository<Review> _reviewRepository;
 
-    public ReviewCoreService(IRepository<Review> reviewRepository)
+    public ReviewService(IRepository<Review> reviewRepository)
     {
         _reviewRepository = reviewRepository;
     }
 
-    public async Task<IEnumerable<Review>> GetAllReviews()
+    public async Task<IEnumerable<Review>> Get()
     {
         try
         {
@@ -38,7 +38,7 @@ public class ReviewCoreService
         }
     }
 
-    public async Task<Review> CreateReview(Review review)
+    public async Task<Review> Create(Review review)
     {
         try
         {
@@ -56,5 +56,20 @@ public class ReviewCoreService
         {
             throw new Exception(e.Message);
         }
+    }
+
+    Task<Review> IService<Review>.GetById(int id)
+    {
+        throw new NotImplementedException();
+    }
+
+    Task<Review> IService<Review>.Update(Review obj)
+    {
+        throw new NotImplementedException();
+    }
+
+    Task IService<Review>.DeleteById(int id)
+    {
+        throw new NotImplementedException();
     }
 }

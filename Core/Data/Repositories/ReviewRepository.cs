@@ -17,7 +17,6 @@ public class ReviewRepository : IRepository<Review>
     {
         try
         {
-            //ser om vi hittar reservationen
             var reservation = await _trananDbContext.Reservations
                 .Where(r => r.ReservationId == review.Reservation.ReservationId)
                 .FirstAsync();

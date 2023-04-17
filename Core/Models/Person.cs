@@ -1,6 +1,6 @@
 namespace Core.Models;
 
-public class Person
+public class Person 
 {
     internal int Id { get; set; }
     internal string FirstName { get; set; }

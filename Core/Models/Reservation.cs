@@ -8,22 +8,12 @@ public class Reservation
     public decimal Price { get; set; }
     public int ReservationCode { get; set; }
     public int MovieScreeningId { get; set; }
-    public MovieScreening MovieScreening { get; set; }
+    public MovieScreening MovieScreening { get; set; } 
     public int CustomerId { get; set; }
     public Customer Customer { get; set; }
     public List<Seat> Seats { get; set; }
 
     public Reservation() { }
-
-    // public Reservation(decimal price, int movieScreeningId, Customer customer, List<Seat> seats)
-    // {
-    //     Price = price;
-    //     MovieScreeningId = movieScreeningId;
-    //     Customer = customer;
-    //     Seats = seats;
-    //     ReservationCode = await GenerateReservationCodeAsync(); //felkolla?
-    // }
-
     public static async Task<Reservation> CreateReservationAsync(
         decimal price,
         int movieScreeningId,
