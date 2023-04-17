@@ -9,6 +9,7 @@ public class Mapper
     {
         var review = new Review()
         {
+            Alias = reviewViewModel.Alias,
             Rating = reviewViewModel.Rating,
             Comment = reviewViewModel.Comment,
             ReservationCode = reviewViewModel.ReservationCode,
@@ -16,6 +17,7 @@ public class Mapper
         };
         return review;
     }
+
     public static ReviewViewModel GenerateReviewAsViewModel(Review review)
     {
         var reviewViewModel = new ReviewViewModel(
@@ -136,7 +138,6 @@ public class Mapper
             reservation.MovieScreeningId,
             customerViewModel,
             reservation.Seats.Select(s => s.SeatId).ToList()
-        ///ändrat här så kanske ej funkar
         );
         return reservationViewModel;
     }
@@ -146,13 +147,14 @@ public class Mapper
     )
     {
         var reservation = await Reservation.CreateReservationAsync(
+            reservationViewModel.ReservationId,
             reservationViewModel.Price,
             reservationViewModel.MovieScreeningId,
             GenerateCustomer(reservationViewModel.CustomerViewModel),
-            // await SeatService.GenerateSeatsFromIdsAsync(reservationDTO.SeatIds) //blir detta rätt async?
-            GenerateSeatsFromIds(reservationViewModel.SeatIds)
+            GenerateSeatsFromIds(reservationViewModel.SeatIds),
+            reservationViewModel.IsCheckedIn
         );
-        return reservation; //kollla upp om rätt
+        return reservation;
     }
 
     public static List<Seat> GenerateSeatsFromIds(List<int> ids)

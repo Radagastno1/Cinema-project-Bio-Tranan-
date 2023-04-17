@@ -8,6 +8,7 @@ public class ReservationViewModel
     public int MovieScreeningId { get; set; }
     public CustomerViewModel CustomerViewModel { get; set; } = new();
     public List<int> SeatIds { get; set; } = new();
+    public bool IsCheckedIn{get;set;}
 
     public ReservationViewModel() { }
 
