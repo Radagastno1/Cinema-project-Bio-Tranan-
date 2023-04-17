@@ -13,7 +13,7 @@ public class MovieRepository : IRepository<Movie>
         _trananDbContext = trananDbContext;
     }
 
-    public async Task<List<Movie>> GetAsync()
+    public async Task<IEnumerable<Movie>> GetAsync()
     {
         try
         {
@@ -29,7 +29,7 @@ public class MovieRepository : IRepository<Movie>
         }
         catch (Exception e)
         {
-            throw new Exception(e.Message);
+           return null;
         }
     }
 
@@ -51,7 +51,7 @@ public class MovieRepository : IRepository<Movie>
         }
         catch (Exception e)
         {
-            throw new Exception(e.Message);
+            return null;
         }
     }
 
@@ -66,13 +66,9 @@ public class MovieRepository : IRepository<Movie>
                 .FirstOrDefaultAsync();
             return recentlyAddedMovie;
         }
-        catch (DbUpdateException e)
-        {
-            throw new DbUpdateException(e.Message);
-        }
         catch (Exception e)
         {
-            throw new Exception(e.Message);
+            return null;
         }
     }
 
@@ -86,7 +82,7 @@ public class MovieRepository : IRepository<Movie>
                 .FirstAsync(m => m.MovieId == movie.MovieId);
             if (movie == null)
             {
-                throw new NullReferenceException("No movie found");
+                return null;
             }
             movieToUpdate.Title = movie.Title ?? movieToUpdate.Title;
             movieToUpdate.Description = movie.Description ?? movieToUpdate.Description;
@@ -108,13 +104,10 @@ public class MovieRepository : IRepository<Movie>
             await _trananDbContext.SaveChangesAsync();
             return movieToUpdate;
         }
-        catch (DbUpdateException e)
-        {
-            throw new DbUpdateException(e.Message);
-        }
         catch (Exception e)
         {
-            throw new Exception(e.Message);
+            //logga
+            return null;
         }
     }
 
@@ -130,13 +123,9 @@ public class MovieRepository : IRepository<Movie>
                 await _trananDbContext.SaveChangesAsync();
             }
         }
-        catch (DbUpdateException e)
-        {
-            throw new DbUpdateException(e.Message);
-        }
         catch (Exception e)
         {
-            throw new Exception(e.Message);
+            //logga
         }
     }
 
@@ -147,13 +136,9 @@ public class MovieRepository : IRepository<Movie>
             _trananDbContext.Movies.ToList().ForEach(m => _trananDbContext.Movies.Remove(m));
             await _trananDbContext.SaveChangesAsync();
         }
-        catch (DbUpdateException e)
-        {
-            throw new DbUpdateException(e.Message);
-        }
         catch (Exception e)
         {
-            throw new Exception(e.Message);
+            //logga
         }
     }
 }

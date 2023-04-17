@@ -13,7 +13,7 @@ public class TheaterRepository : IRepository<Theater>
         _trananDbContext = trananDbContext;
     }
 
-    public async Task<List<Theater>> GetAsync()
+    public async Task<IEnumerable<Theater>> GetAsync()
     {
         try
         {
@@ -30,7 +30,8 @@ public class TheaterRepository : IRepository<Theater>
         }
         catch (Exception e)
         {
-            throw new Exception(e.Message);
+            return null;
+            //logga
         }
     }
 
@@ -41,15 +42,15 @@ public class TheaterRepository : IRepository<Theater>
             var theater = await _trananDbContext.Theaters
                 .Include(t => t.Seats)
                 .FirstAsync(t => t.TheaterId == id);
-                if(theater == null)
-                {
-
-                }
+            if (theater == null)
+            {
+                return null;
+            }
             return theater;
         }
         catch (Exception e)
         {
-            throw new Exception(e.Message);
+            return null;
         }
     }
 
@@ -66,7 +67,7 @@ public class TheaterRepository : IRepository<Theater>
         }
         catch (Exception e)
         {
-           throw new Exception(e.Message);
+            return null;
         }
     }
 
@@ -87,7 +88,7 @@ public class TheaterRepository : IRepository<Theater>
         }
         catch (Exception e)
         {
-            throw new Exception(e.Message);
+            return null;
         }
     }
 

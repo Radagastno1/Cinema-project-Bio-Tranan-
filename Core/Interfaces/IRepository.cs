@@ -6,7 +6,7 @@ namespace Core.Interface;
 public interface IRepository<T>
 {
 
-    public Task<List<T>> GetAsync();
+    public Task<IEnumerable<T>> GetAsync();
 
     public Task<T> GetByIdAsync(int id);
 

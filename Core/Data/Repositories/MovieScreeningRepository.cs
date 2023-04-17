@@ -25,7 +25,7 @@ public class MovieScreeningRepository : IRepository<MovieScreening>, IMovieScree
 
             if (screening == null)
             {
-                throw new ArgumentException("Moviescreening not found");
+                return null;
             }
             var theater = await _trananDbContext.Theaters.FindAsync(screening.TheaterId);
 
@@ -50,17 +50,14 @@ public class MovieScreeningRepository : IRepository<MovieScreening>, IMovieScree
 
             return screening;
         }
-        catch (ArgumentException e)
-        {
-            throw new ArgumentException(e.Message);
-        }
         catch (Exception e)
         {
-            throw new Exception(e.Message);
+            return null;
+            //logga
         }
     }
 
-    public async Task<List<MovieScreening>> GetAsync()
+    public async Task<IEnumerable<MovieScreening>> GetAsync()
     {
         try
         {
@@ -103,11 +100,12 @@ public class MovieScreeningRepository : IRepository<MovieScreening>, IMovieScree
         }
         catch (Exception e)
         {
-            throw new Exception(e.Message);
+           return Enumerable.Empty<MovieScreening>();
+           //logga
         }
     }
 
-    public async Task<List<MovieScreening>> GetShownAsync()
+    public async Task<IEnumerable<MovieScreening>> GetShownAsync()
     {
         try
         {
@@ -217,7 +215,7 @@ public class MovieScreeningRepository : IRepository<MovieScreening>, IMovieScree
             catch (Exception e)
             {
                 await transaction.RollbackAsync();
-                throw new Exception(e.Message);
+                return null;
             }
         }
     }
@@ -243,7 +241,8 @@ public class MovieScreeningRepository : IRepository<MovieScreening>, IMovieScree
         }
         catch (Exception e)
         {
-            throw new Exception(e.Message);
+            return null;
+            //logga
         }
     }
 
@@ -257,7 +256,7 @@ public class MovieScreeningRepository : IRepository<MovieScreening>, IMovieScree
         }
         catch (Exception e)
         {
-            throw new Exception(e.Message);
+           //logga
         }
     }
 
@@ -278,7 +277,7 @@ public class MovieScreeningRepository : IRepository<MovieScreening>, IMovieScree
         var currentScreeningEndTime = currentScreeningStartTime.AddMinutes(
             movieScreening.Movie.DurationMinutes + extraMinutes
         );
-
+        
         var overlappingScreenings =
             await _trananDbContext.MovieScreenings
                 .Where(m => m.TheaterId == movieScreening.TheaterId)

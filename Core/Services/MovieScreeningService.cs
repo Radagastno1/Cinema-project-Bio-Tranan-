@@ -28,11 +28,15 @@ public class MovieScreeningService : IService<MovieScreening>, IMovieScreeningSe
         try
         {
             var screenings = await _movieScreeningRepository.GetAsync();
+            if(screenings == null)
+            {
+                return Enumerable.Empty<MovieScreening>();
+            }
             return screenings;
         }
-        catch (Exception e)
+        catch (Exception)
         {
-            return Enumerable.Empty<MovieScreening>();
+            throw new Exception("Failed getting movie screenings.");
         }
     }
 
@@ -47,9 +51,9 @@ public class MovieScreeningService : IService<MovieScreening>, IMovieScreeningSe
             }
             return shownScreenings;
         }
-        catch (Exception e)
+        catch (Exception)
         {
-            return Enumerable.Empty<MovieScreening>();
+            throw new Exception("Failed getting shown movie screenings.");
         }
     }
 
@@ -64,9 +68,9 @@ public class MovieScreeningService : IService<MovieScreening>, IMovieScreeningSe
             }
             return screening;
         }
-        catch (Exception e)
+        catch (NullReferenceException)
         {
-            return new MovieScreening();
+            throw new Exception("Failed getting movie screening by id.");
         }
     }
 
@@ -78,6 +82,10 @@ public class MovieScreeningService : IService<MovieScreening>, IMovieScreeningSe
             var movie = await _movieRepository.GetByIdAsync(movieScreening.MovieId);
             movieScreening.PricePerPerson = movie.Price + theater.TheaterPrice;
             var addedMovieScreening = await _movieScreeningRepository.CreateAsync(movieScreening);
+            if(addedMovieScreening == null)
+            {
+                return null;
+            }
             return addedMovieScreening;
         }
         catch (NullReferenceException e)
@@ -103,11 +111,15 @@ public class MovieScreeningService : IService<MovieScreening>, IMovieScreeningSe
         try
         {
             var updatedMovieScreening = await _movieScreeningRepository.UpdateAsync(movieScreening);
+            if(updatedMovieScreening == null)
+            {
+                return new MovieScreening();
+            }
             return updatedMovieScreening;
         }
-        catch (Exception e)
+        catch (Exception)
         {
-            throw new Exception(e.Message);
+            throw new Exception("Something went wrong when updating movie screening.");
         }
     }
 
@@ -117,9 +129,9 @@ public class MovieScreeningService : IService<MovieScreening>, IMovieScreeningSe
         {
             await _movieScreeningRepository.DeleteByIdAsync(id);
         }
-        catch (Exception e)
+        catch (Exception)
         {
-            throw new Exception(e.Message);
+            throw new Exception("Something went wrong when deleting movie screening.");
         }
     }
 }

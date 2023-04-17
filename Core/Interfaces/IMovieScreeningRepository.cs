@@ -5,5 +5,5 @@ namespace Core.Interface;
 public interface IMovieScreeningRepository
 {
 
-    public Task<List<MovieScreening>> GetShownAsync();
+    public Task<IEnumerable<MovieScreening>> GetShownAsync();
 }

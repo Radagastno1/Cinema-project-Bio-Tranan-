@@ -13,7 +13,7 @@ public class ReservationRepository : IRepository<Reservation>, IReservationRepos
         _trananDbContext = trananDbContext;
     }
 
-    public async Task<List<Reservation>> GetAsync()
+    public async Task<IEnumerable<Reservation>> GetAsync()
     {
         try
         {
@@ -29,11 +29,12 @@ public class ReservationRepository : IRepository<Reservation>, IReservationRepos
         }
         catch (Exception e)
         {
-            throw new Exception(e.Message);
+            return null;
+            //logga
         }
     }
 
-    public async Task<List<Reservation>> GetByScreeningIdAsync(int screeningId)
+    public async Task<IEnumerable<Reservation>> GetByScreeningIdAsync(int screeningId)
     {
         try
         {
@@ -52,7 +53,8 @@ public class ReservationRepository : IRepository<Reservation>, IReservationRepos
         }
         catch (Exception e)
         {
-            throw new Exception(e.Message);
+            return null;
+            //logga
         }
     }
 
@@ -75,7 +77,7 @@ public class ReservationRepository : IRepository<Reservation>, IReservationRepos
 
             if (foundMovieScreening == null)
             {
-                throw new InvalidOperationException("Movie screening not found.");
+                return null;
             }
 
             var allReservedSeats = await _trananDbContext.Reservations
@@ -91,7 +93,7 @@ public class ReservationRepository : IRepository<Reservation>, IReservationRepos
 
                 if (foundSeat == null)
                 {
-                    throw new InvalidOperationException("Seat not found.");
+                    return null;
                 }
 
                 if (!allReservedSeats.Any(s => s.SeatId == foundSeat.SeatId))
@@ -113,7 +115,8 @@ public class ReservationRepository : IRepository<Reservation>, IReservationRepos
         }
         catch (Exception e)
         {
-            throw new Exception(e.Message);
+            return null;
+            //logga
         }
     }
 
@@ -126,7 +129,7 @@ public class ReservationRepository : IRepository<Reservation>, IReservationRepos
             );
             if (reservationToUpdate == null)
             {
-                throw new ArgumentNullException("Couldn't find reservation to update.");
+                return null;
             }
             reservationToUpdate.Customer = reservation.Customer ?? reservationToUpdate.Customer;
             reservationToUpdate.MovieScreening =
@@ -142,7 +145,8 @@ public class ReservationRepository : IRepository<Reservation>, IReservationRepos
         }
         catch (ArgumentNullException e)
         {
-            throw new ArgumentException(e.Message);
+            return null;
+            //logga
         }
     }
 
@@ -153,10 +157,6 @@ public class ReservationRepository : IRepository<Reservation>, IReservationRepos
             var reservationToDelete = await _trananDbContext.Reservations.FindAsync(reservationId);
             _trananDbContext.Reservations.Remove(reservationToDelete);
 
-            if (reservationToDelete == null)
-            {
-                throw new ArgumentNullException("Couldn't find reservation to delete.");
-            }
             var SeatsToReset = await _trananDbContext.Seats
                 .Where(s => s.Reservations.Any(r => r.ReservationId == reservationId))
                 .ToListAsync();
@@ -185,7 +185,7 @@ public class ReservationRepository : IRepository<Reservation>, IReservationRepos
                 .FirstOrDefaultAsync();
             if (reservationToCheckIn == null)
             {
-                throw new NullReferenceException("No reservation found.");
+                return null;
             }
             reservationToCheckIn.IsCheckedIn = true;
             _trananDbContext.Reservations.Update(reservationToCheckIn);
@@ -200,7 +200,7 @@ public class ReservationRepository : IRepository<Reservation>, IReservationRepos
         }
         catch (Exception e)
         {
-            throw new Exception(e.Message);
+            return null;
         }
     }
 }

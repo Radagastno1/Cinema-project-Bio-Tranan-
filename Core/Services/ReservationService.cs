@@ -22,11 +22,15 @@ public class ReservationService : IService<Reservation>, IReservationService
         try
         {
             var reservations = await _reservationRepository.GetAsync();
+            if(reservations == null)
+            {
+                return Enumerable.Empty<Reservation>();
+            }
             return reservations;
         }
         catch (Exception)
         {
-            return Enumerable.Empty<Reservation>();
+           throw new Exception("Failed to get reservations from database.");
         }
     }
 
@@ -38,11 +42,15 @@ public class ReservationService : IService<Reservation>, IReservationService
         {
             var reservationsForScreening =
                 await _reservationByScreeningRepository.GetByScreeningIdAsync(movieScreeningId);
+                if(reservationsForScreening == null)
+                {
+                    return Enumerable.Empty<Reservation>();
+                }
             return reservationsForScreening;
         }
         catch (Exception)
         {
-            return Enumerable.Empty<Reservation>();
+            throw new Exception("Failed to get reservations by movie screening.");
         }
     }
 
@@ -51,12 +59,20 @@ public class ReservationService : IService<Reservation>, IReservationService
         try
         {
             var reservations = await _reservationRepository.GetAsync();
+            if(reservations == null)
+            {
+                return null;
+            }
             var reservation = reservations.Where(r => r.ReservationCode == reservationCode).First();
+            if(reservation == null)
+            {
+                return null;
+            }
             return reservation;
         }
         catch (Exception)
         {
-            return new Reservation();
+            throw new Exception("Failed to get reservation by reservationcode.");
         }
     }
 
@@ -67,11 +83,15 @@ public class ReservationService : IService<Reservation>, IReservationService
             var checkedInReservation = await _reservationByScreeningRepository.CheckInReservation(
                 code
             );
+            if(checkedInReservation == null)
+            {
+                return null;
+            }
             return checkedInReservation;
         }
-        catch (Exception e)
+        catch (Exception)
         {
-            throw new Exception(e.Message);
+            throw new Exception("Failed to check in reservation in database.");
         }
     }
 
@@ -97,7 +117,7 @@ public class ReservationService : IService<Reservation>, IReservationService
             {
                 throw new InvalidOperationException(e.Message);
             }
-            throw new InvalidOperationException();
+            throw new InvalidOperationException("Failed to create reservation.");
         }
     }
 
@@ -106,11 +126,15 @@ public class ReservationService : IService<Reservation>, IReservationService
         try
         {
             var updatedReservation = await _reservationRepository.UpdateAsync(reservation);
+            if(updatedReservation == null)
+            {
+                return null;
+            }
             return updatedReservation;
         }
-        catch (Exception e)
+        catch (Exception)
         {
-            throw new Exception(e.Message);
+            throw new Exception("Failed to update reservation.");
         }
     }
 
@@ -120,9 +144,9 @@ public class ReservationService : IService<Reservation>, IReservationService
         {
             await _reservationRepository.DeleteByIdAsync(id);
         }
-        catch (Exception e)
+        catch (Exception)
         {
-            throw new Exception(e.Message);
+            throw new Exception("Failed to delete reservation by id.");
         }
     }
 }

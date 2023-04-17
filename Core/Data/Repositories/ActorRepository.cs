@@ -17,7 +17,7 @@ public class ActorRepository : IActorRepository
         var actor = await _trananDbContext.Actors.FindAsync(actorId);
         if (actor == null)
         {
-            throw new ArgumentNullException("Actor/Actress not found");
+            return null;
         }
         return actor;
     }
@@ -27,7 +27,7 @@ public class ActorRepository : IActorRepository
         var director = await _trananDbContext.Directors.FindAsync(directorId);
         if (director == null)
         {
-            throw new ArgumentNullException("Director not found");
+            return null;
         }
         return director;
     }

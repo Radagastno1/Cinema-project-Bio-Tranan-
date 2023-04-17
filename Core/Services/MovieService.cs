@@ -27,7 +27,7 @@ public class MovieService : IService<Movie>
         }
         catch (Exception)
         {
-            return new List<Movie>();
+            throw new Exception("Failed to get movies.");
         }
     }
 
@@ -38,13 +38,13 @@ public class MovieService : IService<Movie>
             var movieFound = await _movieRepository.GetByIdAsync(movieId);
             if (movieFound == null)
             {
-                return null;
+                return new Movie();
             }
             return movieFound;
         }
         catch (Exception)
         {
-            return null;
+            throw new Exception("Failed to get movie by id.");
         }
     }
 
@@ -84,9 +84,9 @@ public class MovieService : IService<Movie>
             var recentlyAddedMovie = await _movieRepository.CreateAsync(movie);
             return recentlyAddedMovie;
         }
-        catch (Exception e)
+        catch (Exception)
         {
-            throw new Exception(e.Message);
+            throw new Exception("Something went wrong when saving movie.");
         }
     }
 
@@ -97,9 +97,9 @@ public class MovieService : IService<Movie>
             var updatedMovie = await _movieRepository.UpdateAsync(movie);
             return updatedMovie;
         }
-        catch (Exception e)
+        catch (Exception)
         {
-            throw new Exception(e.Message);
+            throw new Exception("Failed when updating movies.");
         }
     }
 
@@ -111,7 +111,7 @@ public class MovieService : IService<Movie>
         }
         catch (Exception e)
         {
-            throw new Exception(e.Message);
+            throw new Exception("Failed when deleting movie by id.");
         }
     }
 }

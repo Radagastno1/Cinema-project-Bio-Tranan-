@@ -23,7 +23,7 @@ public class ReviewRepository : IRepository<Review>
 
             if (reservation == null)
             {
-                throw new InvalidOperationException("Couldn't find reservation code.");
+                return null;
             }
 
             var existingReviewOnReservationCode = await _trananDbContext.Reviews
@@ -51,9 +51,13 @@ public class ReviewRepository : IRepository<Review>
                 );
             }
         }
-        catch (Exception e)
+        catch (InvalidOperationException e)
         {
-            throw new Exception(e.Message);
+            if(e.Message == "Review with this reservationcode has allready made a review .")
+            {
+                throw new InvalidOperationException(e.Message);
+            }
+            return null;
         }
     }
 
@@ -68,20 +72,20 @@ public class ReviewRepository : IRepository<Review>
         throw new NotImplementedException();
     }
 
-    public async Task<List<Review>> GetAsync()
+    public async Task<IEnumerable<Review>> GetAsync()
     {
         try
         {
             var reviews = await _trananDbContext.Reviews.ToListAsync();
             if (reviews == null)
             {
-                return new List<Review>();
+                return Enumerable.Empty<Review>();
             }
             return reviews;
         }
         catch (Exception e)
         {
-            throw new Exception(e.Message);
+            return null;
         }
     }
 
@@ -92,13 +96,13 @@ public class ReviewRepository : IRepository<Review>
             var review = await _trananDbContext.Reviews.Where(r => r.ReviewId == id).FirstAsync();
             if(review == null)
             {
-                throw new ArgumentNullException("Review not found.");
+                return null;
             }
             return review;
         }
         catch (Exception e)
         {
-            throw new Exception(e.Message);
+            return null;
         }
     }
 

@@ -23,9 +23,9 @@ public class ReviewService : IService<Review>, IReviewService
             }
             return reviews;
         }
-        catch (Exception e)
+        catch (Exception)
         {
-            throw new Exception(e.Message);
+            throw new Exception("Failed to get reviews.");
         }
     }
 
@@ -34,6 +34,10 @@ public class ReviewService : IService<Review>, IReviewService
         try
         {
             var reviews = await _reviewRepository.GetAsync();
+            if (reviews == null)
+            {
+                return null;
+            }
             var review = reviews.Where(r => r.ReservationCode == reservationCode).First();
             if (review == null)
             {
@@ -41,9 +45,9 @@ public class ReviewService : IService<Review>, IReviewService
             }
             return review;
         }
-        catch (Exception e)
+        catch (Exception)
         {
-            throw new Exception(e.Message);
+            throw new Exception("Failed to get review by reseration code.");
         }
     }
 
@@ -51,19 +55,12 @@ public class ReviewService : IService<Review>, IReviewService
     {
         try
         {
-            if (review == null)
-            {
-                throw new InvalidOperationException("Something went wrong with saving the review.");
-            }
-            else
-            {
-                var createdReview = await _reviewRepository.CreateAsync(review);
-                return createdReview;
-            }
+            var createdReview = await _reviewRepository.CreateAsync(review);
+            return createdReview;
         }
-        catch (Exception e)
+        catch (Exception)
         {
-            throw new Exception(e.Message);
+            throw new Exception("Failed to create review.");
         }
     }
 
