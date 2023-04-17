@@ -9,9 +9,9 @@ namespace TrananAPI.Controllers;
 [Route("theater")]
 public class TheaterController : ControllerBase, IController<TheaterDTO, TheaterDTO>
 {
-    private readonly TheaterService _theaterService;
+    private readonly IService<TheaterDTO, TheaterDTO> _theaterService;
 
-    public TheaterController(TheaterService theaterService)
+    public TheaterController(IService<TheaterDTO, TheaterDTO> theaterService)
     {
         _theaterService = theaterService;
     }
@@ -21,7 +21,7 @@ public class TheaterController : ControllerBase, IController<TheaterDTO, Theater
     {
         try
         {
-            var theaters = await _theaterService.GetTheaters();
+            var theaters = await _theaterService.Get();
             if (theaters == null)
             {
                 return BadRequest("Failed to get theaters.");
@@ -39,7 +39,7 @@ public class TheaterController : ControllerBase, IController<TheaterDTO, Theater
     {
         try
         {
-            var theater = await _theaterService.GetTheaterById(id);
+            var theater = await _theaterService.GetById(id);
             if (theater == null)
             {
                 return BadRequest("Failed to get theater by id.");
@@ -57,7 +57,7 @@ public class TheaterController : ControllerBase, IController<TheaterDTO, Theater
     {
         try
         {
-            var addedTheater = await _theaterService.CreateTheater(theaterDTO);
+            var addedTheater = await _theaterService.Create(theaterDTO);
             if (addedTheater == null)
             {
                 return BadRequest("Failed to create theater.");
@@ -75,7 +75,7 @@ public class TheaterController : ControllerBase, IController<TheaterDTO, Theater
     {
         try
         {
-            var updatedTheater = await _theaterService.UpdateTheater(theaterDTO);
+            var updatedTheater = await _theaterService.Update(theaterDTO);
             if (updatedTheater == null)
             {
                 return BadRequest("Failed to update theater.");
@@ -93,7 +93,7 @@ public class TheaterController : ControllerBase, IController<TheaterDTO, Theater
     {
         try
         {
-            await _theaterService.DeleteTheaterById(id);
+            await _theaterService.DeleteById(id);
             return StatusCode(204);
         }
         catch (Exception e)

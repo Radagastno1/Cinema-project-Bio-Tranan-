@@ -9,9 +9,9 @@ namespace TrananAPI.Controllers;
 [Route("moviescreening")]
 public class MovieScreeningController : ControllerBase, IController<MovieScreeningOutgoingDTO, MovieScreeningIncomingDTO>
 {
-    private readonly MovieScreeningService _movieScreeningService;
+    private readonly IService<MovieScreeningOutgoingDTO, MovieScreeningIncomingDTO> _movieScreeningService;
 
-    public MovieScreeningController(MovieScreeningService movieScreeningService)
+    public MovieScreeningController(IService<MovieScreeningOutgoingDTO, MovieScreeningIncomingDTO> movieScreeningService)
     {
         _movieScreeningService = movieScreeningService;
     }
@@ -21,7 +21,7 @@ public class MovieScreeningController : ControllerBase, IController<MovieScreeni
     {
         try
         {
-            var movieScreenings = await _movieScreeningService.GetUpcomingScreenings();
+            var movieScreenings = await _movieScreeningService.Get();
             if (movieScreenings == null)
             {
                 return BadRequest("Failed to get movie screenings.");
@@ -39,7 +39,7 @@ public class MovieScreeningController : ControllerBase, IController<MovieScreeni
     {
         try
         {
-            var movieScreeningDTO = await _movieScreeningService.GetMovieScreeningById(id);
+            var movieScreeningDTO = await _movieScreeningService.GetById(id);
             if (movieScreeningDTO == null)
             {
                 return BadRequest("Failed to get movie screening by id.");
@@ -59,7 +59,7 @@ public class MovieScreeningController : ControllerBase, IController<MovieScreeni
     {
         try
         {
-            var newMovieScreening = await _movieScreeningService.CreateMovieScreening(
+            var newMovieScreening = await _movieScreeningService.Create(
                 movieScreeningDTO
             );
             if (newMovieScreening == null)
@@ -95,7 +95,7 @@ public class MovieScreeningController : ControllerBase, IController<MovieScreeni
     {
         try
         {
-            var updatedMovieScreening = await _movieScreeningService.UpdateMovieScreening(
+            var updatedMovieScreening = await _movieScreeningService.Update(
                 movieScreeningDTO
             );
             if (updatedMovieScreening == null)
@@ -115,7 +115,7 @@ public class MovieScreeningController : ControllerBase, IController<MovieScreeni
     {
         try
         {
-            await _movieScreeningService.DeleteMovieScreeningById(id);
+            await _movieScreeningService.DeleteById(id);
             return StatusCode(204);
         }
         catch (Exception e)

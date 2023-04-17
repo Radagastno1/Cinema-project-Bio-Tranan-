@@ -1,4 +1,3 @@
-using TrananAPI.Services;
 using TrananAPI.DTO;
 using TrananAPI.Interface;
 using Microsoft.AspNetCore.Mvc;
@@ -9,9 +8,9 @@ namespace TrananAPI.Controllers;
 [Route("movie")]
 public class MovieController : ControllerBase, IController<MovieDTO, MovieDTO>
 {
-    private readonly MovieService _movieService;
+    private readonly IService<MovieDTO, MovieDTO> _movieService;
 
-    public MovieController(MovieService movieService)
+    public MovieController(IService<MovieDTO, MovieDTO> movieService)
     {
         _movieService = movieService;
     }
@@ -21,7 +20,7 @@ public class MovieController : ControllerBase, IController<MovieDTO, MovieDTO>
     {
         try
         {
-            var movieDTOs = await _movieService.GetAllMoviesAsDTOs();
+            var movieDTOs = await _movieService.Get();
             if(movieDTOs == null)
             {
                 return BadRequest("Failed to get movies.");
@@ -39,7 +38,7 @@ public class MovieController : ControllerBase, IController<MovieDTO, MovieDTO>
     {
         try
         {
-            var movieDTO = await _movieService.GetMovieAsDTOById(id);
+            var movieDTO = await _movieService.GetById(id);
             if(movieDTO == null)
             {
                 return BadRequest("Failed to get movie by id.");
@@ -57,7 +56,7 @@ public class MovieController : ControllerBase, IController<MovieDTO, MovieDTO>
     {
         try
         {
-            var newMovie = await _movieService.CreateMovie(movieDTO);
+            var newMovie = await _movieService.Create(movieDTO);
             if(newMovie == null)
             {
                 return BadRequest("Failed to create movie.");
@@ -75,7 +74,7 @@ public class MovieController : ControllerBase, IController<MovieDTO, MovieDTO>
     {
         try
         {
-            var updatedMovie = await _movieService.UpdateMovie(movieDTO);
+            var updatedMovie = await _movieService.Update(movieDTO);
             if(updatedMovie == null)
             {
                 return BadRequest("Failed to update movie.");
@@ -94,7 +93,7 @@ public class MovieController : ControllerBase, IController<MovieDTO, MovieDTO>
     {
         try
         {
-            await _movieService.DeleteMovieById(id);
+            await _movieService.DeleteById(id);
             return StatusCode(204);
         }
         catch (Exception e)

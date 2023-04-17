@@ -1,20 +1,20 @@
-using TrananAPI.Service;
+using TrananAPI.Interface;
+using TrananAPI.Service.Mapper;
 using TrananAPI.DTO;
-using Core.Interface;
 using Core.Models;
 
 namespace TrananAPI.Services;
 
-public class MovieScreeningService
+public class MovieScreeningService : IService<MovieScreeningOutgoingDTO, MovieScreeningIncomingDTO>
 {
-    private readonly IService<MovieScreening> _coreScreeningService;
+    private readonly Core.Interface.IService<MovieScreening> _coreScreeningService;
 
-    public MovieScreeningService(IService<MovieScreening> coreScreeningService)
+    public MovieScreeningService(Core.Interface.IService<MovieScreening> coreScreeningService)
     {
         _coreScreeningService = coreScreeningService;
     }
 
-    public async Task<IEnumerable<MovieScreeningOutgoingDTO>> GetUpcomingScreenings()
+    public async Task<IEnumerable<MovieScreeningOutgoingDTO>> Get()
     {
         try
         {
@@ -30,11 +30,11 @@ public class MovieScreeningService
         }
     }
 
-    public async Task<MovieScreeningOutgoingDTO> GetMovieScreeningById(int movieScreeningId)
+    public async Task<MovieScreeningOutgoingDTO> GetById(int id)
     {
         try
         {
-            var screening = await _coreScreeningService.GetById(movieScreeningId);
+            var screening = await _coreScreeningService.GetById(id);
             if (screening == null)
             {
                 return new MovieScreeningOutgoingDTO();
@@ -47,7 +47,7 @@ public class MovieScreeningService
         }
     }
 
-    public async Task<MovieScreeningOutgoingDTO> CreateMovieScreening(
+    public async Task<MovieScreeningOutgoingDTO> Create(
         MovieScreeningIncomingDTO movieScreeningIncomingDTO
     )
     {
@@ -83,7 +83,7 @@ public class MovieScreeningService
         }
     }
 
-    public async Task<MovieScreeningOutgoingDTO> UpdateMovieScreening(
+    public async Task<MovieScreeningOutgoingDTO> Update(
         MovieScreeningIncomingDTO movieScreeningIncomingDTO
     )
     {
@@ -105,7 +105,7 @@ public class MovieScreeningService
         }
     }
 
-    public async Task DeleteMovieScreeningById(int id)
+    public async Task DeleteById(int id)
     {
         try
         {

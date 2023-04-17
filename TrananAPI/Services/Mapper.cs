@@ -1,7 +1,7 @@
 using Core.Models;
 using TrananAPI.DTO;
 
-namespace TrananAPI.Service;
+namespace TrananAPI.Service.Mapper;
 
 public class Mapper
 {

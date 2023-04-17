@@ -12,11 +12,13 @@ public class ReservationController
         IController<ReservationDTO, ReservationDTO>,
         IReservationController
 {
-    private readonly ReservationService _reservationService;
+    private readonly IService<ReservationDTO, ReservationDTO> _reservationService;
+    private readonly IReservationService _reservationService2;
 
-    public ReservationController(ReservationService reservationService)
+    public ReservationController(IService<ReservationDTO, ReservationDTO> reservationService, IReservationService reservationService2)
     {
         _reservationService = reservationService;
+        _reservationService2 = reservationService2;
     }
 
     [HttpGet]
@@ -24,7 +26,7 @@ public class ReservationController
     {
         try
         {
-            var reservations = await _reservationService.GetReservations();
+            var reservations = await _reservationService.Get();
             if (reservations == null)
             {
                 return BadRequest("Failed to get reservations.");
@@ -48,7 +50,7 @@ public class ReservationController
     {
         try
         {
-            var reservations = await _reservationService.GetReservationsByMovieScreening(
+            var reservations = await _reservationService2.GetByScreeningId(
                 screeningId
             );
             if (reservations == null)
@@ -68,7 +70,7 @@ public class ReservationController
     {
         try
         {
-            var addedReservation = await _reservationService.CreateReservation(reservationDTO);
+            var addedReservation = await _reservationService.Create(reservationDTO);
             if (addedReservation == null)
             {
                 return BadRequest("Failed to create reservation.");
@@ -98,7 +100,7 @@ public class ReservationController
     {
         try
         {
-            var updatedReservation = await _reservationService.UpdateReservation(reservationDTO);
+            var updatedReservation = await _reservationService.Update(reservationDTO);
             if (updatedReservation == null)
             {
                 return BadRequest("Failed to update reservation.");
@@ -116,7 +118,7 @@ public class ReservationController
     {
         try
         {
-            await _reservationService.DeleteReservation(id);
+            await _reservationService.DeleteById(id);
             return StatusCode(204);
         }
         catch (Exception e)
@@ -130,7 +132,7 @@ public class ReservationController
     {
         try
         {
-            var updatedReservation = await _reservationService.CheckInReservation(code);
+            var updatedReservation = await _reservationService2.CheckInReservation(code);
             if (updatedReservation == null)
             {
                 return BadRequest("Failed to check in reservation.");

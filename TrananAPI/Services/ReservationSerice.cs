@@ -1,26 +1,26 @@
 using Microsoft.EntityFrameworkCore;
 using Core.Models;
-using Core.Interface;
 using TrananAPI.DTO;
-using TrananAPI.Service;
+using TrananAPI.Interface;
+using TrananAPI.Service.Mapper;
 
 namespace TrananAPI.Services;
 
-public class ReservationService
+public class ReservationService : IService<ReservationDTO, ReservationDTO>, IReservationService
 {
-    private readonly IService<Reservation> _coreReservationService;
+    private readonly Core.Interface.IService<Reservation> _coreReservationService;
     private readonly Core.Interface.IReservationService _coreReservationService2;
 
     public ReservationService(
-        IService<Reservation> coreReservationService,
-        IReservationService coreReservationService2
+        Core.Interface.IService<Reservation> coreReservationService,
+        Core.Interface.IReservationService coreReservationService2
     )
     {
         _coreReservationService = coreReservationService;
         _coreReservationService2 = coreReservationService2;
     }
 
-    public async Task<IEnumerable<ReservationDTO>> GetReservations()
+    public async Task<IEnumerable<ReservationDTO>> Get()
     {
         try
         {
@@ -37,15 +37,15 @@ public class ReservationService
             throw new Exception(e.Message);
         }
     }
-
-    public async Task<IEnumerable<ReservationDTO>> GetReservationsByMovieScreening(
-        int movieScreeningId
+   
+    public async Task<IEnumerable<ReservationDTO>> GetByScreeningId(
+        int screeningId
     )
     {
         try
         {
             var reservationsForScreening =
-                await _coreReservationService2.GetReservationsByMovieScreening(movieScreeningId);
+                await _coreReservationService2.GetReservationsByMovieScreening(screeningId);
             var reservationDTOs = reservationsForScreening.Select(
                 r => Mapper.GenerateReservationDTO(r)
             );
@@ -61,7 +61,7 @@ public class ReservationService
         }
     }
 
-    public async Task<ReservationDTO> CreateReservation(ReservationDTO reservationDTO)
+    public async Task<ReservationDTO> Create(ReservationDTO reservationDTO)
     {
         try
         {
@@ -88,7 +88,7 @@ public class ReservationService
         }
     }
 
-    public async Task<ReservationDTO> UpdateReservation(ReservationDTO reservationDTO)
+    public async Task<ReservationDTO> Update(ReservationDTO reservationDTO)
     {
         try
         {
@@ -107,11 +107,11 @@ public class ReservationService
         }
     }
 
-    public async Task DeleteReservation(int reservationId)
+    public async Task DeleteById(int id)
     {
         try
         {
-            await _coreReservationService.DeleteById(reservationId);
+            await _coreReservationService.DeleteById(id);
         }
         catch (Exception e)
         {
@@ -131,5 +131,10 @@ public class ReservationService
         {
             throw new Exception(e.Message);
         }
+    }
+
+    Task<ReservationDTO> IService<ReservationDTO, ReservationDTO>.GetById(int id)
+    {
+        throw new NotImplementedException();
     }
 }

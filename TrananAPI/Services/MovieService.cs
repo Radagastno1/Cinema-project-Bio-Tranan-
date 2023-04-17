@@ -1,20 +1,20 @@
 using Core.Models;
-using Core.Interface;
+using TrananAPI.Interface;
 using TrananAPI.DTO;
-using TrananAPI.Service;
+using TrananAPI.Service.Mapper;
 
 namespace TrananAPI.Services;
 
-public class MovieService
+public class MovieService : IService<MovieDTO, MovieDTO>
 {
-    private readonly IService<Movie> _coreMovieService;
+    private readonly Core.Interface.IService<Movie> _coreMovieService;
 
-    public MovieService(IService<Movie> coreMovieService)
+    public MovieService(Core.Interface.IService<Movie> coreMovieService)
     {
         _coreMovieService = coreMovieService;
     }
 
-    public async Task<IEnumerable<MovieDTO>> GetAllMoviesAsDTOs()
+    public async Task<IEnumerable<MovieDTO>> Get()
     {
         try
         {
@@ -32,11 +32,11 @@ public class MovieService
         }
     }
 
-    public async Task<MovieDTO> GetMovieAsDTOById(int movieId)
+    public async Task<MovieDTO> GetById(int id)
     {
         try
         {
-            var movieFound = await _coreMovieService.GetById(movieId);
+            var movieFound = await _coreMovieService.GetById(id);
             if (movieFound == null)
             {
                 return null;
@@ -49,7 +49,7 @@ public class MovieService
         }
     }
 
-    public async Task<MovieDTO> CreateMovie(MovieDTO movieDTO)
+    public async Task<MovieDTO> Create(MovieDTO movieDTO)
     {
         try
         {
@@ -63,7 +63,7 @@ public class MovieService
         }
     }
 
-    public async Task<MovieDTO> UpdateMovie(MovieDTO movieDTO)
+    public async Task<MovieDTO> Update(MovieDTO movieDTO)
     {
         try
         {
@@ -77,7 +77,7 @@ public class MovieService
         }
     }
 
-    public async Task DeleteMovieById(int id)
+    public async Task DeleteById(int id)
     {
         try
         {
