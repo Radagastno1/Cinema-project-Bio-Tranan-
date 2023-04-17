@@ -1,12 +1,13 @@
 using TrananAPI.Services;
 using TrananAPI.DTO;
-using Microsoft.AspNetCore.Mvc; //kolla upp varför just mvc
+using TrananAPI.Interface;
+using Microsoft.AspNetCore.Mvc;
 
 namespace TrananAPI.Controllers;
 
 [ApiController]
 [Route("moviescreening")]
-public class MovieScreeningController : ControllerBase
+public class MovieScreeningController : ControllerBase, IController<MovieScreeningOutgoingDTO, MovieScreeningIncomingDTO>
 {
     private readonly MovieScreeningService _movieScreeningService;
 
@@ -16,39 +17,43 @@ public class MovieScreeningController : ControllerBase
     }
 
     [HttpGet]
-    public async Task<ActionResult<List<MovieScreeningOutgoingDTO>>> GetMovieScreenings()
+    public async Task<ActionResult<IEnumerable<MovieScreeningOutgoingDTO>>> Get()
     {
         try
         {
-            var movieScreenings =
-                await _movieScreeningService.GetUpcomingScreenings()
-                ?? new List<MovieScreeningOutgoingDTO>();
+            var movieScreenings = await _movieScreeningService.GetUpcomingScreenings();
+            if (movieScreenings == null)
+            {
+                return BadRequest("Failed to get movie screenings.");
+            }
             return Ok(movieScreenings);
         }
         catch (Exception e)
         {
-            Console.WriteLine(e);
-            return NotFound();
+            return StatusCode(StatusCodes.Status500InternalServerError, e.Message);
         }
     }
 
     [HttpGet("{id:int}")]
-    public async Task<ActionResult<MovieScreeningOutgoingDTO>> GetMovieScreeningById(int id)
+    public async Task<ActionResult<MovieScreeningOutgoingDTO>> GetById(int id)
     {
         try
         {
             var movieScreeningDTO = await _movieScreeningService.GetMovieScreeningById(id);
+            if (movieScreeningDTO == null)
+            {
+                return BadRequest("Failed to get movie screening by id.");
+            }
             return Ok(movieScreeningDTO);
         }
         catch (Exception e)
         {
-            Console.WriteLine(e);
-            return NotFound();
+            return StatusCode(StatusCodes.Status500InternalServerError, e.Message);
         }
     }
 
     [HttpPost]
-    public async Task<ActionResult<MovieScreeningOutgoingDTO>> PostMovieScreeningDTO(
+    public async Task<ActionResult<MovieScreeningOutgoingDTO>> Post(
         MovieScreeningIncomingDTO movieScreeningDTO
     )
     {
@@ -57,6 +62,10 @@ public class MovieScreeningController : ControllerBase
             var newMovieScreening = await _movieScreeningService.CreateMovieScreening(
                 movieScreeningDTO
             );
+            if (newMovieScreening == null)
+            {
+                return BadRequest("Failed to create movie screening.");
+            }
             return Ok(newMovieScreening);
         }
         catch (InvalidOperationException e)
@@ -75,35 +84,43 @@ public class MovieScreeningController : ControllerBase
         {
             return BadRequest(e.Message);
         }
+        catch (Exception e)
+        {
+            return StatusCode(StatusCodes.Status500InternalServerError, e.Message);
+        }
     }
 
     [HttpPut]
-    public async Task<ActionResult> PutMovieScreening(MovieScreeningIncomingDTO movieScreeningDTO)
+    public async Task<ActionResult<MovieScreeningOutgoingDTO>> Put(MovieScreeningIncomingDTO movieScreeningDTO)
     {
         try
         {
-            var updatedMovieScreening = await _movieScreeningService.UpdateMovieScreening(movieScreeningDTO);
+            var updatedMovieScreening = await _movieScreeningService.UpdateMovieScreening(
+                movieScreeningDTO
+            );
+            if (updatedMovieScreening == null)
+            {
+                return BadRequest("Failed to update movie screening.");
+            }
             return Ok(updatedMovieScreening);
         }
         catch (Exception e)
         {
-            Console.WriteLine(e);
-            return NotFound();
+            return StatusCode(StatusCodes.Status500InternalServerError, e.Message);
         }
     }
 
     [HttpDelete("{id:int}")]
-    public async Task<ActionResult> DeleteMovieScreening(int id)
+    public async Task<IActionResult> DeleteById(int id)
     {
         try
         {
             await _movieScreeningService.DeleteMovieScreeningById(id);
-            return Ok();
+            return StatusCode(204);
         }
         catch (Exception e)
         {
-            Console.WriteLine(e);
-            return NotFound();
+            return StatusCode(StatusCodes.Status500InternalServerError, e.Message);
         }
     }
 }

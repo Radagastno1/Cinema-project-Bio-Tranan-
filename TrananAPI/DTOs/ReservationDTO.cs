@@ -1,8 +1,10 @@
+using TrananAPI.Interface;
+
 namespace TrananAPI.DTO;
 
-public class ReservationDTO
+public class ReservationDTO : IDTO
 {
-    public int ReservationId { get; set; }
+    public int Id { get; set; }
     public decimal Price { get; set; }
     public int ReservationCode { get; set; }
     public int MovieScreeningId { get; set; }
@@ -17,7 +19,7 @@ public class ReservationDTO
         List<int> seatIds, int reservationCode, bool isCheckedIn
     )
     {
-        ReservationId = reservationId;
+        Id = reservationId;
         Price = price;
         MovieScreeningId = movieScreeningId;
         CustomerDTO = customerDTO;

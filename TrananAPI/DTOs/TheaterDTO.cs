@@ -1,9 +1,11 @@
 using Newtonsoft.Json;
+using TrananAPI.Interface;
+
 namespace TrananAPI.DTO;
 
-public class TheaterDTO
+public class TheaterDTO : IDTO
 {
-    public int TheaterId{get;set;}
+    public int Id{get;set;}
     public string Name { get; set; }
     public decimal TheaterPrice{get;set;}
     public int Rows { get; set; }
@@ -13,7 +15,7 @@ public class TheaterDTO
 
     public TheaterDTO(int theaterId, string name, int rows, List<SeatDTO>seatDTOs, decimal theaterPrice)
     {
-        TheaterId = theaterId;
+        Id = theaterId;
         Name = name;
         Rows = rows;
         SeatDTOs = seatDTOs;

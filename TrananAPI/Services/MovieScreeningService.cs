@@ -8,6 +8,7 @@ namespace TrananAPI.Services;
 public class MovieScreeningService
 {
     private readonly IService<MovieScreening> _coreScreeningService;
+
     public MovieScreeningService(IService<MovieScreening> coreScreeningService)
     {
         _coreScreeningService = coreScreeningService;
@@ -15,21 +16,35 @@ public class MovieScreeningService
 
     public async Task<IEnumerable<MovieScreeningOutgoingDTO>> GetUpcomingScreenings()
     {
-        var screenings = await _coreScreeningService.Get();
-        var screeningsDTOSs = screenings
-            .Select(s => Mapper.GenerateMovieScreeningOutcomingDTO(s))
-            .ToList();
-        return screeningsDTOSs;
+        try
+        {
+            var screenings = await _coreScreeningService.Get();
+            var screeningsDTOSs = screenings
+                .Select(s => Mapper.GenerateMovieScreeningOutcomingDTO(s))
+                .ToList();
+            return screeningsDTOSs;
+        }
+        catch (Exception e)
+        {
+            throw new Exception(e.Message);
+        }
     }
 
     public async Task<MovieScreeningOutgoingDTO> GetMovieScreeningById(int movieScreeningId)
     {
-        var screening = await _coreScreeningService.GetById(movieScreeningId);
-        if (screening == null)
+        try
         {
-            return new MovieScreeningOutgoingDTO();
+            var screening = await _coreScreeningService.GetById(movieScreeningId);
+            if (screening == null)
+            {
+                return new MovieScreeningOutgoingDTO();
+            }
+            return Mapper.GenerateMovieScreeningOutcomingDTO(screening);
         }
-        return Mapper.GenerateMovieScreeningOutcomingDTO(screening);
+        catch (Exception e)
+        {
+            throw new Exception(e.Message);
+        }
     }
 
     public async Task<MovieScreeningOutgoingDTO> CreateMovieScreening(
@@ -44,9 +59,7 @@ public class MovieScreeningService
                 TheaterId = movieScreeningIncomingDTO.TheaterId,
                 DateAndTime = movieScreeningIncomingDTO.DateAndTime
             };
-            var addedMovieScreening = await _coreScreeningService.Create(
-                newMovieScreening
-            );
+            var addedMovieScreening = await _coreScreeningService.Create(newMovieScreening);
             var addedMovieScreeningDTO = Mapper.GenerateMovieScreeningOutcomingDTO(
                 addedMovieScreening
             );
@@ -74,21 +87,33 @@ public class MovieScreeningService
         MovieScreeningIncomingDTO movieScreeningIncomingDTO
     )
     {
-        var movieScreeningToUpdate = new Core.Models.MovieScreening()
+        try
         {
-            MovieScreeningId = movieScreeningIncomingDTO.MovieScreeningId,
-            DateAndTime = movieScreeningIncomingDTO.DateAndTime,
-            MovieId = movieScreeningIncomingDTO.MovieId,
-            TheaterId = movieScreeningIncomingDTO.TheaterId
-        };
-        var updatedMovieScreening = await _coreScreeningService.Update(
-            movieScreeningToUpdate
-        );
-        return Mapper.GenerateMovieScreeningOutcomingDTO(updatedMovieScreening);
+            var movieScreeningToUpdate = new Core.Models.MovieScreening()
+            {
+                MovieScreeningId = movieScreeningIncomingDTO.Id,
+                DateAndTime = movieScreeningIncomingDTO.DateAndTime,
+                MovieId = movieScreeningIncomingDTO.MovieId,
+                TheaterId = movieScreeningIncomingDTO.TheaterId
+            };
+            var updatedMovieScreening = await _coreScreeningService.Update(movieScreeningToUpdate);
+            return Mapper.GenerateMovieScreeningOutcomingDTO(updatedMovieScreening);
+        }
+        catch (Exception e)
+        {
+            throw new Exception(e.Message);
+        }
     }
 
     public async Task DeleteMovieScreeningById(int id)
     {
-       await _coreScreeningService.DeleteById(id);
+        try
+        {
+            await _coreScreeningService.DeleteById(id);
+        }
+        catch (Exception e)
+        {
+            throw new Exception(e.Message);
+        }
     }
 }

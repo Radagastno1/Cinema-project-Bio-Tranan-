@@ -1,8 +1,10 @@
+using TrananAPI.Interface;
+
 namespace TrananAPI.DTO;
 
-public class SeatDTO
+public class SeatDTO : IDTO
 {
-    public int SeatId{get;set;}
+    public int Id{get;set;}
     public int SeatNumber { get; set; }
     public int Row { get; set; }
     public bool IsWheelChairSpace { get; set; }
@@ -13,7 +15,7 @@ public class SeatDTO
 
     public SeatDTO(int seatId, int seatNumber, int row, bool isBooked, bool isNotBookable, bool isWheelChairSpace)
     {
-        SeatId = seatId;
+        Id = seatId;
         SeatNumber = seatNumber;
         Row = row;
         IsBooked = isBooked;

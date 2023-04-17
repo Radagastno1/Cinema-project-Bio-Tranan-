@@ -22,17 +22,43 @@ public class ReservationService
 
     public async Task<IEnumerable<ReservationDTO>> GetReservations()
     {
-        var reservations = await _coreReservationService.Get();
-        return reservations.Select(r => Mapper.GenerateReservationDTO(r));
+        try
+        {
+            var reservations = await _coreReservationService.Get();
+            var reservationDTOs = reservations.Select(r => Mapper.GenerateReservationDTO(r));
+            if (reservationDTOs == null)
+            {
+                return Enumerable.Empty<ReservationDTO>();
+            }
+            return reservationDTOs;
+        }
+        catch (Exception e)
+        {
+            throw new Exception(e.Message);
+        }
     }
 
     public async Task<IEnumerable<ReservationDTO>> GetReservationsByMovieScreening(
         int movieScreeningId
     )
     {
-        var reservationsForScreening =
-            await _coreReservationService2.GetReservationsByMovieScreening(movieScreeningId);
-        return reservationsForScreening.Select(r => Mapper.GenerateReservationDTO(r));
+        try
+        {
+            var reservationsForScreening =
+                await _coreReservationService2.GetReservationsByMovieScreening(movieScreeningId);
+            var reservationDTOs = reservationsForScreening.Select(
+                r => Mapper.GenerateReservationDTO(r)
+            );
+            if (reservationDTOs == null)
+            {
+                return Enumerable.Empty<ReservationDTO>();
+            }
+            return reservationDTOs;
+        }
+        catch (Exception e)
+        {
+            throw new Exception(e.Message);
+        }
     }
 
     public async Task<ReservationDTO> CreateReservation(ReservationDTO reservationDTO)
@@ -41,7 +67,12 @@ public class ReservationService
         {
             var newReservation = await Mapper.GenerateReservation(reservationDTO);
             var addedReservation = await _coreReservationService.Create(newReservation);
-            return Mapper.GenerateReservationDTO(addedReservation);
+            var addedReservationDTO = Mapper.GenerateReservationDTO(addedReservation);
+            if (addedReservationDTO == null)
+            {
+                return new ReservationDTO();
+            }
+            return addedReservationDTO;
         }
         catch (InvalidOperationException e)
         {
@@ -59,16 +90,34 @@ public class ReservationService
 
     public async Task<ReservationDTO> UpdateReservation(ReservationDTO reservationDTO)
     {
-        var reservationToUpdate = await Mapper.GenerateReservation(reservationDTO);
-        var updatedReservation = await _coreReservationService.Update(reservationToUpdate);
-        return Mapper.GenerateReservationDTO(reservationToUpdate);
+        try
+        {
+            var reservationToUpdate = await Mapper.GenerateReservation(reservationDTO);
+            var updatedReservation = await _coreReservationService.Update(reservationToUpdate);
+            var updatedReservationDTO = Mapper.GenerateReservationDTO(reservationToUpdate);
+            if (updatedReservationDTO == null)
+            {
+                return new ReservationDTO();
+            }
+            return updatedReservationDTO;
+        }
+        catch (Exception e)
+        {
+            throw new Exception(e.Message);
+        }
     }
 
     public async Task DeleteReservation(int reservationId)
     {
-        await _coreReservationService.DeleteById(reservationId);
+        try
+        {
+            await _coreReservationService.DeleteById(reservationId);
+        }
+        catch (Exception e)
+        {
+            throw new Exception(e.Message);
+        }
     }
-
     public async Task<ReservationDTO> CheckInReservation(int code)
     {
         try

@@ -1,14 +1,16 @@
+using TrananAPI.Interface;
+
 namespace TrananAPI.DTO;
 
-public class DirectorDTO
+public class DirectorDTO : IDTO
 {
-    public int DirectorId { get; set; }
+    public int Id { get; set; }
     public string FirstName { get; set; }
     public string LastName { get; set; }
 
     public DirectorDTO(int directorId, string firstName, string lastName)
     {
-        DirectorId = directorId;
+        Id = directorId;
         FirstName = firstName;
         LastName = lastName;
     }

@@ -1,10 +1,10 @@
-using System.ComponentModel.DataAnnotations;
+using TrananAPI.Interface;
 
 namespace TrananAPI.DTO;
 
-public class MovieScreeningIncomingDTO
+public class MovieScreeningIncomingDTO : IDTO
 {
-    public int MovieScreeningId{get;set;}
+    public int Id{get;set;}
     public DateTime DateAndTime { get; set; }
     public int MovieId { get; set; }
 

@@ -28,7 +28,7 @@ public class Mapper
     public static Movie GenerateMovie(MovieDTO movieDTO)
     {
         var movie = new Movie(
-            movieDTO.MovieId,
+            movieDTO.Id,
             movieDTO.Title,
             movieDTO.ReleaseYear,
             movieDTO.Language,
@@ -125,7 +125,7 @@ public class Mapper
             allSeats.Add(
                 new SeatDTO()
                 {
-                    SeatId = seat.SeatId,
+                    Id = seat.SeatId,
                     Row = seat.Row,
                     SeatNumber = seat.SeatNumber,
                     IsBooked = isBooked,  //för att sätta vilken stol som är bokad när det visas
@@ -140,7 +140,7 @@ public class Mapper
     public static Theater GenerateTheater(TheaterDTO theaterDTO)
     {
         var theater = new Theater(
-            theaterDTO.TheaterId,
+            theaterDTO.Id,
             theaterDTO.Name,
             theaterDTO.Rows,
             GenerateSeats(theaterDTO.SeatDTOs),
@@ -178,7 +178,7 @@ public class Mapper
     public static async Task<Reservation> GenerateReservation(ReservationDTO reservationDTO)
     {
         var reservation = await Reservation.CreateReservationAsync(
-            reservationDTO.ReservationId,
+            reservationDTO.Id,
             reservationDTO.Price,
             reservationDTO.MovieScreeningId,
             GenerateCustomer(reservationDTO.CustomerDTO),

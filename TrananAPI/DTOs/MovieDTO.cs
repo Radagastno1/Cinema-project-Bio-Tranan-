@@ -1,10 +1,10 @@
-using System.ComponentModel.DataAnnotations;
+using TrananAPI.Interface;
 
 namespace TrananAPI.DTO;
 
-public class MovieDTO
+public class MovieDTO : IDTO
 {
-    public int MovieId { get; set; }
+    public int Id { get; set; }
     public string Title { get; set; }
 
     public int ReleaseYear { get; set; }
@@ -36,7 +36,7 @@ public class MovieDTO
         decimal price, string trailerId
     )
     {
-        MovieId = movieId;
+        Id = movieId;
         Title = title;
         ReleaseYear = releaseYear;
         Language = language;

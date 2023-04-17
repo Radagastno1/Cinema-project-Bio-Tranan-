@@ -16,9 +16,17 @@ public class TheaterService
 
     public async Task<IEnumerable<TheaterDTO>> GetTheaters()
     {
-        var theaters = await _coreTheaterService.Get();
+        try
+        {
+       var theaters = await _coreTheaterService.Get();
         var theaterDTOs = theaters.Select(t => Mapper.GenerateTheaterDTO(t)).ToList();
         return theaterDTOs;
+        }
+        catch(Exception e)
+        {
+            throw new Exception(e.Message);
+        }
+ 
     }
 
     public async Task<TheaterDTO> GetTheaterById(int theaterId)

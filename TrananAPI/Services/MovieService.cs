@@ -26,9 +26,9 @@ public class MovieService
             var allMoviesAsDtos = allMovies.Select(m => Mapper.GenerateMovieDTO(m));
             return allMoviesAsDtos;
         }
-        catch (Exception)
+        catch (Exception e)
         {
-            return new List<MovieDTO>();
+            throw new Exception(e.Message);
         }
     }
 
@@ -43,9 +43,9 @@ public class MovieService
             }
             return Mapper.GenerateMovieDTO(movieFound);
         }
-        catch (Exception)
+        catch (Exception e)
         {
-            return null;
+            throw new Exception(e.Message);
         }
     }
 
@@ -56,55 +56,36 @@ public class MovieService
             var movie = Mapper.GenerateMovie(movieDTO);
             var createdMovie = await _coreMovieService.Create(movie);
             return Mapper.GenerateMovieDTO(movie);
-            // List<Actor> actorsOfMovie = new();
-            // foreach (var actor in movieDTO.ActorDTOs)
-            // {
-            //     var actorInDB = await _movieCoreService.GetActorById(actor.ActorId);
-            //     if (actorInDB == null)
-            //     {
-            //         var newActor = Mapper.GenerateActor(actor);
-            //         actorsOfMovie.Add(newActor);
-            //     }
-            //     else
-            //     {
-            //         actorsOfMovie.Add(actorInDB);
-            //     }
-            // }
-            // List<Director> directorsOfMovie = new();
-            // foreach (var director in movieDTO.DirectorDTOs)
-            // {
-            //     var directorInDb = await _movieCoreService.GetDirectorById(director.DirectorId);
-            //     if (directorInDb == null)
-            //     {
-            //         var newDirector = Mapper.GenerateDirector(director);
-            //         directorsOfMovie.Add(newDirector);
-            //     }
-            //     else
-            //     {
-            //         directorsOfMovie.Add(directorInDb);
-            //     }
-            // }
-           
-            // var newMovie = Mapper.GenerateMovie(movieDTO);
-            // newMovie.Actors = actorsOfMovie;
-            // newMovie.Directors = directorsOfMovie;
-            // var recentlyAddedMovie = await _movieCoreService.CreateMovie(newMovie);
-            // return Mapper.GenerateMovieDTO(newMovie);
         }
-        catch (Exception)
+        catch (Exception e)
         {
-            throw new Exception();
+            throw new Exception(e.Message);
         }
     }
 
     public async Task<MovieDTO> UpdateMovie(MovieDTO movieDTO)
     {
-        var movieToUpdate = Mapper.GenerateMovie(movieDTO);
-        var updatedMovie = await _coreMovieService.Update(movieToUpdate);
-        return Mapper.GenerateMovieDTO(updatedMovie);
+        try
+        {
+            var movieToUpdate = Mapper.GenerateMovie(movieDTO);
+            var updatedMovie = await _coreMovieService.Update(movieToUpdate);
+            return Mapper.GenerateMovieDTO(updatedMovie);
+        }
+        catch (Exception e)
+        {
+            throw new Exception(e.Message);
+        }
     }
+
     public async Task DeleteMovieById(int id)
     {
-        await _coreMovieService.DeleteById(id);
+        try
+        {
+            await _coreMovieService.DeleteById(id);
+        }
+        catch (Exception e)
+        {
+            throw new Exception(e.Message);
+        }
     }
 }
