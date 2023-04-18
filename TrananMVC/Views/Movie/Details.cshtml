@@ -10,19 +10,6 @@
         <img src="@Html.Raw(@Model.ImageUrl)" />
     </div>
 
-<div class="movie-trailer">
-    @if (@Model.TrailerLink != null)
-    {
-         <iframe width="560" 
-                height="315" 
-                src=@Model.TrailerLink 
-                frameborder="0" 
-                allowfullscreen></iframe>
-    }  
-    else
-    {
-        <p>Din webbläsare stöder inte inbäddade videor från YouTube.</p>
-    }
 </div>
 
     <div class="text-container">
