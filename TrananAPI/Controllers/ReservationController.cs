@@ -1,5 +1,4 @@
 using Microsoft.AspNetCore.Mvc;
-using TrananAPI.Services;
 using TrananAPI.DTO;
 using TrananAPI.Interface;
 
@@ -39,7 +38,7 @@ public class ReservationController
         }
     }
 
-    [HttpGet("{id:int}")] //fixa
+    [HttpGet("{id:int}")]
     public async Task<ActionResult<ReservationDTO>> GetById(int id)
     {
         throw new NotImplementedException();

@@ -1,4 +1,5 @@
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using TrananMVC.ViewModel;
 using TrananMVC.Interface;
 

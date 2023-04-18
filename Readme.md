@@ -33,7 +33,7 @@ Bio Tranan vill ha två saker, dels en publik hemsida där besökare skall kunna
 - [x] Se schemat för kommande filmvisningar
 - [x] Få grundläggande information om filmerna som ska visas
 - [x] Reservera platser på filmvisning
-7629
+
 Utöver detta vill Bio Tranan, som drivs av erfarna utvecklare, ha ett REST API som kan fungera som administationsverktyg (i framtiden tänkte de skriva sin egen frontend för detta). REST API:et skall kunna:
 - [x] Lägga till nya filmer
 - [x] Ta bort filmer
@@ -54,18 +54,18 @@ Regler för systemet:
 
 Hemsidan:
 - [x] Visa det totala priset innan reservationen läggs (se bild)
-- [x] Det skall gå att avboka en reservation
-- [ ] Använd ett externt api till något på hemsidan, exempelvis ett random advice från https://api.adviceslip.com/, eller mer avancerat: https://developers.themoviedb.org/3/getting-started/introduction
+- [/] Det skall gå att avboka en reservation
+- [/] Använd ett externt api till något på hemsidan, exempelvis ett random advice från https://api.adviceslip.com/, eller mer avancerat: https://developers.themoviedb.org/3/getting-started/introduction
 - [x] Reviews! Det skall gå att poängsätta filmer samt ge dem ett skriftligt omdöme genom att ange sin reservationskod, men bara efter att filmen visats.
 
 REST-API
 - [x] Skapa en ny reservation
 - [ ] Det skall gå att lägga tillfälliga platsrestriktioner på en viss visning, utifall det blir nya pandemi-regler i höst
 - [ ] Kräv autentisering för att kunna användas (Valfri metod)
-- [ ] "Checka in" en reservationskod och sätt den som använd (Kommer att användas vid betalning)
+- [x] "Checka in" en reservationskod och sätt den som använd (Kommer att användas vid betalning)
 
 Regler för systemet:
-- [ ] Ta bort reservationer automatiskt ur databasen när de inte längre är giltiga
+- [x] Ta bort reservationer automatiskt ur databasen när de inte längre är giltiga
 
 ## Systemet
 Hur du väljer att strukturera denna uppgift är upp till dig, men du måste givetvis använda ASP.Net. Exempel: 
