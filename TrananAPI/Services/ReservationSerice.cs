@@ -1,4 +1,3 @@
-using Microsoft.EntityFrameworkCore;
 using Core.Models;
 using TrananAPI.DTO;
 using TrananAPI.Interface;
@@ -37,10 +36,8 @@ public class ReservationService : IService<ReservationDTO, ReservationDTO>, IRes
             throw new Exception(e.Message);
         }
     }
-   
-    public async Task<IEnumerable<ReservationDTO>> GetByScreeningId(
-        int screeningId
-    )
+
+    public async Task<IEnumerable<ReservationDTO>> GetByScreeningId(int screeningId)
     {
         try
         {
@@ -61,11 +58,61 @@ public class ReservationService : IService<ReservationDTO, ReservationDTO>, IRes
         }
     }
 
+    public static async Task<Reservation> CreateReservationAsync(
+        int reservationId,
+        decimal price,
+        int movieScreeningId,
+        Customer customer,
+        List<Seat> seats,
+        bool isCheckedIn = false
+    )
+    {
+        var reservation = new Reservation()
+        {
+            Price = price,
+            MovieScreeningId = movieScreeningId,
+            Customer = customer,
+            Seats = seats,
+            IsCheckedIn = isCheckedIn
+        };
+
+        reservation.ReservationCode = await GenerateReservationCodeAsync();
+        return reservation;
+    }
+
+    private static async Task<int> GenerateReservationCodeAsync()
+    {
+        int randomNumber = await GetRandomNumberFromAPI();
+
+        if (randomNumber == 0)
+        {
+            throw new Exception("Reservation code is unavailable. Please contact admin.");
+        }
+        return randomNumber;
+    }
+
+    private static async Task<int> GetRandomNumberFromAPI()
+    {
+        string url = "http://www.randomnumberapi.com/api/v1.0/random?min=100&max=1000";
+        HttpClient httpClient = new();
+        try
+        {
+            var randomNumberArray = await httpClient.GetFromJsonAsync<int[]>(url);
+            int randomNumber = randomNumberArray[0];
+            return randomNumber;
+        }
+        catch (HttpRequestException)
+        {
+            return 0;
+        }
+    }
+
     public async Task<ReservationDTO> Create(ReservationDTO reservationDTO)
     {
         try
         {
             var newReservation = await Mapper.GenerateReservation(reservationDTO);
+
             var addedReservation = await _coreReservationService.Create(newReservation);
             var addedReservationDTO = Mapper.GenerateReservationDTO(addedReservation);
             if (addedReservationDTO == null)
@@ -118,6 +165,7 @@ public class ReservationService : IService<ReservationDTO, ReservationDTO>, IRes
             throw new Exception(e.Message);
         }
     }
+
     public async Task<ReservationDTO> CheckInReservation(int code)
     {
         try

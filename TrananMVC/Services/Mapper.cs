@@ -119,7 +119,9 @@ public class Mapper
             ActorsAsViewModels(movie.Actors),
             DirectorsAsViewModels(movie.Directors),
             movie.TrailerId,
-           movie.Reviews?.Select(r => new ReviewViewModel(r.Rating, r.Comment, r.ReservationCode, r.Alias)).ToList() ?? new List<ReviewViewModel>()
+            movie.Reviews
+                ?.Select(r => new ReviewViewModel(r.Rating, r.Comment, r.ReservationCode, r.Alias))
+                .ToList() ?? new List<ReviewViewModel>()
         );
     }
 
@@ -147,7 +149,7 @@ public class Mapper
         ReservationViewModel reservationViewModel
     )
     {
-        var reservation = await Reservation.CreateReservationAsync(
+        var reservation = await TrananMVC.Service.ReservationService.CreateReservationAsync(
             reservationViewModel.Id,
             reservationViewModel.Price,
             reservationViewModel.MovieScreeningId,

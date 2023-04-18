@@ -177,16 +177,15 @@ public class Mapper
 
     public static async Task<Reservation> GenerateReservation(ReservationDTO reservationDTO)
     {
-        var reservation = await Reservation.CreateReservationAsync(
+        var reservation = await TrananAPI.Services.ReservationService.CreateReservationAsync(
             reservationDTO.Id,
             reservationDTO.Price,
             reservationDTO.MovieScreeningId,
             GenerateCustomer(reservationDTO.CustomerDTO),
-            // await SeatService.GenerateSeatsFromIdsAsync(reservationDTO.SeatIds) //blir detta rätt async?
             GenerateSeatsFromIds(reservationDTO.SeatIds),
             reservationDTO.IsCheckedIn
         );
-        return reservation; //kollla upp om rätt
+        return reservation; 
     }
 
     public static List<Seat> GenerateSeatsFromIds(List<int> ids)

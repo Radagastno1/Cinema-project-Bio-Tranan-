@@ -11,8 +11,8 @@
     {
         <table>
             <tr>
-                <th>Title</th>
-                <th>Rating</th>
+                <th>Film</th>
+                <th>Stjärnor</th>
             </tr>
 
             @foreach (var movie in Model.Take(5))
@@ -25,7 +25,7 @@
                             </a>
                         </div>
                     </td>
-                    <td>@movie.Reviews.Average(r => r.Rating)</td>
+                    <td><h2>@movie.Reviews.Average(r => r.Rating)</h2></td>
                 </tr>
             }
         </table>
