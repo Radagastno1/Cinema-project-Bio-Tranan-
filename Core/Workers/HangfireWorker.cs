@@ -19,7 +19,6 @@ public class HangfireWorker
 
     public void DailyWork()
     {
-        Console.WriteLine("DAILY WORK ANROPAS!!!!!!!!!!!!!!!!!");
         BackgroundJob.Enqueue(() => CallRemoveUnvalidReservations());
     }
 }

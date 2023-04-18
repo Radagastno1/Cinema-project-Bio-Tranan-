@@ -30,7 +30,6 @@ public class ReservationRepository : IRepository<Reservation>, IReservationRepos
         catch (Exception e)
         {
             return null;
-            //logga
         }
     }
 
@@ -54,7 +53,6 @@ public class ReservationRepository : IRepository<Reservation>, IReservationRepos
         catch (Exception e)
         {
             return null;
-            //logga
         }
     }
 
@@ -116,7 +114,6 @@ public class ReservationRepository : IRepository<Reservation>, IReservationRepos
         catch (Exception e)
         {
             return null;
-            //logga
         }
     }
 

@@ -37,9 +37,7 @@ public class MovieScreeningRepository : IRepository<MovieScreening>, IMovieScree
                     .ToListAsync();
 
                 theater.Seats = seats;
-                Console.WriteLine(theater.Seats.Count());
                 screening.Theater = theater;
-
                 var allReservedSeats = await _trananDbContext.Reservations
                     .Where(r => r.MovieScreeningId == screening.MovieScreeningId)
                     .SelectMany(r => r.Seats)
@@ -84,7 +82,6 @@ public class MovieScreeningRepository : IRepository<MovieScreening>, IMovieScree
                         .ToListAsync();
 
                     theater.Seats = seats;
-                    Console.WriteLine(theater.Seats.Count());
                     screening.Theater = theater;
 
                     var allReservedSeats = await _trananDbContext.Reservations
@@ -100,7 +97,6 @@ public class MovieScreeningRepository : IRepository<MovieScreening>, IMovieScree
         catch (Exception e)
         {
             return Enumerable.Empty<MovieScreening>();
-            //logga
         }
     }
 
@@ -134,7 +130,6 @@ public class MovieScreeningRepository : IRepository<MovieScreening>, IMovieScree
                         .ToListAsync();
 
                     theater.Seats = seats;
-                    Console.WriteLine(theater.Seats.Count());
                     screening.Theater = theater;
 
                     var allReservedSeats = await _trananDbContext.Reservations
@@ -241,7 +236,6 @@ public class MovieScreeningRepository : IRepository<MovieScreening>, IMovieScree
         catch (Exception e)
         {
             return null;
-            //logga
         }
     }
 

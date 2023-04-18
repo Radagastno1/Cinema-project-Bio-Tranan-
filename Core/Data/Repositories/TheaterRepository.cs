@@ -31,7 +31,6 @@ public class TheaterRepository : IRepository<Theater>
         catch (Exception e)
         {
             return null;
-            //logga
         }
     }
 
