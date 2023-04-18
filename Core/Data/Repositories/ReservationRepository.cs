@@ -146,7 +146,6 @@ public class ReservationRepository : IRepository<Reservation>, IReservationRepos
         catch (ArgumentNullException e)
         {
             return null;
-            //logga
         }
     }
 

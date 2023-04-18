@@ -53,7 +53,6 @@ public class MovieScreeningRepository : IRepository<MovieScreening>, IMovieScree
         catch (Exception e)
         {
             return null;
-            //logga
         }
     }
 
@@ -100,8 +99,8 @@ public class MovieScreeningRepository : IRepository<MovieScreening>, IMovieScree
         }
         catch (Exception e)
         {
-           return Enumerable.Empty<MovieScreening>();
-           //logga
+            return Enumerable.Empty<MovieScreening>();
+            //logga
         }
     }
 
@@ -248,16 +247,13 @@ public class MovieScreeningRepository : IRepository<MovieScreening>, IMovieScree
 
     public async Task DeleteByIdAsync(int id)
     {
-        try
+        var movieScreeningToRemove = await _trananDbContext.MovieScreenings.FindAsync(id);
+        if (movieScreeningToRemove == null)
         {
-            var movieScreeningToRemove = await _trananDbContext.MovieScreenings.FindAsync(id);
-            _trananDbContext.MovieScreenings.Remove(movieScreeningToRemove);
-            await _trananDbContext.SaveChangesAsync();
+            throw new ArgumentNullException("MovieScreening not found");
         }
-        catch (Exception e)
-        {
-           //logga
-        }
+        _trananDbContext.MovieScreenings.Remove(movieScreeningToRemove);
+        await _trananDbContext.SaveChangesAsync();
     }
 
     public async Task DeleteAsync()
@@ -277,7 +273,7 @@ public class MovieScreeningRepository : IRepository<MovieScreening>, IMovieScree
         var currentScreeningEndTime = currentScreeningStartTime.AddMinutes(
             movieScreening.Movie.DurationMinutes + extraMinutes
         );
-        
+
         var overlappingScreenings =
             await _trananDbContext.MovieScreenings
                 .Where(m => m.TheaterId == movieScreening.TheaterId)

@@ -106,7 +106,6 @@ public class MovieRepository : IRepository<Movie>
         }
         catch (Exception e)
         {
-            //logga
             return null;
         }
     }
@@ -125,7 +124,7 @@ public class MovieRepository : IRepository<Movie>
         }
         catch (Exception e)
         {
-            //logga
+            throw new Exception(e.Message);
         }
     }
 
@@ -138,7 +137,7 @@ public class MovieRepository : IRepository<Movie>
         }
         catch (Exception e)
         {
-            //logga
+            throw new Exception(e.Message);
         }
     }
 }
