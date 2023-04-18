@@ -1,9 +1,11 @@
+using TrananMVC.Interface;
+
 namespace TrananMVC.ViewModel;
 
-public class CreatedReservationViewModel
+public class CreatedReservationViewModel : IViewModel
 {
     // public ReservationViewModel ReservationViewModel{get;set;} 
-    public int ReservationId { get; set; }
+    public int Id { get; set; }
     public int ReservationCode { get; set; }
     public decimal Price { get; set; }
     public int MovieScreeningId { get; set; }
@@ -19,7 +21,7 @@ public class CreatedReservationViewModel
 
     public CreatedReservationViewModel(int reservationId, int reservationCode, decimal price, string firstName, string lastName, string phoneNumber, string email, DateTime dateAndTime, string movieTitle, string movieImageUrl, string theaterName, List<SeatViewModel> reservedSeats)
     {
-        ReservationId = reservationId;
+        Id = reservationId;
         ReservationCode = reservationCode;
         Price = price;
         FirstName = firstName;

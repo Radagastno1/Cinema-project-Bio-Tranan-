@@ -1,8 +1,10 @@
+using TrananMVC.Interface;
+
 namespace TrananMVC.ViewModel;
 
-public class ReservationViewModel
+public class ReservationViewModel : IViewModel
 {
-    public int ReservationId { get; set; }
+    public int Id { get; set; }
     public decimal Price { get; set; }
     public int ReservationCode { get; set; }
     public int MovieScreeningId { get; set; }
@@ -21,7 +23,7 @@ public class ReservationViewModel
         List<int> seatIds
     )
     {
-        ReservationId = reservationId;
+        Id = reservationId;
         Price = price;
         ReservationCode = reservationCode;
         MovieScreeningId = movieScreeningId;

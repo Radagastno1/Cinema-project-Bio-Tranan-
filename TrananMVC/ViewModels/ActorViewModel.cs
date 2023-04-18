@@ -1,14 +1,16 @@
+using TrananMVC.Interface;
+
 namespace TrananMVC.ViewModel;
 
-public class ActorViewModel
+public class ActorViewModel : IViewModel
 {
-    public int ActorId { get; set; }
+    public int Id { get; set; }
     public string FirstName { get; set; }
     public string LastName { get; set; }
 
     public ActorViewModel(int actorId, string firstName, string lastName)
     {
-        ActorId = actorId;
+        Id = actorId;
         FirstName = firstName;
         LastName = lastName;
     }

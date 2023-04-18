@@ -1,8 +1,10 @@
+using TrananMVC.Interface;
+
 namespace TrananMVC.ViewModel;
 
-public class CustomerViewModel
+public class CustomerViewModel : IViewModel
 {
-    public int CustomerId { get; set; }
+    public int Id { get; set; }
     public string FirstName { get; set; }
     public string LastName { get; set; }
     public string PhoneNumber { get; set; }
@@ -10,7 +12,7 @@ public class CustomerViewModel
     public CustomerViewModel(){}
     public CustomerViewModel(int customerId, string firstName, string lastName, string phoneNumber, string email)
     {
-        CustomerId = customerId;
+        Id = customerId;
         FirstName = firstName;
         LastName = lastName;
         PhoneNumber = phoneNumber;

@@ -1,12 +1,8 @@
-using TrananMVC.ViewModel;
-
 namespace TrananMVC.Interface;
 
-public interface IMovieService
+public interface IMovieService<T>
 {
-     public Task<List<MovieViewModel>> GetUpcomingMoviesAsync();
-
-    public Task<List<MovieViewModel>> GetAllMoviesAsync();
-
-    public Task<MovieViewModel> GetMovieByIdAsync(int movieId);
+    public Task<List<T>> GetAll();
+    public Task<List<T>> GetUpcoming();
+    public Task<T> GetById(int id);
 }

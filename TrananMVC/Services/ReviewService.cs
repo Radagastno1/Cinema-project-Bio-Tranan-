@@ -1,20 +1,19 @@
-using Core.Interface;
 using Core.Models;
 using TrananMVC.ViewModel;
 using TrananMVC.Interface;
 
 namespace TrananMVC.Service;
 
-public class ReviewService
+public class ReviewService : IReviewService
 {
-    private readonly IService<Review> _coreReviewService;
-    private readonly IService<Reservation> _coreReservationService;
-    private readonly IReservationService _coreReservationService2;
+    private readonly Core.Interface.IService<Review> _coreReviewService;
+    private readonly Core.Interface.IService<Reservation> _coreReservationService;
+    private readonly Core.Interface.IReservationService _coreReservationService2;
 
     public ReviewService(
-        IService<Review> coreReviewService,
-        IService<Reservation> coreReservationService,
-        IReservationService coreReservationService2
+        Core.Interface.IService<Review> coreReviewService,
+        Core.Interface.IService<Reservation> coreReservationService,
+        Core.Interface.IReservationService coreReservationService2
     )
     {
         _coreReservationService = coreReservationService;

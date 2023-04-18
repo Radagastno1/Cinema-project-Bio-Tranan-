@@ -1,10 +1,10 @@
-using System.Linq;
+using TrananMVC.Interface;
 
 namespace TrananMVC.ViewModel;
 
-public class MovieScreeningViewModel
+public class MovieScreeningViewModel : IViewModel
 {
-    public int MovieScreeningId { get; set; }
+    public int Id { get; set; }
     public DateTime DateAndTime { get; set; }
     public int MovieId { get; set; }
     public string MovieTitle { get; set; }
@@ -17,7 +17,7 @@ public class MovieScreeningViewModel
     public MovieScreeningViewModel(int id, DateTime dateAndTime, int movieId, string movieTitle,
     string movieImageUrl, string theaterName, decimal pricePerPerson, List<SeatViewModel> allSeats)
     {
-        MovieScreeningId = id;
+        Id = id;
         DateAndTime = dateAndTime;
         MovieId = movieId;
         MovieTitle = movieTitle;

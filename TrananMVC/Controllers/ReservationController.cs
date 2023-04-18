@@ -1,18 +1,17 @@
-using System.Diagnostics;
 using Microsoft.AspNetCore.Mvc;
 using TrananMVC.ViewModel;
-using TrananMVC.Service;
+using TrananMVC.Interface;
 
 namespace TrananMVC.Controllers;
 
 public class ReservationController : Controller
 {
-    private readonly MovieScreeningService _movieScreeningService;
-    private readonly ReservationService _reservationService;
+    private readonly IMovieService<MovieScreeningViewModel> _movieScreeningService;
+    private readonly IReservationService _reservationService;
 
     public ReservationController(
-        MovieScreeningService movieScreeningService,
-        ReservationService reservationService
+        IMovieService<MovieScreeningViewModel> movieScreeningService,
+        IReservationService reservationService
     )
     {
         _movieScreeningService = movieScreeningService;
@@ -23,7 +22,7 @@ public class ReservationController : Controller
     {
         try
         {
-            var movieScreeningViewModel = await _movieScreeningService.GetMovieScreeningById(
+            var movieScreeningViewModel = await _movieScreeningService.GetById(
                 movieScreeningId
             );
             var reservationViewModel = new ReservationViewModel();

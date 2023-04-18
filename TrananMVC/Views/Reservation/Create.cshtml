@@ -25,8 +25,8 @@
     <h4>Välj stolar:</h4>
     @foreach (var seat in Model.MovieScreeningViewModel.AvailableSeats)
     {
-            <input type="checkbox" name="ReservationViewModel.SeatIds" value="@seat.SeatId">
-            <label for="seat-@seat.SeatId">Rad: @seat.Row Stolnummer: @seat.SeatNumber</label>
+            <input type="checkbox" name="ReservationViewModel.SeatIds" value="@seat.Id">
+            <label for="seat-@seat.Id">Rad: @seat.Row Stolnummer: @seat.SeatNumber</label>
     }
 
     <h4>Förnamn: </h4> <input type="text" name="ReservationViewModel.CustomerViewModel.FirstName"
@@ -45,7 +45,7 @@
      <input type="hidden" name="ReservationViewModel.Price" value="@Model.ReservationViewModel.Price" />
 
     <input type="hidden" name="ReservationViewModel.MovieScreeningId"
-        value="@Model.MovieScreeningViewModel.MovieScreeningId" />
+        value="@Model.MovieScreeningViewModel.Id" />
   
 
     <button type="submit" id="button">Reservera</button>

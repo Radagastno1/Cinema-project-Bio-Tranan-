@@ -1,8 +1,10 @@
+using TrananMVC.Interface;
+
 namespace TrananMVC.ViewModel;
 
-public class MovieViewModel
+public class MovieViewModel : IViewModel
 {
-    public int MovieId { get; set; }
+    public int Id { get; set; }
     public string Title { get; set; }
 
     public int ReleaseYear { get; set; }
@@ -38,7 +40,7 @@ public class MovieViewModel
         List<ReviewViewModel> reviewViewModels
     )
     {
-        MovieId = movieId;
+        Id = movieId;
         Title = title;
         ReleaseYear = releaseYear;
         Language = language;

@@ -1,14 +1,16 @@
+using TrananMVC.Interface;
+
 namespace TrananMVC.ViewModel;
 
-public class DirectorViewModel
+public class DirectorViewModel : IViewModel
 {
-     public int DirectorId { get; set; }
+     public int Id { get; set; }
     public string FirstName { get; set; }
     public string LastName { get; set; }
 
     public DirectorViewModel(int directorId, string firstName, string lastName)
     {
-        DirectorId = directorId;
+        Id = directorId;
         FirstName = firstName;
         LastName = lastName;
     }

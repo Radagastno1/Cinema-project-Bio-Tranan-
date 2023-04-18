@@ -1,8 +1,10 @@
+using TrananMVC.Interface;
+
 namespace TrananMVC.ViewModel;
 
-public class SeatViewModel
+public class SeatViewModel : IViewModel
 {
-    public int SeatId { get; set; }
+    public int Id { get; set; }
     public int SeatNumber { get; set; }
     public int Row { get; set; }
     public bool IsWheelChairSpace { get; set; }
@@ -13,7 +15,7 @@ public class SeatViewModel
 
     public SeatViewModel(int seatId, int seatNumber, int row)
     {
-        SeatId = seatId;
+        Id = seatId;
         SeatNumber = seatNumber;
         Row = row;
     }

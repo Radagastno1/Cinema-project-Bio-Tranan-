@@ -1,15 +1,14 @@
-using System.Diagnostics;
 using Microsoft.AspNetCore.Mvc;
 using TrananMVC.ViewModel;
-using TrananMVC.Service;
+using TrananMVC.Interface;
 
 namespace TrananMVC.Controllers;
 
 public class SchemaController : Controller
 {
-    private readonly MovieScreeningService _movieScreeningService;
+    private readonly IMovieService<MovieScreeningViewModel> _movieScreeningService;
 
-    public SchemaController(MovieScreeningService movieScreeningService)
+    public SchemaController(IMovieService<MovieScreeningViewModel> movieScreeningService)
     {
         _movieScreeningService = movieScreeningService;
     }
@@ -18,7 +17,7 @@ public class SchemaController : Controller
     {
         try
         {
-            var movieScreeningViewModels = await _movieScreeningService.GetUpcomingScreenings();
+            var movieScreeningViewModels = await _movieScreeningService.GetUpcoming();
             if (movieScreeningViewModels == null)
             {
                 return View(new List<MovieScreeningViewModel>());
@@ -39,7 +38,7 @@ public class SchemaController : Controller
     {
         try
         {
-            var movieScreeningViewModels = await _movieScreeningService.GetShownScreenings();
+            var movieScreeningViewModels = await _movieScreeningService.GetAll();
             if (movieScreeningViewModels == null)
             {
                 return View(new List<MovieScreeningViewModel>());

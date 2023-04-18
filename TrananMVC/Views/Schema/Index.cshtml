@@ -27,7 +27,7 @@
                     @if (screening.AvailableSeats.Count > 0)
                     {
                         <a asp-controller="Reservation" asp-action="Create"
-                            asp-route-movieScreeningId="@screening.MovieScreeningId">
+                            asp-route-movieScreeningId="@screening.Id">
                             <button id="button">Reservera</button>
                         </a>
                     }

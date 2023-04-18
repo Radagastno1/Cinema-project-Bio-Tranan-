@@ -13,7 +13,7 @@ public class Mapper
             Rating = reviewViewModel.Rating,
             Comment = reviewViewModel.Comment,
             ReservationCode = reviewViewModel.ReservationCode,
-            MovieId = reviewViewModel.MovieViewModel.MovieId,
+            MovieId = reviewViewModel.MovieViewModel.Id,
         };
         return review;
     }
@@ -60,7 +60,7 @@ public class Mapper
             allSeats.Add(
                 new SeatViewModel()
                 {
-                    SeatId = seat.SeatId,
+                    Id = seat.SeatId,
                     Row = seat.Row,
                     SeatNumber = seat.SeatNumber,
                     IsBooked = isBooked,
@@ -76,7 +76,7 @@ public class Mapper
     {
         var theaterViewModel = new TheaterViewModel()
         {
-            TheaterId = theater.TheaterId,
+            Id = theater.TheaterId,
             Name = theater.Name,
             Rows = theater.Rows,
             Seats = GenerateSeatsToViewModels(theater.Seats)
@@ -92,7 +92,7 @@ public class Mapper
             seatViewModels.Add(
                 new SeatViewModel()
                 {
-                    SeatId = seat.SeatId,
+                    Id = seat.SeatId,
                     Row = seat.Row,
                     SeatNumber = seat.SeatNumber,
                     IsWheelChairSpace = seat.IsWheelChairSpace,
@@ -148,7 +148,7 @@ public class Mapper
     )
     {
         var reservation = await Reservation.CreateReservationAsync(
-            reservationViewModel.ReservationId,
+            reservationViewModel.Id,
             reservationViewModel.Price,
             reservationViewModel.MovieScreeningId,
             GenerateCustomer(reservationViewModel.CustomerViewModel),
@@ -229,7 +229,7 @@ public class Mapper
             customerViewModel.PhoneNumber,
             customerViewModel.Email
         );
-        customer.CustomerId = customerViewModel.CustomerId;
+        customer.CustomerId = customerViewModel.Id;
         return customer;
     }
 }

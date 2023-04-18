@@ -1,19 +1,19 @@
-using Core.Interface;
+using TrananMVC.Interface;
 using Core.Models;
 using TrananMVC.ViewModel;
 
 namespace TrananMVC.Service;
 
-public class MovieScreeningService
+public class MovieScreeningService : IMovieService<MovieScreeningViewModel>
 {
-    private readonly IService<MovieScreening> _coreScreeningService;
-    private readonly IMovieScreeningService _coreScreeningService2;
-    private readonly IService<Movie> _coreMovieService;
+    private readonly Core.Interface.IService<MovieScreening> _coreScreeningService;
+    private readonly Core.Interface.IMovieScreeningService _coreScreeningService2;
+    private readonly Core.Interface.IService<Movie> _coreMovieService;
 
     public MovieScreeningService(
-        IService<MovieScreening> coreScreeningService,
-        IMovieScreeningService coreScreeningService2,
-        IService<Movie> coreMovieService
+        Core.Interface.IService<MovieScreening> coreScreeningService,
+        Core.Interface.IMovieScreeningService coreScreeningService2,
+        Core.Interface.IService<Movie> coreMovieService
     )
     {
         _coreScreeningService = coreScreeningService;
@@ -21,7 +21,7 @@ public class MovieScreeningService
         _coreMovieService = coreMovieService;
     }
 
-    public async Task<List<MovieScreeningViewModel>> GetUpcomingScreenings()
+    public async Task<List<MovieScreeningViewModel>> GetUpcoming()
     {
         try
         {
@@ -39,8 +39,8 @@ public class MovieScreeningService
             return new List<MovieScreeningViewModel>();
         }
     }
-
-    public async Task<List<MovieScreeningViewModel>> GetShownScreenings()
+    //Get all shown screenings
+    public async Task<List<MovieScreeningViewModel>> GetAll()
     {
         try
         {
@@ -59,11 +59,11 @@ public class MovieScreeningService
         }
     }
 
-    public async Task<MovieScreeningViewModel> GetMovieScreeningById(int movieScreeningId)
+    public async Task<MovieScreeningViewModel> GetById(int id)
     {
         try
         {
-            var movieScreening = await _coreScreeningService.GetById(movieScreeningId);
+            var movieScreening = await _coreScreeningService.GetById(id);
             if (movieScreening == null)
             {
                 return new MovieScreeningViewModel();

@@ -7,14 +7,14 @@ namespace TrananMVC.Controllers;
 
 public class MovieController : Controller
 {
-    private readonly IMovieService _movieService;
-    private readonly MovieScreeningService _movieScreeningService;
-    private readonly ReviewService _reviewService;
+    private readonly IMovieService<MovieViewModel> _movieService;
+    private readonly IMovieService<MovieScreeningViewModel> _movieScreeningService;
+    private readonly IReviewService _reviewService;
 
     public MovieController(
-        IMovieService movieService,
-        MovieScreeningService movieScreeningService,
-        ReviewService reviewService
+        IMovieService<MovieViewModel> movieService,
+        IMovieService<MovieScreeningViewModel> movieScreeningService,
+        IReviewService reviewService
     )
     {
         _movieService = movieService;
@@ -26,7 +26,7 @@ public class MovieController : Controller
     {
         try
         {
-            var movieViewModel = await _movieService.GetMovieByIdAsync(movieId);
+            var movieViewModel = await _movieService.GetById(movieId);
             return View(movieViewModel);
         }
         catch (Exception)
@@ -47,10 +47,10 @@ public class MovieController : Controller
     {
         try
         {
-            var movieScreening = await _movieScreeningService.GetMovieScreeningById(
+            var movieScreening = await _movieScreeningService.GetById(
                 movieScreeningId
             );
-            var movie = await _movieService.GetMovieByIdAsync(movieScreening.MovieId);
+            var movie = await _movieService.GetById(movieScreening.MovieId);
             var reviewViewModel = new ReviewViewModel();
             reviewViewModel.MovieViewModel = movie;
             return View(reviewViewModel);
@@ -74,16 +74,17 @@ public class MovieController : Controller
     {
         try
         {
-            var movieViewModel = await _movieService.GetMovieByIdAsync(
-                reviewViewModel.MovieViewModel.MovieId
+            var movieViewModel = await _movieService.GetById(
+                reviewViewModel.MovieViewModelId
             );
+
             reviewViewModel.MovieViewModel = movieViewModel;
             var createdReview = await _reviewService.CreateReview(reviewViewModel);
 
             return RedirectToAction(
                 "Details",
                 "Movie",
-                new { movieId = reviewViewModel.MovieViewModel.MovieId }
+                new { movieId = reviewViewModel.MovieViewModel.Id }
             );
         }
         catch (Exception)
@@ -104,7 +105,7 @@ public class MovieController : Controller
     {
         try
         {
-            var movies = await _movieService.GetAllMoviesAsync();
+            var movies = await _movieService.GetAll();
             var topMovies = movies
                 .Where(m => m.Reviews != null && m.Reviews.Any())
                 .OrderByDescending(m => m.Reviews.Max(r => r.Rating))

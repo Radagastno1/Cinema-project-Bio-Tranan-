@@ -28,11 +28,11 @@ builder.Services.AddScoped<Core.Interface.IMovieScreeningService,Core.Services.M
 builder.Services.AddScoped<Core.Interface.IReservationService,Core.Services.ReservationService>();
 builder.Services.AddScoped<Core.Interface.IReviewService,Core.Services.ReviewService>();
 
-builder.Services.AddScoped<TrananMVC.Service.MovieScreeningService>();
-builder.Services.AddScoped<TrananMVC.Interface.IMovieService,TrananMVC.Service.MovieService>();
-builder.Services.AddScoped<TrananMVC.Service.ReservationService>();
+builder.Services.AddScoped<TrananMVC.Interface.IMovieService<TrananMVC.ViewModel.MovieViewModel>,TrananMVC.Service.MovieService>();
+builder.Services.AddScoped<TrananMVC.Interface.IMovieService<TrananMVC.ViewModel.MovieScreeningViewModel>,TrananMVC.Service.MovieScreeningService>();
+builder.Services.AddScoped<TrananMVC.Interface.IReservationService,TrananMVC.Service.ReservationService>();
 builder.Services.AddScoped<TrananMVC.Interface.IMovieTrailerService,TrananMVC.ApiServices.MovieTrailerService>();
-builder.Services.AddScoped<TrananMVC.Service.ReviewService>();
+builder.Services.AddScoped<TrananMVC.Interface.IReviewService,TrananMVC.Service.ReviewService>();
 
 var app = builder.Build();
 

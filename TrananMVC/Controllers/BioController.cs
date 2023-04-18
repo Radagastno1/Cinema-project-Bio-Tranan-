@@ -8,10 +8,13 @@ namespace TrananMVC.Controllers;
 
 public class BioController : Controller
 {
-    private readonly MovieScreeningService _movieScreeningService;
-    private readonly IMovieService _movieService;
+    private readonly IMovieService<MovieScreeningViewModel> _movieScreeningService;
+    private readonly IMovieService<MovieViewModel> _movieService;
 
-    public BioController(MovieScreeningService movieScreeningService, IMovieService movieService)
+    public BioController(
+        IMovieService<MovieScreeningViewModel> movieScreeningService,
+        IMovieService<MovieViewModel> movieService
+    )
     {
         _movieScreeningService = movieScreeningService;
         _movieService = movieService;
@@ -21,7 +24,7 @@ public class BioController : Controller
     {
         try
         {
-            var upcomingMovies = await _movieService.GetUpcomingMoviesAsync();
+            var upcomingMovies = await _movieService.GetAll();
             if (upcomingMovies == null)
             {
                 return View(new List<MovieViewModel>());

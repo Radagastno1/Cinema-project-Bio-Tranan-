@@ -1,14 +1,16 @@
-using Core.Models;
+using TrananMVC.Interface;
 
 namespace TrananMVC.ViewModel;
 
-public class ReviewViewModel
+public class ReviewViewModel : IViewModel
 {
+    public int Id{get;set;}
     public string Alias{get;set;} //sätt i models i ccore med  och uppdatera db
     public int Rating { get; set; }
     public string Comment { get; set; }
-    public int ReservationCode { get; set; } //ändra i core så den hittar reservation på koden och sätter reservaitonen då!
+    public int ReservationCode { get; set; } 
     public MovieViewModel MovieViewModel { get; set; }
+    public int MovieViewModelId { get; set; }
 
     public ReviewViewModel() { }
 

@@ -1,20 +1,19 @@
-using Core.Interface;
 using Core.Models;
 using TrananMVC.ViewModel;
 using TrananMVC.Interface;
 
 namespace TrananMVC.Service;
 
-public class MovieService : IMovieService
+public class MovieService : IMovieService<MovieViewModel>
 {
-    private readonly IService<Movie> _coreMovieService;
+    private readonly Core.Interface.IService<Movie> _coreMovieService;
     private readonly IMovieTrailerService _movieTrailerService;
-    private readonly ReviewService _reviewService;
+    private readonly IReviewService _reviewService;
 
     public MovieService(
-        IService<Movie> coreMovieService,
+        Core.Interface.IService<Movie> coreMovieService,
         IMovieTrailerService movieTrailerService,
-        ReviewService reviewService
+        IReviewService reviewService
     )
     {
         _coreMovieService = coreMovieService;
@@ -22,7 +21,7 @@ public class MovieService : IMovieService
         _reviewService = reviewService;
     }
 
-    public async Task<List<MovieViewModel>> GetUpcomingMoviesAsync()
+    public async Task<List<MovieViewModel>> GetUpcoming()
     {
         try
         {
@@ -43,7 +42,7 @@ public class MovieService : IMovieService
         }
     }
 
-    public async Task<List<MovieViewModel>> GetAllMoviesAsync()
+    public async Task<List<MovieViewModel>> GetAll()
     {
         try
         {
@@ -60,7 +59,7 @@ public class MovieService : IMovieService
         }
     }
 
-    public async Task<MovieViewModel> GetMovieByIdAsync(int movieId)
+    public async Task<MovieViewModel> GetById(int movieId)
     {
         try
         {

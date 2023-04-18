@@ -1,18 +1,18 @@
 using TrananMVC.ViewModel;
-using Core.Interface;
+using TrananMVC.Interface;
 using Core.Models;
 
 namespace TrananMVC.Service;
 
-public class ReservationService
+public class ReservationService : IReservationService
 {
-    private readonly IService<Reservation> _coreReservationService;
-    private readonly IService<MovieScreening> _coreScreeningService;
-    private readonly IService<Movie> _coreMovieService;
+    private readonly Core.Interface.IService<Reservation> _coreReservationService;
+    private readonly Core.Interface.IService<MovieScreening> _coreScreeningService;
+    private readonly Core.Interface.IService<Movie> _coreMovieService;
 
     public ReservationService(
-      IService<Reservation> coreReservationService, IService<MovieScreening> coreScreeningService, 
-      IService<Movie> coreMovieService
+      Core.Interface.IService<Reservation> coreReservationService, Core.Interface.IService<MovieScreening> coreScreeningService, 
+      Core.Interface.IService<Movie> coreMovieService
     )
     {
         _coreReservationService = coreReservationService;

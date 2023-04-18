@@ -1,6 +1,6 @@
 namespace TrananMVC.ViewModel;
 
-public class MessageViewModel
+public class MessageViewModel 
 {
     public string Message { get; set; }
     public string OriginUrl { get; set; }
