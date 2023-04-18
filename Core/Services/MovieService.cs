@@ -109,7 +109,7 @@ public class MovieService : IService<Movie>
         {
             await _movieRepository.DeleteByIdAsync(id);
         }
-        catch (Exception e)
+        catch (Exception)
         {
             throw new Exception("Failed when deleting movie by id.");
         }

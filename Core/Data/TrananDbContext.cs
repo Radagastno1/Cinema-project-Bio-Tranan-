@@ -14,8 +14,6 @@ public class TrananDbContext : DbContext, ITrananDbContext
     public DbSet<Theater> Theaters { get; set; }
     public DbSet<MovieScreening> MovieScreenings { get; set; }
     public DbSet<Customer> Customers { get; set; }
-
-    // // public DbSet<Admin> Admins { get; set; }
     public DbSet<Reservation> Reservations { get; set; }
     public DbSet<Review> Reviews { get; set; }
 
@@ -75,10 +73,10 @@ public class TrananDbContext : DbContext, ITrananDbContext
         modelBuilder.Entity<Customer>().HasMany(m => m.Reservations).WithOne(a => a.Customer);
         modelBuilder.Entity<Reservation>().HasOne(r => r.Customer).WithMany(c => c.Reservations);
 
-        modelBuilder.Entity<Movie>()
-        .HasMany(m => m.Reviews)
-        .WithOne(r => r.Movie)
-        .OnDelete(DeleteBehavior.Cascade);
-
+        modelBuilder
+            .Entity<Movie>()
+            .HasMany(m => m.Reviews)
+            .WithOne(r => r.Movie)
+            .OnDelete(DeleteBehavior.Cascade);
     }
 }
