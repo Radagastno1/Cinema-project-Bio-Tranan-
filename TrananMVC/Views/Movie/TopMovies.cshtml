@@ -25,10 +25,18 @@
                             </a>
                         </div>
                     </td>
-                    <td><h2>@movie.Reviews.Average(r => r.Rating)</h2></td>
+                    <td>
+                        <div class="star-icons">
+                            @for (int i = 0; i < Math.Round(movie.Reviews.Average(r => r.Rating)); i++)
+                            {
+                                <img src="https://icon-library.com/images/movie-star-icon/movie-star-icon-20.jpg" id="icon" />
+                            }
+                        </div>
+                    </td>
                 </tr>
             }
         </table>
+
     }
 
 </div>
