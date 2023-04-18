@@ -7,6 +7,11 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="hangfire.aspnetcore" Version="1.7.34" />
+    <PackageReference Include="hangfire.core" Version="1.7.34" />
+    <!-- <PackageReference Include="hangfire.sqlite.core" Version="1.0.2" /> -->
+    <PackageReference Include="Hangfire.MemoryStorage" Version="1.7.0" />
+    <PackageReference Include="hangfire.storage.sqlite" Version="0.3.3" />
     <PackageReference Include="microsoft.entityframeworkcore" Version="7.0.5" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="7.0.5">
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>

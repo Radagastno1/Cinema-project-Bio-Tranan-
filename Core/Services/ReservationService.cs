@@ -17,12 +17,28 @@ public class ReservationService : IService<Reservation>, IReservationService
         _reservationByScreeningRepository = reservationByScreeningRepository;
     }
 
+    public async Task RemoveUnvalidReservations()
+    {
+        var allReservations = await _reservationRepository.GetAsync();
+        var unvalidReservations = allReservations
+            .Where(
+                r =>
+                    DateTime.Now
+                    > r.MovieScreening.DateAndTime.AddDays(1)
+            )
+            .ToList();
+        foreach (var reservation in unvalidReservations)
+        {
+            await _reservationRepository.DeleteByIdAsync(reservation.ReservationId);
+        }
+    }
+
     public async Task<IEnumerable<Reservation>> Get()
     {
         try
         {
             var reservations = await _reservationRepository.GetAsync();
-            if(reservations == null)
+            if (reservations == null)
             {
                 return Enumerable.Empty<Reservation>();
             }
@@ -30,7 +46,7 @@ public class ReservationService : IService<Reservation>, IReservationService
         }
         catch (Exception)
         {
-           throw new Exception("Failed to get reservations from database.");
+            throw new Exception("Failed to get reservations from database.");
         }
     }
 
@@ -42,10 +58,10 @@ public class ReservationService : IService<Reservation>, IReservationService
         {
             var reservationsForScreening =
                 await _reservationByScreeningRepository.GetByScreeningIdAsync(movieScreeningId);
-                if(reservationsForScreening == null)
-                {
-                    return Enumerable.Empty<Reservation>();
-                }
+            if (reservationsForScreening == null)
+            {
+                return Enumerable.Empty<Reservation>();
+            }
             return reservationsForScreening;
         }
         catch (Exception)
@@ -59,12 +75,12 @@ public class ReservationService : IService<Reservation>, IReservationService
         try
         {
             var reservations = await _reservationRepository.GetAsync();
-            if(reservations == null)
+            if (reservations == null)
             {
                 return null;
             }
             var reservation = reservations.Where(r => r.ReservationCode == reservationCode).First();
-            if(reservation == null)
+            if (reservation == null)
             {
                 return null;
             }
@@ -83,7 +99,7 @@ public class ReservationService : IService<Reservation>, IReservationService
             var checkedInReservation = await _reservationByScreeningRepository.CheckInReservation(
                 code
             );
-            if(checkedInReservation == null)
+            if (checkedInReservation == null)
             {
                 return null;
             }
@@ -126,7 +142,7 @@ public class ReservationService : IService<Reservation>, IReservationService
         try
         {
             var updatedReservation = await _reservationRepository.UpdateAsync(reservation);
-            if(updatedReservation == null)
+            if (updatedReservation == null)
             {
                 return null;
             }
