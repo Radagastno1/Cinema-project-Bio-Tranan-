@@ -119,7 +119,7 @@ public class Mapper
             ActorsAsViewModels(movie.Actors),
             DirectorsAsViewModels(movie.Directors),
             movie.TrailerId,
-            movie.Reviews.Select(r => new ReviewViewModel(r.Rating, r.Comment, r.ReservationCode, r.Alias)).ToList()
+           movie.Reviews?.Select(r => new ReviewViewModel(r.Rating, r.Comment, r.ReservationCode, r.Alias)).ToList() ?? new List<ReviewViewModel>()
         );
     }
 

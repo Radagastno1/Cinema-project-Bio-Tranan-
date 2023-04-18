@@ -11,17 +11,26 @@ public class MovieService : IMovieService
     private readonly IMovieTrailerService _movieTrailerService;
     private readonly ReviewService _reviewService;
 
-    public MovieService(IService<Movie> coreMovieService, IMovieTrailerService movieTrailerService,ReviewService reviewService)
+    public MovieService(
+        IService<Movie> coreMovieService,
+        IMovieTrailerService movieTrailerService,
+        ReviewService reviewService
+    )
     {
         _coreMovieService = coreMovieService;
         _movieTrailerService = movieTrailerService;
         _reviewService = reviewService;
     }
+
     public async Task<List<MovieViewModel>> GetUpcomingMoviesAsync()
     {
         try
         {
             var movies = await _coreMovieService.Get();
+            if (movies == null)
+            {
+                return new List<MovieViewModel>();
+            }
             var upcomingMovies = movies.Where(m => m.AmountOfScreenings < m.MaxScreenings);
             var moviesAsViewModels = movies
                 .Select(m => Mapper.GenerateMovieAsViewModel(m))
@@ -39,6 +48,10 @@ public class MovieService : IMovieService
         try
         {
             var movies = await _coreMovieService.Get();
+            if (movies == null)
+            {
+                return new List<MovieViewModel>();
+            }
             return movies.Select(m => Mapper.GenerateMovieAsViewModel(m)).ToList();
         }
         catch (Exception)
@@ -52,6 +65,10 @@ public class MovieService : IMovieService
         try
         {
             var movie = await _coreMovieService.GetById(movieId);
+            if (movie == null)
+            {
+                return new MovieViewModel();
+            }
             var movieViewModel = Mapper.GenerateMovieAsViewModel(movie);
             movieViewModel.TrailerLink =
                 await _movieTrailerService.GetYoutubeTrailerLinkByMovieId(movie) ?? null;

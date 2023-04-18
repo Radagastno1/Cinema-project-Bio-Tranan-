@@ -21,18 +21,33 @@ public class ReservationController : Controller
 
     public async Task<IActionResult> Create(int movieScreeningId)
     {
-        var movieScreeningViewModel = await _movieScreeningService.GetMovieScreeningById(
-            movieScreeningId
-        );
-        var reservationViewModel = new ReservationViewModel();
-        reservationViewModel.MovieScreeningId = movieScreeningId;
-
-        var movieScreeningReservationViewModel = new MovieScreeningReservationViewModel()
+        try
         {
-            MovieScreeningViewModel = movieScreeningViewModel,
-            ReservationViewModel = reservationViewModel
-        };
-        return View(movieScreeningReservationViewModel);
+            var movieScreeningViewModel = await _movieScreeningService.GetMovieScreeningById(
+                movieScreeningId
+            );
+            var reservationViewModel = new ReservationViewModel();
+            reservationViewModel.MovieScreeningId = movieScreeningId;
+
+            var movieScreeningReservationViewModel = new MovieScreeningReservationViewModel()
+            {
+                MovieScreeningViewModel = movieScreeningViewModel,
+                ReservationViewModel = reservationViewModel
+            };
+            return View(movieScreeningReservationViewModel);
+        }
+        catch (Exception)
+        {
+            return RedirectToAction(
+                "Error",
+                "Bio",
+                new MessageViewModel(
+                    "Ursäkta men sidan du söker kan inte hittas just nu. Prova igen eller gå till startsidan.",
+                    "/reservation/create",
+                    "/bio/index"
+                )
+            );
+        }
     }
 
     [HttpPost]
@@ -40,11 +55,25 @@ public class ReservationController : Controller
         MovieScreeningReservationViewModel movieScreeningReservationViewModel
     )
     {
-        Console.WriteLine("post reservation anropas");
-        var createdReservationViewModel = await _reservationService.CreateReservation(
-            movieScreeningReservationViewModel.ReservationViewModel
-        );
-        return RedirectToAction("ShowReservation", "Reservation", createdReservationViewModel);
+        try
+        {
+            var createdReservationViewModel = await _reservationService.CreateReservation(
+                movieScreeningReservationViewModel.ReservationViewModel
+            );
+            return RedirectToAction("ShowReservation", "Reservation", createdReservationViewModel);
+        }
+        catch (Exception)
+        {
+            return RedirectToAction(
+                "Error",
+                "Bio",
+                new MessageViewModel(
+                    "Ursäkta men sidan du söker kan inte hittas just nu. Prova igen eller gå till startsidan.",
+                    "/reservation/postreservation",
+                    "/bio/index"
+                )
+            );
+        }
     }
 
     public async Task<IActionResult> ShowReservation(
@@ -56,20 +85,26 @@ public class ReservationController : Controller
 
     public async Task<IActionResult> Cancel(int reservationId)
     {
-        var isDeleted = await _reservationService.DeleteReservationById(reservationId);
-        if (isDeleted)
+        try
         {
-            return View();
+            var isDeleted = await _reservationService.DeleteReservationById(reservationId);
+            if (isDeleted)
+            {
+                return View(); 
+            }
+            return RedirectToAction("ShowReservation", "Reservation");
         }
-        //fixa en felsida:
-        return RedirectToAction("ShowReservation", "Reservation");
-    }
-
-    [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
-    public IActionResult Error()
-    {
-        return View(
-            new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier }
-        );
+        catch (Exception)
+        {
+            return RedirectToAction(
+                "Error",
+                "Bio",
+                new MessageViewModel(
+                    "Ursäkta men sidan du söker kan inte hittas just nu. Prova igen eller gå till startsidan.",
+                    "/reservation/postreservation",
+                    "/bio/index"
+                )
+            );
+        }
     }
 }

@@ -16,13 +16,43 @@ public class SchemaController : Controller
 
     public async Task<IActionResult> Index()
     {
-        var movieScreeningViewModels = await _movieScreeningService.GetUpcomingScreenings();
-        return View(movieScreeningViewModels);
+        try
+        {
+            var movieScreeningViewModels = await _movieScreeningService.GetUpcomingScreenings();
+            if (movieScreeningViewModels == null)
+            {
+                return View(new List<MovieScreeningViewModel>());
+            }
+            return View(movieScreeningViewModels);
+        }
+        catch (Exception)
+        {
+            return RedirectToAction(
+                "Error",
+                "Bio",
+                new MessageViewModel("Ursäkta men sidan du söker kan inte hittas just nu. Prova igen eller gå till startsidan.", "/schema/index", "/bio/index")
+            );
+        }
     }
 
     public async Task<IActionResult> Shown()
     {
-        var movieScreeningViewModels = await _movieScreeningService.GetShownScreenings();
-        return View(movieScreeningViewModels);
+        try
+        {
+            var movieScreeningViewModels = await _movieScreeningService.GetShownScreenings();
+            if (movieScreeningViewModels == null)
+            {
+                return View(new List<MovieScreeningViewModel>());
+            }
+            return View(movieScreeningViewModels);
+        }
+        catch (Exception)
+        {
+           return RedirectToAction(
+                "Error",
+                "Bio",
+                new MessageViewModel("Ursäkta men sidan du söker kan inte hittas just nu. Prova igen eller gå till startsidan.", "/schema/shown", "/bio/index")
+            );
+        }
     }
 }

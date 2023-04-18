@@ -19,8 +19,27 @@ public class BioController : Controller
 
     public async Task<IActionResult> Index()
     {
-        var upcomingMovies = await _movieService.GetUpcomingMoviesAsync();
-        return View(upcomingMovies);
+        try
+        {
+            var upcomingMovies = await _movieService.GetUpcomingMoviesAsync();
+            if (upcomingMovies == null)
+            {
+                return View(new List<MovieViewModel>());
+            }
+            return View(upcomingMovies);
+        }
+        catch (Exception)
+        {
+            return RedirectToAction(
+                "Error",
+                "Bio",
+                new MessageViewModel(
+                    "Ursäkta men sidan du söker kan inte hittas just nu. Tryck för att prova igen.",
+                    "/bio/index",
+                    "/bio/index"
+                )
+            );
+        }
     }
 
     public async Task<IActionResult> AboutUs()
@@ -33,11 +52,8 @@ public class BioController : Controller
         return View();
     }
 
-    [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
-    public IActionResult Error()
+    public async Task<IActionResult> Error(MessageViewModel messageViewModel)
     {
-        return View(
-            new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier }
-        );
+        return View(messageViewModel);
     }
 }
