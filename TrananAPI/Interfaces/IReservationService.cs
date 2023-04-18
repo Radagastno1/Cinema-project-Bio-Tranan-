@@ -4,10 +4,6 @@ namespace TrananAPI.Interface;
 
 public interface IReservationService
 {
-      public Task<IEnumerable<ReservationDTO>> GetByScreeningId(
-        int screeningId);
-
-
+    public Task<IEnumerable<ReservationDTO>> GetByScreeningId(int screeningId);
     public Task<ReservationDTO> CheckInReservation(int code);
-
 }

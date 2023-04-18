@@ -1,5 +1,4 @@
 using Microsoft.AspNetCore.Mvc;
-using TrananAPI.DTO;
 
 namespace TrananAPI.Interface;
 

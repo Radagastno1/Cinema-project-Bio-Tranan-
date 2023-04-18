@@ -1,4 +1,3 @@
-using TrananAPI.Services;
 using TrananAPI.DTO;
 using TrananAPI.Interface;
 using Microsoft.AspNetCore.Mvc;

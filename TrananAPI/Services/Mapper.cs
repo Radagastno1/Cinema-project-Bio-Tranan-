@@ -128,7 +128,7 @@ public class Mapper
                     Id = seat.SeatId,
                     Row = seat.Row,
                     SeatNumber = seat.SeatNumber,
-                    IsBooked = isBooked,  //för att sätta vilken stol som är bokad när det visas
+                    IsBooked = isBooked,
                     IsNotBookable = seat.IsNotBookable,
                     IsWheelChairSpace = seat.IsWheelChairSpace
                 }
@@ -185,7 +185,7 @@ public class Mapper
             GenerateSeatsFromIds(reservationDTO.SeatIds),
             reservationDTO.IsCheckedIn
         );
-        return reservation; 
+        return reservation;
     }
 
     public static List<Seat> GenerateSeatsFromIds(List<int> ids)

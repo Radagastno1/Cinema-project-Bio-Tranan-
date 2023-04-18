@@ -125,11 +125,6 @@ var app = builder.Build();
 app.UseHangfireDashboard();
 app.UseHangfireServer();
 
-// RecurringJob.AddOrUpdate(
-//     "RemoveInvalidReservations",
-//     () => serviceProvider.GetService<Core.Workers.HangfireWorker>().DailyWork(),
-//     Cron.Daily
-// );
 serviceProvider.GetService<Core.Workers.HangfireWorker>().DailyWork();
 
 if (app.Environment.IsDevelopment())

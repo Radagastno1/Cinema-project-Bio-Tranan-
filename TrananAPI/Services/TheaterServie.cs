@@ -18,15 +18,14 @@ public class TheaterService : IService<TheaterDTO, TheaterDTO>
     {
         try
         {
-       var theaters = await _coreTheaterService.Get();
-        var theaterDTOs = theaters.Select(t => Mapper.GenerateTheaterDTO(t)).ToList();
-        return theaterDTOs;
+            var theaters = await _coreTheaterService.Get();
+            var theaterDTOs = theaters.Select(t => Mapper.GenerateTheaterDTO(t)).ToList();
+            return theaterDTOs;
         }
-        catch(Exception e)
+        catch (Exception e)
         {
             throw new Exception(e.Message);
         }
- 
     }
 
     public async Task<TheaterDTO> GetById(int id)

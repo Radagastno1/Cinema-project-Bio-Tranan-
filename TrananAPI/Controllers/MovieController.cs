@@ -87,7 +87,6 @@ public class MovieController : ControllerBase, IController<MovieDTO, MovieDTO>
         }
     }
 
-    // [Authorize]
     [HttpDelete("{id:int}")]
     public async Task<IActionResult> DeleteById(int id)
     {
