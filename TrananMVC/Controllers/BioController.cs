@@ -1,5 +1,4 @@
-﻿using System.Diagnostics;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using TrananMVC.ViewModel;
 using TrananMVC.Service;
 using TrananMVC.Interface;

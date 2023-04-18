@@ -4,7 +4,6 @@ namespace TrananMVC.ViewModel;
 
 public class CreatedReservationViewModel : IViewModel
 {
-    // public ReservationViewModel ReservationViewModel{get;set;} 
     public int Id { get; set; }
     public int ReservationCode { get; set; }
     public decimal Price { get; set; }

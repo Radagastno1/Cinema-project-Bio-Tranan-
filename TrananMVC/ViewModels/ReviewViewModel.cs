@@ -5,7 +5,7 @@ namespace TrananMVC.ViewModel;
 public class ReviewViewModel : IViewModel
 {
     public int Id{get;set;}
-    public string Alias{get;set;} //sätt i models i ccore med  och uppdatera db
+    public string Alias{get;set;}
     public int Rating { get; set; }
     public string Comment { get; set; }
     public int ReservationCode { get; set; } 

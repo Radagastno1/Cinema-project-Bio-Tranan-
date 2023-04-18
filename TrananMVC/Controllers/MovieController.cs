@@ -1,7 +1,6 @@
 using Microsoft.AspNetCore.Mvc;
 using TrananMVC.ViewModel;
 using TrananMVC.Interface;
-using TrananMVC.Service;
 
 namespace TrananMVC.Controllers;
 

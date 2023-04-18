@@ -6,12 +6,12 @@ namespace TrananMVC.ApiServices;
 
 public class MovieTrailerService : IMovieTrailerService
 {
-    private string ApiKey { get; set; }
+    private string YoutubeApiKey { get; set; }
     private string TmdbApiKey { get; set; }
 
     public MovieTrailerService()
     {
-        ApiKey = "AIzaSyC0ps8z67GJeu6G1EXaB1CMd8mpZBDINgg";
+        YoutubeApiKey = "AIzaSyC0ps8z67GJeu6G1EXaB1CMd8mpZBDINgg";
         TmdbApiKey = "6ad1feea19be83985f0e68f6816fb05b";
     }
 
@@ -20,7 +20,7 @@ public class MovieTrailerService : IMovieTrailerService
         var trailerId = movie.TrailerId;
         using HttpClient client = new HttpClient();
         var response = await client.GetAsync(
-            $"https://www.googleapis.com/youtube/v3/videos?id={trailerId}&key={ApiKey}"
+            $"https://www.googleapis.com/youtube/v3/videos?id={trailerId}&key={YoutubeApiKey}"
         );
         if (response.IsSuccessStatusCode)
         {
