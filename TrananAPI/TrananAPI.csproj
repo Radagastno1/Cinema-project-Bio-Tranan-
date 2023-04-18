@@ -7,6 +7,11 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="hangfire.aspnetcore" Version="1.7.34" />
+    <PackageReference Include="hangfire.sqlite" Version="1.4.2" />
+    <PackageReference Include="hangfire.sqlite.core" Version="1.0.2" />
+    <PackageReference Include="microsoft.aspnetcore.http" Version="2.2.2" />
+    <PackageReference Include="Hangfire.MemoryStorage" Version="1.7.0" />
     <PackageReference Include="Microsoft.AspNetCore.Mvc.NewtonsoftJson" Version="6.0.14" />
     <PackageReference Include="Microsoft.EntityFrameworkCore" Version="7.0.5" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.InMemory" Version="7.0.4" />
