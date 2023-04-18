@@ -45,7 +45,7 @@ public class ReservationController
         throw new NotImplementedException();
     }
 
-    [HttpGet("{screeningId:int}")]
+    [HttpGet("screening/{screeningId:int}")]
     public async Task<ActionResult<List<ReservationDTO>>> GetByScreeningId(int screeningId)
     {
         try
