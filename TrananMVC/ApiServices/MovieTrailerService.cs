@@ -11,8 +11,7 @@ public class MovieTrailerService : IMovieTrailerService
 
     public MovieTrailerService()
     {
-        YoutubeApiKey = "AIzaSyC0ps8z67GJeu6G1EXaB1CMd8mpZBDINgg";
-        TmdbApiKey = "6ad1feea19be83985f0e68f6816fb05b";
+       
     }
 
     public async Task<string> GetYoutubeTrailerLinkByMovieId(Movie movie)
