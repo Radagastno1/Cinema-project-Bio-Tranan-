@@ -1,6 +1,8 @@
 using Microsoft.AspNetCore.Mvc;
 using TrananAPI.DTO;
+using Core.Models;
 using TrananAPI.Interface;
+using TrananAPI.Service.Mapper;
 
 namespace TrananAPI.Controllers;
 
@@ -8,11 +10,11 @@ namespace TrananAPI.Controllers;
 [Route("theater")]
 public class TheaterController : ControllerBase, IController<TheaterDTO, TheaterDTO>
 {
-    private readonly IService<TheaterDTO, TheaterDTO> _theaterService;
+    private readonly Core.Interface.IService<Theater> _coreTheaterService;
 
-    public TheaterController(IService<TheaterDTO, TheaterDTO> theaterService)
+    public TheaterController(Core.Interface.IService<Theater> coreTheaterService)
     {
-        _theaterService = theaterService;
+        _coreTheaterService = coreTheaterService;
     }
 
     [HttpGet]
@@ -20,12 +22,12 @@ public class TheaterController : ControllerBase, IController<TheaterDTO, Theater
     {
         try
         {
-            var theaters = await _theaterService.Get();
+            var theaters = await _coreTheaterService.Get();
             if (theaters == null)
             {
                 return BadRequest("Failed to get theaters.");
             }
-            return Ok(theaters);
+            return Ok(theaters.Select(t => Mapper.GenerateTheaterDTO(t)));
         }
         catch (Exception e)
         {
@@ -38,12 +40,12 @@ public class TheaterController : ControllerBase, IController<TheaterDTO, Theater
     {
         try
         {
-            var theater = await _theaterService.GetById(id);
+            var theater = await _coreTheaterService.GetById(id);
             if (theater == null)
             {
                 return BadRequest("Failed to get theater by id.");
             }
-            return Ok(theater);
+            return Ok(Mapper.GenerateTheaterDTO(theater));
         }
         catch (Exception e)
         {
@@ -56,12 +58,13 @@ public class TheaterController : ControllerBase, IController<TheaterDTO, Theater
     {
         try
         {
-            var addedTheater = await _theaterService.Create(theaterDTO);
+            var theaterToCreate = Mapper.GenerateTheater(theaterDTO);
+            var addedTheater = await _coreTheaterService.Create(theaterToCreate);
             if (addedTheater == null)
             {
                 return BadRequest("Failed to create theater.");
             }
-            return CreatedAtAction(nameof(GetById), new { id = addedTheater.Id });
+            return CreatedAtAction(nameof(GetById), new { id = addedTheater.TheaterId });
         }
         catch (Exception e)
         {
@@ -74,12 +77,13 @@ public class TheaterController : ControllerBase, IController<TheaterDTO, Theater
     {
         try
         {
-            var updatedTheater = await _theaterService.Update(theaterDTO);
+            var theaterToUpdate = Mapper.GenerateTheater(theaterDTO);
+            var updatedTheater = await _coreTheaterService.Update(theaterToUpdate);
             if (updatedTheater == null)
             {
                 return BadRequest("Failed to update theater.");
             }
-            return Ok(updatedTheater);
+            return Ok(Mapper.GenerateTheaterDTO(updatedTheater));
         }
         catch (Exception e)
         {
@@ -92,7 +96,7 @@ public class TheaterController : ControllerBase, IController<TheaterDTO, Theater
     {
         try
         {
-            await _theaterService.DeleteById(id);
+            await _coreTheaterService.DeleteById(id);
             return StatusCode(204);
         }
         catch (Exception e)

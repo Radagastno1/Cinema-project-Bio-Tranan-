@@ -1,6 +1,8 @@
 using TrananAPI.DTO;
+using Core.Models;
 using TrananAPI.Interface;
 using Microsoft.AspNetCore.Mvc;
+using TrananAPI.Service.Mapper;
 
 namespace TrananAPI.Controllers;
 
@@ -8,11 +10,11 @@ namespace TrananAPI.Controllers;
 [Route("movie")]
 public class MovieController : ControllerBase, IController<MovieDTO, MovieDTO>
 {
-    private readonly IService<MovieDTO, MovieDTO> _movieService;
+    private readonly Core.Interface.IService<Movie> _coreMovieService;
 
-    public MovieController(IService<MovieDTO, MovieDTO> movieService)
+    public MovieController(Core.Interface.IService<Movie> coreMovieService)
     {
-        _movieService = movieService;
+        _coreMovieService = coreMovieService;
     }
 
     [HttpGet]
@@ -20,12 +22,12 @@ public class MovieController : ControllerBase, IController<MovieDTO, MovieDTO>
     {
         try
         {
-            var movieDTOs = await _movieService.Get();
-            if(movieDTOs == null)
+            var movies = await _coreMovieService.Get();
+            if (movies == null)
             {
                 return BadRequest("Failed to get movies.");
             }
-            return Ok(movieDTOs);
+            return Ok(movies.Select(m => Mapper.GenerateMovieDTO(m)));
         }
         catch (Exception e)
         {
@@ -38,12 +40,12 @@ public class MovieController : ControllerBase, IController<MovieDTO, MovieDTO>
     {
         try
         {
-            var movieDTO = await _movieService.GetById(id);
-            if(movieDTO == null)
+            var movie = await _coreMovieService.GetById(id);
+            if (movie == null)
             {
                 return BadRequest("Failed to get movie by id.");
             }
-            return Ok(movieDTO);
+            return Mapper.GenerateMovieDTO(movie);
         }
         catch (Exception e)
         {
@@ -56,12 +58,14 @@ public class MovieController : ControllerBase, IController<MovieDTO, MovieDTO>
     {
         try
         {
-            var newMovie = await _movieService.Create(movieDTO);
-            if(newMovie == null)
+            var movie = Mapper.GenerateMovie(movieDTO);
+            var newMovie = await _coreMovieService.Create(movie);
+            var newMovieDTO = Mapper.GenerateMovieDTO(newMovie);
+            if (newMovie == null)
             {
                 return BadRequest("Failed to create movie.");
             }
-            return CreatedAtAction(nameof(GetById), new { id = newMovie.Id }, newMovie);
+            return CreatedAtAction(nameof(GetById), new { id = newMovieDTO.Id }, newMovieDTO);
         }
         catch (Exception e)
         {
@@ -74,12 +78,13 @@ public class MovieController : ControllerBase, IController<MovieDTO, MovieDTO>
     {
         try
         {
-            var updatedMovie = await _movieService.Update(movieDTO);
-            if(updatedMovie == null)
+            var movieToUpdate = Mapper.GenerateMovie(movieDTO);
+            var updatedMovie = await _coreMovieService.Update(movieToUpdate);
+            if (updatedMovie == null)
             {
                 return BadRequest("Failed to update movie.");
             }
-            return Ok(updatedMovie);
+            return Ok(Mapper.GenerateMovieDTO(updatedMovie));
         }
         catch (Exception e)
         {
@@ -92,7 +97,7 @@ public class MovieController : ControllerBase, IController<MovieDTO, MovieDTO>
     {
         try
         {
-            await _movieService.DeleteById(id);
+            await _coreMovieService.DeleteById(id);
             return StatusCode(204);
         }
         catch (Exception e)

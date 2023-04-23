@@ -1,5 +1,7 @@
 using Microsoft.AspNetCore.Mvc;
 using TrananAPI.DTO;
+using Core.Models;
+using TrananAPI.Service.Mapper;
 using TrananAPI.Interface;
 
 namespace TrananAPI.Controllers;
@@ -11,13 +13,16 @@ public class ReservationController
         IController<ReservationDTO, ReservationDTO>,
         IReservationController
 {
-    private readonly IService<ReservationDTO, ReservationDTO> _reservationService;
-    private readonly IReservationService _reservationService2;
+    private readonly Core.Interface.IService<Reservation> _coreReservationService;
+    private readonly Core.Interface.IReservationService _coreReservationService2;
 
-    public ReservationController(IService<ReservationDTO, ReservationDTO> reservationService, IReservationService reservationService2)
+    public ReservationController(
+        Core.Interface.IService<Reservation> coreReservationService,
+        Core.Interface.IReservationService coreReservationService2
+    )
     {
-        _reservationService = reservationService;
-        _reservationService2 = reservationService2;
+        _coreReservationService = coreReservationService;
+        _coreReservationService2 = coreReservationService2;
     }
 
     [HttpGet]
@@ -25,12 +30,12 @@ public class ReservationController
     {
         try
         {
-            var reservations = await _reservationService.Get();
+            var reservations = await _coreReservationService.Get();
             if (reservations == null)
             {
                 return BadRequest("Failed to get reservations.");
             }
-            return Ok(reservations);
+            return Ok(reservations.Select(r => Mapper.GenerateReservationDTO(r)));
         }
         catch (Exception e)
         {
@@ -49,14 +54,14 @@ public class ReservationController
     {
         try
         {
-            var reservations = await _reservationService2.GetByScreeningId(
+            var reservations = await _coreReservationService2.GetReservationsByMovieScreening(
                 screeningId
             );
             if (reservations == null)
             {
                 return BadRequest("Failed to get reservations by movie screening id.");
             }
-            return Ok(reservations);
+            return Ok(reservations.Select(r => Mapper.GenerateReservationDTO(r)));
         }
         catch (Exception e)
         {
@@ -69,12 +74,17 @@ public class ReservationController
     {
         try
         {
-            var addedReservation = await _reservationService.Create(reservationDTO);
+            var newReservation = Mapper.GenerateReservation(reservationDTO);
+            var addedReservation = await _coreReservationService.Create(newReservation);
             if (addedReservation == null)
             {
                 return BadRequest("Failed to create reservation.");
             }
-            return CreatedAtAction(nameof(Get), null, addedReservation);
+            return CreatedAtAction(
+                nameof(Get),
+                null,
+                Mapper.GenerateReservationDTO(addedReservation)
+            );
         }
         catch (InvalidOperationException e)
         {
@@ -99,12 +109,13 @@ public class ReservationController
     {
         try
         {
-            var updatedReservation = await _reservationService.Update(reservationDTO);
+            var reservationToUpdate = Mapper.GenerateReservation(reservationDTO);
+            var updatedReservation = await _coreReservationService.Update(reservationToUpdate);
             if (updatedReservation == null)
             {
                 return BadRequest("Failed to update reservation.");
             }
-            return Ok(updatedReservation);
+            return Ok(Mapper.GenerateReservationDTO(updatedReservation));
         }
         catch (Exception e)
         {
@@ -117,7 +128,7 @@ public class ReservationController
     {
         try
         {
-            await _reservationService.DeleteById(id);
+            await _coreReservationService.DeleteById(id);
             return StatusCode(204);
         }
         catch (Exception e)
@@ -131,12 +142,12 @@ public class ReservationController
     {
         try
         {
-            var updatedReservation = await _reservationService2.CheckInReservation(code);
+            var updatedReservation = await _coreReservationService2.CheckInReservationByCode(code);
             if (updatedReservation == null)
             {
                 return BadRequest("Failed to check in reservation.");
             }
-            return Ok(updatedReservation);
+            return Ok(Mapper.GenerateReservationDTO(updatedReservation));
         }
         catch (Exception e)
         {

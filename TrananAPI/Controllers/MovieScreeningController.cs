@@ -1,18 +1,22 @@
 using TrananAPI.DTO;
+using TrananAPI.Service.Mapper;
 using TrananAPI.Interface;
 using Microsoft.AspNetCore.Mvc;
+using Core.Models;
 
 namespace TrananAPI.Controllers;
 
 [ApiController]
 [Route("moviescreening")]
-public class MovieScreeningController : ControllerBase, IController<MovieScreeningOutgoingDTO, MovieScreeningIncomingDTO>
+public class MovieScreeningController
+    : ControllerBase,
+        IController<MovieScreeningOutgoingDTO, MovieScreeningIncomingDTO>
 {
-    private readonly IService<MovieScreeningOutgoingDTO, MovieScreeningIncomingDTO> _movieScreeningService;
+    private readonly Core.Interface.IService<MovieScreening> _coreScreeningService;
 
-    public MovieScreeningController(IService<MovieScreeningOutgoingDTO, MovieScreeningIncomingDTO> movieScreeningService)
+    public MovieScreeningController(Core.Interface.IService<MovieScreening> coreScreeningService)
     {
-        _movieScreeningService = movieScreeningService;
+        _coreScreeningService = coreScreeningService;
     }
 
     [HttpGet]
@@ -20,12 +24,15 @@ public class MovieScreeningController : ControllerBase, IController<MovieScreeni
     {
         try
         {
-            var movieScreenings = await _movieScreeningService.Get();
+            var movieScreenings = await _coreScreeningService.Get();
             if (movieScreenings == null)
             {
                 return BadRequest("Failed to get movie screenings.");
             }
-            return Ok(movieScreenings);
+            var screeningsDTOSs = movieScreenings
+                .Select(s => Mapper.GenerateMovieScreeningOutcomingDTO(s))
+                .ToList();
+            return Ok(screeningsDTOSs);
         }
         catch (Exception e)
         {
@@ -38,12 +45,12 @@ public class MovieScreeningController : ControllerBase, IController<MovieScreeni
     {
         try
         {
-            var movieScreeningDTO = await _movieScreeningService.GetById(id);
-            if (movieScreeningDTO == null)
+            var movieScreening = await _coreScreeningService.GetById(id);
+            if (movieScreening == null)
             {
                 return BadRequest("Failed to get movie screening by id.");
             }
-            return Ok(movieScreeningDTO);
+            return Ok(Mapper.GenerateMovieScreeningOutcomingDTO(movieScreening));
         }
         catch (Exception e)
         {
@@ -58,14 +65,18 @@ public class MovieScreeningController : ControllerBase, IController<MovieScreeni
     {
         try
         {
-            var newMovieScreening = await _movieScreeningService.Create(
-                movieScreeningDTO
-            );
+            var newMovieScreening = new MovieScreening()
+            {
+                MovieId = movieScreeningDTO.MovieId,
+                TheaterId = movieScreeningDTO.TheaterId,
+                DateAndTime = movieScreeningDTO.DateAndTime
+            };
+            var createdMovieScreening = await _coreScreeningService.Create(newMovieScreening);
             if (newMovieScreening == null)
             {
                 return BadRequest("Failed to create movie screening.");
             }
-            return Ok(newMovieScreening);
+            return Ok(Mapper.GenerateMovieScreeningOutcomingDTO(createdMovieScreening));
         }
         catch (InvalidOperationException e)
         {
@@ -90,18 +101,25 @@ public class MovieScreeningController : ControllerBase, IController<MovieScreeni
     }
 
     [HttpPut]
-    public async Task<ActionResult<MovieScreeningOutgoingDTO>> Put(MovieScreeningIncomingDTO movieScreeningDTO)
+    public async Task<ActionResult<MovieScreeningOutgoingDTO>> Put(
+        MovieScreeningIncomingDTO movieScreeningDTO
+    )
     {
         try
         {
-            var updatedMovieScreening = await _movieScreeningService.Update(
-                movieScreeningDTO
-            );
+            var movieScreeningToUpdate = new Core.Models.MovieScreening()
+            {
+                MovieScreeningId = movieScreeningDTO.Id,
+                DateAndTime = movieScreeningDTO.DateAndTime,
+                MovieId = movieScreeningDTO.MovieId,
+                TheaterId = movieScreeningDTO.TheaterId
+            };
+            var updatedMovieScreening = await _coreScreeningService.Update(movieScreeningToUpdate);
             if (updatedMovieScreening == null)
             {
                 return BadRequest("Failed to update movie screening.");
             }
-            return Ok(updatedMovieScreening);
+            return Ok(Mapper.GenerateMovieScreeningOutcomingDTO(updatedMovieScreening));
         }
         catch (Exception e)
         {
@@ -114,7 +132,7 @@ public class MovieScreeningController : ControllerBase, IController<MovieScreeni
     {
         try
         {
-            await _movieScreeningService.DeleteById(id);
+            await _coreScreeningService.DeleteById(id);
             return StatusCode(204);
         }
         catch (Exception e)

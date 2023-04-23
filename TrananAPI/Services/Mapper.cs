@@ -175,16 +175,18 @@ public class Mapper
         return reservationDTO;
     }
 
-    public static async Task<Reservation> GenerateReservation(ReservationDTO reservationDTO)
+    public static Reservation GenerateReservation(ReservationDTO reservationDTO)
     {
-        var reservation = await TrananAPI.Services.ReservationService.CreateReservationAsync(
-            reservationDTO.Id,
-            reservationDTO.Price,
-            reservationDTO.MovieScreeningId,
-            GenerateCustomer(reservationDTO.CustomerDTO),
-            GenerateSeatsFromIds(reservationDTO.SeatIds),
-            reservationDTO.IsCheckedIn
-        );
+        var reservation = new Reservation()
+        {
+            ReservationId = reservationDTO.Id,
+            Price = reservationDTO.Price,
+            MovieScreeningId = reservationDTO.MovieScreeningId,
+            Customer = GenerateCustomer(reservationDTO.CustomerDTO),
+            Seats = GenerateSeatsFromIds(reservationDTO.SeatIds),
+            ReservationCode = reservationDTO.ReservationCode,
+            IsCheckedIn = reservationDTO.IsCheckedIn
+        };
         return reservation;
     }
 

@@ -32,30 +32,6 @@ builder.Services.AddDbContext<Core.Data.TrananDbContext>(
 );
 
 builder.Services.AddScoped<
-    TrananAPI.Interface.IService<TrananAPI.DTO.MovieDTO, TrananAPI.DTO.MovieDTO>,
-    TrananAPI.Services.MovieService
->();
-builder.Services.AddScoped<
-    TrananAPI.Interface.IService<TrananAPI.DTO.TheaterDTO, TrananAPI.DTO.TheaterDTO>,
-    TrananAPI.Services.TheaterService
->();
-builder.Services.AddScoped<
-    TrananAPI.Interface.IService<
-        TrananAPI.DTO.MovieScreeningOutgoingDTO,
-        TrananAPI.DTO.MovieScreeningIncomingDTO
-    >,
-    TrananAPI.Services.MovieScreeningService
->();
-builder.Services.AddScoped<
-    TrananAPI.Interface.IService<TrananAPI.DTO.ReservationDTO, TrananAPI.DTO.ReservationDTO>,
-    TrananAPI.Services.ReservationService
->();
-builder.Services.AddScoped<
-    TrananAPI.Interface.IReservationService,
-    TrananAPI.Services.ReservationService
->();
-
-builder.Services.AddScoped<
     Core.Interface.IRepository<Core.Models.Movie>,
     Core.Data.Repository.MovieRepository
 >();
