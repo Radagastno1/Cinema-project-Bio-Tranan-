@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "xrPVlHUH9CQ/930mXewrm6M0StrmG354/B6xckrhBbfW4bfFT90prLO9E2CurRWtuTcTAmXIyC15lFSQuEl/4Q==",
+  "dgSpecHash": "BW9o1n9NB7hOM/PLM7owB5TGtlSXN+GCuqv1J53tqJPYS/RNjgszhkoHe396XmVLTjNjjgDp/peQlfUIlk0Gmw==",
   "success": true,
-  "projectFilePath": "C:\\Users\\angel\\Documents\\SUVNET22\\OOP2\\INLÄMNINGAR\\bio-tranan-Radagastno1\\trananapi\\TrananAPI.csproj",
+  "projectFilePath": "C:\\Users\\angel\\Documents\\SUVNET22\\OOP2\\INLÄMNINGAR\\bio-tranan-Radagastno1\\TrananAPI\\TrananAPI.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\angel\\.nuget\\packages\\dapper\\1.50.2\\dapper.1.50.2.nupkg.sha512",
     "C:\\Users\\angel\\.nuget\\packages\\hangfire.aspnetcore\\1.7.34\\hangfire.aspnetcore.1.7.34.nupkg.sha512",
