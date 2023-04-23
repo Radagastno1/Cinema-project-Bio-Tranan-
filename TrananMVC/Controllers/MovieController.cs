@@ -1,31 +1,34 @@
 using Microsoft.AspNetCore.Mvc;
 using TrananMVC.ViewModel;
 using TrananMVC.Interface;
+using Core.Models;
+using TrananMVC.Service;
 
 namespace TrananMVC.Controllers;
 
 public class MovieController : Controller
 {
-    private readonly IMovieService<MovieViewModel> _movieService;
-    private readonly IMovieService<MovieScreeningViewModel> _movieScreeningService;
-    private readonly IReviewService _reviewService;
+    private readonly Core.Interface.IService<Movie> _coreMovieService;
+    private readonly Core.Interface.IService<MovieScreening> _coreScreeningService;
+     private readonly Core.Interface.IService<Review> _coreReviewService;
 
     public MovieController(
-        IMovieService<MovieViewModel> movieService,
-        IMovieService<MovieScreeningViewModel> movieScreeningService,
-        IReviewService reviewService
+        Core.Interface.IService<Movie> coreMovieService,
+        Core.Interface.IService<MovieScreening> coreScreeningService,
+        Core.Interface.IService<Review> coreReviewService
     )
     {
-        _movieService = movieService;
-        _movieScreeningService = movieScreeningService;
-        _reviewService = reviewService;
+        _coreMovieService = coreMovieService;
+        _coreScreeningService = coreScreeningService;
+        _coreReviewService = coreReviewService;
     }
 
     public async Task<IActionResult> Details(int movieId)
     {
         try
         {
-            var movieViewModel = await _movieService.GetById(movieId);
+            var movie = await _coreMovieService.GetById(movieId);
+            var movieViewModel = Mapper.GenerateMovieAsViewModel(movie);
             return View(movieViewModel);
         }
         catch (Exception)
@@ -46,12 +49,12 @@ public class MovieController : Controller
     {
         try
         {
-            var movieScreening = await _movieScreeningService.GetById(
+            var movieScreening = await _coreScreeningService.GetById(
                 movieScreeningId
             );
-            var movie = await _movieService.GetById(movieScreening.MovieId);
+            var movie = await _coreMovieService.GetById(movieScreening.MovieId);
             var reviewViewModel = new ReviewViewModel();
-            reviewViewModel.MovieViewModel = movie;
+            reviewViewModel.MovieViewModel = Mapper.GenerateMovieAsViewModel(movie);
             return View(reviewViewModel);
         }
         catch (Exception)
@@ -73,12 +76,12 @@ public class MovieController : Controller
     {
         try
         {
-            var movieViewModel = await _movieService.GetById(
+            var movie = await _coreMovieService.GetById(
                 reviewViewModel.MovieViewModelId
             );
 
-            reviewViewModel.MovieViewModel = movieViewModel;
-            var createdReview = await _reviewService.CreateReview(reviewViewModel);
+            reviewViewModel.MovieViewModel = Mapper.GenerateMovieAsViewModel(movie);
+            var createdReview = await _coreReviewService.Create(Mapper.GenerateReview(reviewViewModel));
 
             return RedirectToAction(
                 "Details",
@@ -104,13 +107,13 @@ public class MovieController : Controller
     {
         try
         {
-            var movies = await _movieService.GetAll();
+            var movies = await _coreMovieService.Get();
             var topMovies = movies
                 .Where(m => m.Reviews != null && m.Reviews.Any())
                 .OrderByDescending(m => m.Reviews.Max(r => r.Rating))
                 .Take(5)
                 .ToList();
-            return View(topMovies);
+            return View(topMovies.Select(m => Mapper.GenerateMovieAsViewModel(m)).ToList());
         }
         catch (ArgumentNullException)
         {

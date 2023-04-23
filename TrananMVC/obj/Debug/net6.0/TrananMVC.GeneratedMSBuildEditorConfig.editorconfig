@@ -8,73 +8,73 @@ build_property.PlatformNeutralAssembly =
 build_property._SupportedPlatformList = Linux,macOS,Windows
 build_property.RootNamespace = TrananMVC
 build_property.RootNamespace = TrananMVC
-build_property.ProjectDir = c:\Users\angel\Documents\SUVNET22\OOP2\INLÄMNINGAR\bio-tranan-Radagastno1\TrananMVC\
+build_property.ProjectDir = C:\Users\angel\Documents\SUVNET22\OOP2\INLÄMNINGAR\bio-tranan-Radagastno1\trananmvc\
 build_property.RazorLangVersion = 6.0
 build_property.SupportLocalizedComponentNames = 
 build_property.GenerateRazorMetadataSourceChecksumAttributes = 
-build_property.MSBuildProjectDirectory = c:\Users\angel\Documents\SUVNET22\OOP2\INLÄMNINGAR\bio-tranan-Radagastno1\TrananMVC
+build_property.MSBuildProjectDirectory = C:\Users\angel\Documents\SUVNET22\OOP2\INLÄMNINGAR\bio-tranan-Radagastno1\trananmvc
 build_property._RazorSourceGeneratorDebug = 
 
-[c:/Users/angel/Documents/SUVNET22/OOP2/INLÄMNINGAR/bio-tranan-Radagastno1/TrananMVC/Views/Bio/AboutUs.cshtml]
+[C:/Users/angel/Documents/SUVNET22/OOP2/INLÄMNINGAR/bio-tranan-Radagastno1/trananmvc/Views/Bio/AboutUs.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQmlvXEFib3V0VXMuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
-[c:/Users/angel/Documents/SUVNET22/OOP2/INLÄMNINGAR/bio-tranan-Radagastno1/TrananMVC/Views/Bio/Contact.cshtml]
+[C:/Users/angel/Documents/SUVNET22/OOP2/INLÄMNINGAR/bio-tranan-Radagastno1/trananmvc/Views/Bio/Contact.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQmlvXENvbnRhY3QuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
-[c:/Users/angel/Documents/SUVNET22/OOP2/INLÄMNINGAR/bio-tranan-Radagastno1/TrananMVC/Views/Bio/Error.cshtml]
+[C:/Users/angel/Documents/SUVNET22/OOP2/INLÄMNINGAR/bio-tranan-Radagastno1/trananmvc/Views/Bio/Error.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQmlvXEVycm9yLmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
-[c:/Users/angel/Documents/SUVNET22/OOP2/INLÄMNINGAR/bio-tranan-Radagastno1/TrananMVC/Views/Bio/Index.cshtml]
+[C:/Users/angel/Documents/SUVNET22/OOP2/INLÄMNINGAR/bio-tranan-Radagastno1/trananmvc/Views/Bio/Index.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQmlvXEluZGV4LmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
-[c:/Users/angel/Documents/SUVNET22/OOP2/INLÄMNINGAR/bio-tranan-Radagastno1/TrananMVC/Views/Movie/Details.cshtml]
+[C:/Users/angel/Documents/SUVNET22/OOP2/INLÄMNINGAR/bio-tranan-Radagastno1/trananmvc/Views/Movie/Details.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcTW92aWVcRGV0YWlscy5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
-[c:/Users/angel/Documents/SUVNET22/OOP2/INLÄMNINGAR/bio-tranan-Radagastno1/TrananMVC/Views/Movie/Review.cshtml]
+[C:/Users/angel/Documents/SUVNET22/OOP2/INLÄMNINGAR/bio-tranan-Radagastno1/trananmvc/Views/Movie/Review.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcTW92aWVcUmV2aWV3LmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
-[c:/Users/angel/Documents/SUVNET22/OOP2/INLÄMNINGAR/bio-tranan-Radagastno1/TrananMVC/Views/Movie/TopMovies.cshtml]
+[C:/Users/angel/Documents/SUVNET22/OOP2/INLÄMNINGAR/bio-tranan-Radagastno1/trananmvc/Views/Movie/TopMovies.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcTW92aWVcVG9wTW92aWVzLmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
-[c:/Users/angel/Documents/SUVNET22/OOP2/INLÄMNINGAR/bio-tranan-Radagastno1/TrananMVC/Views/Reservation/Cancel.cshtml]
+[C:/Users/angel/Documents/SUVNET22/OOP2/INLÄMNINGAR/bio-tranan-Radagastno1/trananmvc/Views/Reservation/Cancel.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcUmVzZXJ2YXRpb25cQ2FuY2VsLmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
-[c:/Users/angel/Documents/SUVNET22/OOP2/INLÄMNINGAR/bio-tranan-Radagastno1/TrananMVC/Views/Reservation/Create.cshtml]
+[C:/Users/angel/Documents/SUVNET22/OOP2/INLÄMNINGAR/bio-tranan-Radagastno1/trananmvc/Views/Reservation/Create.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcUmVzZXJ2YXRpb25cQ3JlYXRlLmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
-[c:/Users/angel/Documents/SUVNET22/OOP2/INLÄMNINGAR/bio-tranan-Radagastno1/TrananMVC/Views/Reservation/ShowReservation.cshtml]
+[C:/Users/angel/Documents/SUVNET22/OOP2/INLÄMNINGAR/bio-tranan-Radagastno1/trananmvc/Views/Reservation/ShowReservation.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcUmVzZXJ2YXRpb25cU2hvd1Jlc2VydmF0aW9uLmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
-[c:/Users/angel/Documents/SUVNET22/OOP2/INLÄMNINGAR/bio-tranan-Radagastno1/TrananMVC/Views/Schema/Index.cshtml]
+[C:/Users/angel/Documents/SUVNET22/OOP2/INLÄMNINGAR/bio-tranan-Radagastno1/trananmvc/Views/Schema/Index.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU2NoZW1hXEluZGV4LmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
-[c:/Users/angel/Documents/SUVNET22/OOP2/INLÄMNINGAR/bio-tranan-Radagastno1/TrananMVC/Views/Schema/Shown.cshtml]
+[C:/Users/angel/Documents/SUVNET22/OOP2/INLÄMNINGAR/bio-tranan-Radagastno1/trananmvc/Views/Schema/Shown.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU2NoZW1hXFNob3duLmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
-[c:/Users/angel/Documents/SUVNET22/OOP2/INLÄMNINGAR/bio-tranan-Radagastno1/TrananMVC/Views/Shared/_ValidationScriptsPartial.cshtml]
+[C:/Users/angel/Documents/SUVNET22/OOP2/INLÄMNINGAR/bio-tranan-Radagastno1/trananmvc/Views/Shared/_ValidationScriptsPartial.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU2hhcmVkXF9WYWxpZGF0aW9uU2NyaXB0c1BhcnRpYWwuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
-[c:/Users/angel/Documents/SUVNET22/OOP2/INLÄMNINGAR/bio-tranan-Radagastno1/TrananMVC/Views/_ViewImports.cshtml]
+[C:/Users/angel/Documents/SUVNET22/OOP2/INLÄMNINGAR/bio-tranan-Radagastno1/trananmvc/Views/_ViewImports.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcX1ZpZXdJbXBvcnRzLmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
-[c:/Users/angel/Documents/SUVNET22/OOP2/INLÄMNINGAR/bio-tranan-Radagastno1/TrananMVC/Views/_ViewStart.cshtml]
+[C:/Users/angel/Documents/SUVNET22/OOP2/INLÄMNINGAR/bio-tranan-Radagastno1/trananmvc/Views/_ViewStart.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcX1ZpZXdTdGFydC5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
-[c:/Users/angel/Documents/SUVNET22/OOP2/INLÄMNINGAR/bio-tranan-Radagastno1/TrananMVC/Views/Shared/_Layout.cshtml]
+[C:/Users/angel/Documents/SUVNET22/OOP2/INLÄMNINGAR/bio-tranan-Radagastno1/trananmvc/Views/Shared/_Layout.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU2hhcmVkXF9MYXlvdXQuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = b-22lid5owlh

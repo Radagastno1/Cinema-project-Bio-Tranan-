@@ -1,34 +1,40 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using TrananMVC.ViewModel;
 using TrananMVC.Service;
-using TrananMVC.Interface;
+using Core.Models;
 
 namespace TrananMVC.Controllers;
 
 public class BioController : Controller
 {
-    private readonly IMovieService<MovieScreeningViewModel> _movieScreeningService;
-    private readonly IMovieService<MovieViewModel> _movieService;
+    private readonly Core.Interface.IService<MovieScreening> _coreScreeningService;
+    private readonly Core.Interface.IService<Movie> _coreMovieService;
 
     public BioController(
-        IMovieService<MovieScreeningViewModel> movieScreeningService,
-        IMovieService<MovieViewModel> movieService
+        Core.Interface.IService<MovieScreening> coreScreeningService,
+        Core.Interface.IService<Movie> coreMovieService
     )
     {
-        _movieScreeningService = movieScreeningService;
-        _movieService = movieService;
+        _coreMovieService = coreMovieService;
+        _coreScreeningService = coreScreeningService;
     }
 
     public async Task<IActionResult> Index()
     {
         try
         {
-            var upcomingMovies = await _movieService.GetAll();
+            var movies = await _coreMovieService.Get();
+
+            var upcomingMovies = movies.Where(m => m.AmountOfScreenings < m.MaxScreenings);
+            var upcomingMoviesAsViewModels = movies
+                .Select(m => Mapper.GenerateMovieAsViewModel(m))
+                .ToList();
+
             if (upcomingMovies == null)
             {
                 return View(new List<MovieViewModel>());
             }
-            return View(upcomingMovies);
+            return View(upcomingMoviesAsViewModels);
         }
         catch (Exception)
         {

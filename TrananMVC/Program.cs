@@ -80,22 +80,9 @@ builder.Services.AddScoped<Core.Interface.IReservationService, Core.Services.Res
 builder.Services.AddScoped<Core.Interface.IReviewService, Core.Services.ReviewService>();
 
 builder.Services.AddScoped<
-    TrananMVC.Interface.IMovieService<TrananMVC.ViewModel.MovieViewModel>,
-    TrananMVC.Service.MovieService
->();
-builder.Services.AddScoped<
-    TrananMVC.Interface.IMovieService<TrananMVC.ViewModel.MovieScreeningViewModel>,
-    TrananMVC.Service.MovieScreeningService
->();
-builder.Services.AddScoped<
-    TrananMVC.Interface.IReservationService,
-    TrananMVC.Service.ReservationService
->();
-builder.Services.AddScoped<
     TrananMVC.Interface.IMovieTrailerService,
     TrananMVC.ApiServices.MovieTrailerService
 >();
-builder.Services.AddScoped<TrananMVC.Interface.IReviewService, TrananMVC.Service.ReviewService>();
 
 builder.Services.AddScoped<Core.Workers.HangfireWorker>();
 

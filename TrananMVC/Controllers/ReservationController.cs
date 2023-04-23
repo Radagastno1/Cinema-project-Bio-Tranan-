@@ -1,30 +1,36 @@
 using Microsoft.AspNetCore.Mvc;
 using TrananMVC.ViewModel;
 using TrananMVC.Interface;
+using Core.Models;
+using TrananMVC.Service;
 
 namespace TrananMVC.Controllers;
 
 public class ReservationController : Controller
 {
-    private readonly IMovieService<MovieScreeningViewModel> _movieScreeningService;
-    private readonly IReservationService _reservationService;
+    private readonly Core.Interface.IService<MovieScreening> _coreScreeningService;
+    private readonly Core.Interface.IService<Reservation> _coreReservationService;
+    private readonly Core.Interface.IService<Movie> _coreMovieService;
 
     public ReservationController(
-        IMovieService<MovieScreeningViewModel> movieScreeningService,
-        IReservationService reservationService
+        Core.Interface.IService<MovieScreening> coreScreeningService,
+        Core.Interface.IService<Reservation> coreReservationService,
+        Core.Interface.IService<Movie> coreMovieService
     )
     {
-        _movieScreeningService = movieScreeningService;
-        _reservationService = reservationService;
+        _coreReservationService = coreReservationService;
+        _coreScreeningService = coreScreeningService;
+        _coreMovieService = coreMovieService;
     }
 
     public async Task<IActionResult> Create(int movieScreeningId)
     {
         try
         {
-            var movieScreeningViewModel = await _movieScreeningService.GetById(
-                movieScreeningId
-            );
+            var movieScreening = await _coreScreeningService.GetById(movieScreeningId);
+
+            var movieScreeningViewModel = Mapper.GenerateMovieScreeningToViewModel(movieScreening);
+
             var reservationViewModel = new ReservationViewModel();
             reservationViewModel.MovieScreeningId = movieScreeningId;
 
@@ -56,8 +62,18 @@ public class ReservationController : Controller
     {
         try
         {
-            var createdReservationViewModel = await _reservationService.CreateReservation(
+            var reservationToCreate = Mapper.GenerateReservation(
                 movieScreeningReservationViewModel.ReservationViewModel
+            );
+            var createdReservation = await _coreReservationService.Create(reservationToCreate);
+            var movieScreening = await _coreScreeningService.GetById(
+                createdReservation.MovieScreeningId
+            );
+            var movie = await _coreMovieService.GetById(movieScreening.MovieId);
+            var createdReservationViewModel = Mapper.GenerateCreatedReservationViewModel(
+                movieScreening,
+                createdReservation,
+                movie
             );
             return RedirectToAction("ShowReservation", "Reservation", createdReservationViewModel);
         }
@@ -86,12 +102,9 @@ public class ReservationController : Controller
     {
         try
         {
-            var isDeleted = await _reservationService.DeleteReservationById(reservationId);
-            if (isDeleted)
-            {
-                return View(); 
-            }
-            return RedirectToAction("ShowReservation", "Reservation");
+            await _coreReservationService.DeleteById(reservationId);
+
+            return View();
         }
         catch (Exception)
         {

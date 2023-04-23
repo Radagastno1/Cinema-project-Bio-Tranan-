@@ -2,28 +2,35 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using TrananMVC.ViewModel;
 using TrananMVC.Interface;
+using TrananMVC.Service;
+using Core.Models;
 
 namespace TrananMVC.Controllers;
 
 public class SchemaController : Controller
 {
-    private readonly IMovieService<MovieScreeningViewModel> _movieScreeningService;
+    private readonly Core.Interface.IService<MovieScreening> _coreScreeningService;
+    private readonly Core.Interface.IMovieScreeningService _coreScreeningService2;
 
-    public SchemaController(IMovieService<MovieScreeningViewModel> movieScreeningService)
+    public SchemaController(Core.Interface.IService<MovieScreening> coreScreeningService,
+    Core.Interface.IMovieScreeningService coreScreeningService2, 
+    Core.Interface.IService<Movie> coreMovieService
+    )
     {
-        _movieScreeningService = movieScreeningService;
+        _coreScreeningService = coreScreeningService;
+        _coreScreeningService2 = coreScreeningService2;
     }
 
     public async Task<IActionResult> Index()
     {
         try
         {
-            var movieScreeningViewModels = await _movieScreeningService.GetUpcoming();
+            var movieScreeningViewModels = await _coreScreeningService.Get();
             if (movieScreeningViewModels == null)
             {
                 return View(new List<MovieScreeningViewModel>());
             }
-            return View(movieScreeningViewModels);
+            return View(movieScreeningViewModels.Select(m => Mapper.GenerateMovieScreeningToViewModel(m)).ToList());
         }
         catch (Exception)
         {
@@ -39,12 +46,13 @@ public class SchemaController : Controller
     {
         try
         {
-            var movieScreeningViewModels = await _movieScreeningService.GetAll();
-            if (movieScreeningViewModels == null)
+            var shownMovieScreenings = await _coreScreeningService2.GetShownScreenings();
+            if (shownMovieScreenings == null)
             {
                 return View(new List<MovieScreeningViewModel>());
             }
-            return View(movieScreeningViewModels);
+            var shownMovieScreeningsViewModels = shownMovieScreenings.Select(m => Mapper.GenerateMovieScreeningToViewModel(m)).ToList();
+            return View(shownMovieScreeningsViewModels);
         }
         catch (Exception)
         {
