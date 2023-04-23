@@ -145,18 +145,17 @@ public class Mapper
         return reservationViewModel;
     }
 
-    public static async Task<Reservation> GenerateReservation(
-        ReservationViewModel reservationViewModel
-    )
+    public static Reservation GenerateReservation(ReservationViewModel reservationViewModel)
     {
-        var reservation = await TrananMVC.Service.ReservationService.CreateReservationAsync(
-            reservationViewModel.Id,
-            reservationViewModel.Price,
-            reservationViewModel.MovieScreeningId,
-            GenerateCustomer(reservationViewModel.CustomerViewModel),
-            GenerateSeatsFromIds(reservationViewModel.SeatIds),
-            reservationViewModel.IsCheckedIn
-        );
+        var reservation = new Reservation()
+        {
+            ReservationId = reservationViewModel.Id,
+            Price = reservationViewModel.Price,
+            MovieScreeningId = reservationViewModel.MovieScreeningId,
+            Customer = GenerateCustomer(reservationViewModel.CustomerViewModel),
+            Seats = GenerateSeatsFromIds(reservationViewModel.SeatIds),
+            IsCheckedIn = reservationViewModel.IsCheckedIn
+        };
         return reservation;
     }
 

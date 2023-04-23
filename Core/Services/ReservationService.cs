@@ -1,5 +1,6 @@
 using Core.Models;
 using Core.Interface;
+using System.Net.Http.Json;
 
 namespace Core.Services;
 
@@ -21,11 +22,7 @@ public class ReservationService : IService<Reservation>, IReservationService
     {
         var allReservations = await _reservationRepository.GetAsync();
         var unvalidReservations = allReservations
-            .Where(
-                r =>
-                    DateTime.Now
-                    > r.MovieScreening.DateAndTime.AddDays(1)
-            )
+            .Where(r => DateTime.Now > r.MovieScreening.DateAndTime.AddDays(1))
             .ToList();
         foreach (var reservation in unvalidReservations)
         {
@@ -120,7 +117,17 @@ public class ReservationService : IService<Reservation>, IReservationService
     {
         try
         {
-            var addedReservation = await _reservationRepository.CreateAsync(reservation);
+            var completedReservation = await CreateReservationAsync(
+                reservation.ReservationId,
+                reservation.Price,
+                reservation.MovieScreeningId,
+                reservation.Customer,
+                reservation.Seats,
+                reservation.IsCheckedIn
+            );
+
+            var addedReservation = await _reservationRepository.CreateAsync(completedReservation);
+
             return addedReservation;
         }
         catch (InvalidOperationException e)
@@ -134,6 +141,55 @@ public class ReservationService : IService<Reservation>, IReservationService
                 throw new InvalidOperationException(e.Message);
             }
             throw new InvalidOperationException("Failed to create reservation.");
+        }
+    }
+
+    public static async Task<Reservation> CreateReservationAsync(
+        int reservationId,
+        decimal price,
+        int movieScreeningId,
+        Customer customer,
+        List<Seat> seats,
+        bool isCheckedIn = false
+    )
+    {
+        var reservation = new Reservation()
+        {
+            Price = price,
+            MovieScreeningId = movieScreeningId,
+            Customer = customer,
+            Seats = seats,
+            IsCheckedIn = isCheckedIn
+        };
+
+        reservation.ReservationCode = await GenerateReservationCodeAsync();
+        return reservation;
+    }
+
+    private static async Task<int> GenerateReservationCodeAsync()
+    {
+        int randomNumber = await GetRandomNumberFromAPI();
+
+        if (randomNumber == 0)
+        {
+            throw new Exception("Reservation code is unavailable. Please contact admin.");
+        }
+        return randomNumber;
+    }
+
+    private static async Task<int> GetRandomNumberFromAPI()
+    {
+        string url = "http://www.randomnumberapi.com/api/v1.0/random?min=100&max=1000";
+        HttpClient httpClient = new();
+        try
+        {
+            var randomNumberArray = await httpClient.GetFromJsonAsync<int[]>(url);
+            int randomNumber = randomNumberArray[0];
+            return randomNumber;
+        }
+        catch (HttpRequestException)
+        {
+            return 0;
         }
     }
 

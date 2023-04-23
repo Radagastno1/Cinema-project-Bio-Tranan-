@@ -53,7 +53,7 @@ Regler för systemet:
 ## Utöver dessa krav finns några extra VG-krav
 
 Hemsidan:
-- [x] Visa det totala priset innan reservationen läggs (se bild)
+- [ ] Visa det totala priset innan reservationen läggs (se bild)
 - [/] Det skall gå att avboka en reservation
 - [/] Använd ett externt api till något på hemsidan, exempelvis ett random advice från https://api.adviceslip.com/, eller mer avancerat: https://developers.themoviedb.org/3/getting-started/introduction
 - [x] Reviews! Det skall gå att poängsätta filmer samt ge dem ett skriftligt omdöme genom att ange sin reservationskod, men bara efter att filmen visats.
